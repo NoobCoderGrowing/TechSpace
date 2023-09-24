@@ -1,0 +1,42 @@
+.profilePhoto{
+    position: absolute;
+    width: 13vh;
+    height: 13vh;
+    display: block;
+    border-radius: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 3vh;
+}
+
+.bubbleContainer{
+    width: 60%;
+    height: 60vh;
+    position: absolute;
+    top: 21vh;
+    left: 50%;
+    transform:translateX(-50%);
+    border: 0;
+    margin: 0;
+}
+
+.title{
+    width: 100%;
+    position: absolute;
+    top:10%;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    color: white;
+    font-size: 1.8vw; 
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.galleryContainer {
+    width: 80%;
+    overflow: hidden;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}

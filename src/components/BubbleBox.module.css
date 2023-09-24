@@ -1,0 +1,30 @@
+.bubbleBorder {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    background-color: #fff;
+    border-radius: 10px;
+  }
+
+  .bubbleText{
+    padding: 1vh 3vh;
+    width: 100%;
+    height: 100%;
+    font-size: 16px;
+    overflow: scroll;
+    box-sizing: border-box;
+  }
+  
+  .bubbleBorder::before{
+    content: '';
+    width: 0;
+    height: 0;
+    border: 15px solid;
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-color:  transparent transparent #fff transparent;
+  }
+
+  

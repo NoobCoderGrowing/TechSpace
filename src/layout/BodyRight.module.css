@@ -1,0 +1,6 @@
+.rightContainer{
+    flex-grow: 1;
+    flex-basis: 70vw;
+    background-color: blueviolet;
+    position: relative;
+}

@@ -1,0 +1,27 @@
+.gallery {
+    display: flex;
+    overflow-x: auto;
+    /* scroll-snap-type: x mandatory; */
+    white-space: nowrap;
+    /* Ensure images stay in a single line  */
+}
+
+.galleryImg {
+    flex: 0 0 auto;
+    width: 30%;
+    height: 30%;
+    /* scroll-snap-align: start; */
+    transition: filter 0.3s ease;
+    margin-right: 7.5vw;
+}
+
+.galleryImg:hover{
+    cursor: pointer;
+    filter: brightness(1.2);
+    transform: scale(1.2);
+    box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.5);
+}
+
+::-webkit-scrollbar {
+    height: 0; /* 隐藏滚动栏的宽度 */
+}
