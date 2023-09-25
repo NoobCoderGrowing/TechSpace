@@ -217,7 +217,7 @@ function Resume(){
                                     <div>
                                         <p className={classes.nowrap}><b>Queensland University of Technology</b></p>
                                     </div>
-                                    <div> <p className={classes.educationTimeline}>2022 Jul 24 ~ 2024 Dec15</p></div>
+                                    <div> <p className={classes.educationTimeline}>2023 Jul 24 ~ 2024 Nov 15</p></div>
                                 </div>
                                 <p>Master of Data Analytics (Statistical Data Science Major)</p>
                                 <p>GPA: N/A（First Semester）</p>
