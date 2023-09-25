@@ -53,6 +53,7 @@ function Resume(){
                             <p><b>Backend:</b> SpringBoot, SpringCloud, RestTemplate, OpenFeign, Dubbo, WebFlux, MySql, Redis, Caffeine, Kafka, Nacos, Eureka, Apollo Config Center, Lucene, ElasticSearch, jmap, jstat</p>
                             <p><b>Frontend:</b> React, Typesscript, antd, bootstrap, webpack, vite</p>
                             <p><b>Machine Learning and Deep Learning:</b> sk-learn, pytorch, numpy, py-plot, wandb</p>
+                            <p><b>Image Processing:</b> OpenCV</p>
                             <p><b>CI&CD:</b> docker, k8s, jenkins</p>
                         </div>
                     </div>
@@ -93,7 +94,7 @@ function Resume(){
                                 
                                 <ul className={classes.listContainer}>
                                     <li>Implement frontend components according to design</li>
-                                    <li>Incorporate Docsify as system manual</li>
+                                    <li>Define system manual structure, and implement and integrates it into the system</li>
                                     <li>Invent frontend dev tools to enhance development efficiency</li>
                                 </ul>
                              </div>
@@ -132,10 +133,11 @@ function Resume(){
                                     </div>
                                     <p className={classes.workTimeline}>Shanghai, China, &nbsp;2022 July 01 ~ 2023 April 13</p>
                                 </div>
-                                <p>loonshots-web is a Machine Learning Data Labling plateform, which offers data labling task realease, task inspection, and data labeling tools. My main contribution to the project is below</p>
+                                <p>loonshots-web is a Machine Learning Data Labeling plateform, which integrates data labeling task realease, task inspection, and data labeling tools together. My main contribution to the project is below</p>
                                 <ul className={classes.listContainer}>
-                                    <li>Implement 3rd party task release frontend pipeline</li>
-                                    <li>Implement web email editor</li>
+                                    <li>Implement task release frontend pipeline</li>
+                                    <li>Incorporate Docsify as system manual</li>
+                                    <li>Implement web email editor component</li>
                                     <li>Invent duplicate localization entry checker</li>
                                     <li>Invent SVG picture coloring and sizing library</li>
                                 </ul>
