@@ -32,7 +32,7 @@ function Resume(){
                             <p>Mobile Number: +61 410837649</p>
                             <p>Email: <a href="mailto:waynejune.yao@gmail.com">waynejune.yao@gmail.com</a></p>
                             <p>Linkedin: <a href="linkedin.com/in/wayne-yao-connect">linkedin.com/in/wayne-yao-connect</a></p>
-                            <p>Personal Website: <a href="linkedin.com/in/wayne-yao-connect">linkedin.com/in/wayne-yao-connect</a></p>
+                            <p>Personal Website: <a href="https://wenjunblog.xyz/">https://wenjunblog.xyz</a></p>
                         </div>
                     </div>
 
@@ -220,7 +220,7 @@ function Resume(){
                                     <div> <p className={classes.educationTimeline}>2022 Jul 24 ~ 2024 Dec15</p></div>
                                 </div>
                                 <p>Master of Data Analytics (Statistical Data Science Major)</p>
-                                <p>GPA: </p>
+                                <p>GPA: N/A（First Semester）</p>
                             </div>
                             <div className={classes.educationContainer}>
                                 <div className={`${classes.education}`}>
@@ -230,7 +230,7 @@ function Resume(){
                                     <div> <p className={classes.educationTimeline}>2019 Jul 28 ~ 2022 Jun 15</p></div>
                                 </div>
                                 <p>Master of Information Technology</p>
-                                <p>GPA: </p>
+                                <p>GPA: 5.44/7.00</p>
                             </div>
 
                             <div className={classes.educationContainer}>
@@ -241,7 +241,7 @@ function Resume(){
                                     <div> <p className={classes.educationTimeline}>2014 Sep 01 ~ 2018 Jun 30</p></div>
                                 </div>
                                 <p>Bachelor of English</p>
-                                <p>GPA: </p>
+                                <p>GPA: 83.00/100.00 </p>
                             </div>
 
                         </div>
