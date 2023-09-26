@@ -31,7 +31,7 @@ function Resume(){
                             <p>Address: Robertson, Brisbane, QLD, AU</p>
                             <p>Mobile Number: +61 410837649</p>
                             <p>Email: <a href="mailto:waynejune.yao@gmail.com">waynejune.yao@gmail.com</a></p>
-                            <p>Linkedin: <a href="linkedin.com/in/wayne-yao-connect">linkedin.com/in/wayne-yao-connect</a></p>
+                            <p>Linkedin: <a href="https://www.linkedin.com/in/wayne-yao-connect">linkedin.com/in/wayne-yao-connect</a></p>
                             <p>Personal Website: <a href="https://wenjunblog.xyz/">https://wenjunblog.xyz</a></p>
                         </div>
                     </div>
@@ -54,7 +54,7 @@ function Resume(){
                             <p><b>Frontend:</b> React, Typesscript, antd, bootstrap, webpack, vite</p>
                             <p><b>Machine Learning and Deep Learning:</b> sk-learn, pytorch, numpy, py-plot, wandb</p>
                             <p><b>Image Processing:</b> OpenCV</p>
-                            <p><b>CI&CD:</b> docker, k8s, jenkins</p>
+                            <p><b>CI&CD:</b> Git, Docker, K8s, Jenkins</p>
                         </div>
                     </div>
                     <div className={classes.row}>
@@ -254,7 +254,7 @@ function Resume(){
                             <h3>Core Finished Courses </h3>
                         </div>
                         <div className={classes.right}>
-                            <p>Software engineering (Python), Advanced Software Engineering (Java), Introduction To Computer Systems, Cmputer System Principles & Programming, Dicrete Mathmatics, Calculus & Linear Algebra I, Analysis of Scientific Data, Relational Database System, Advanced Database System, Concurrency Theory and Practice, Machine Learning </p>
+                            <p>Software engineering (Python), Advanced Software Engineering (Java), Introduction To Computer Systems, Cmputer System Principles & Programming, Data Structures & Algorithms, Dicrete Mathmatics, Calculus & Linear Algebra I, Analysis of Scientific Data, Relational Database System, Advanced Database System, Concurrency Theory and Practice, Machine Learning, Introduction to Web Design, Human Computer Interaction</p>
                         </div>
                     </div>
                 </div>

@@ -91,12 +91,17 @@
     color: 	#696969;
 }
 
+.contact a{
+    color: #696969;
+}
+
 .profession{
     margin-top: 5vh;
 }
 
 .workHistoryContainer{
     margin-bottom: 3vh;
+    &:last-child{margin-bottom: 0;}
 }
 
 .workHistory{
@@ -151,6 +156,7 @@ h3{
 
 .educationContainer{
     margin-bottom: 2vh;
+    &:last-child{margin-bottom: 0;}
 }
 
 .educationContainer p{
