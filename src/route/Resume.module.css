@@ -13,12 +13,12 @@
     background-color: white;
     margin: 15% auto;
     padding: 5vw 5vw 10vw 5vw; 
-    /* border: 1px solid #888; */
     width: 60%;
     box-shadow: 0 0.5vw 1vw 0 rgba(0, 0, 0, 0.2);
     text-align: center;
     position: relative;
     font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 1.3vw;
     
 }
 
@@ -55,8 +55,7 @@
     display: flex;
     flex-direction: row;
     position: relative;
-    margin-top: 3vh;
-    margin-bottom: 15vh;
+    margin-bottom: 5vw;
 }
 
 .left{
@@ -95,12 +94,10 @@
     color: #696969;
 }
 
-.profession{
-    margin-top: 5vh;
-}
+
 
 .workHistoryContainer{
-    margin-bottom: 3vh;
+    margin-bottom: 2vw;
     &:last-child{margin-bottom: 0;}
 }
 
@@ -146,16 +143,13 @@ h3{
     white-space: nowrap;
 }
 
-.leaveReason{
-    margin: 1vh;
-}
 
 .listContainer{
     margin: 0;
 }
 
 .educationContainer{
-    margin-bottom: 2vh;
+    margin-bottom: 1vw;
     &:last-child{margin-bottom: 0;}
 }
 
@@ -164,5 +158,5 @@ h3{
 }
 
 .timeDetailSeperator{
-    margin-bottom: 0.8vh;
+    margin-bottom: 0.5vw;
 }

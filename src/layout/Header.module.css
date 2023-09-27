@@ -1,6 +1,6 @@
 .headerContainer{
     width: 100vw;
-    min-height: 35vh;
+    min-height: 25vw;
     background-image: url(../assets/background1.jpeg);
     background-position: center;
     background-size: cover;
@@ -33,7 +33,7 @@
     font-size: 3vw;
     list-style-type: none;
     position: absolute;
-    top:10vh;
+    top:20%;
     left: 50%;
     transform: translateX(-50%);
 }
@@ -48,15 +48,15 @@
     align-items: center;
     position: absolute;
     width: 40vw;
-    bottom: 6vh;
+    bottom: 30%;
     left: 50%;
     transform: translateX(-50%);
     
 }
 
 .searchInput {
-    padding: 1.25vh;
-    border: 0.1vh solid #ccc;
+    padding: 1.1vw;
+    border: 0.1vw solid #ccc;
     border-radius: 1vw;
     font-size: 1vw;
     flex-grow: 1;

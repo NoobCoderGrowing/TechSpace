@@ -1,6 +1,6 @@
 .bodyContainer{
     width: 100vw;
-    min-height: 90vh;
+    min-height: 60vw;
     display: flex;
     flex-direction: row;
     position: relative;

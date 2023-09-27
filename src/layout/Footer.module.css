@@ -1,6 +1,6 @@
 .footerContainer{
     width: 100vw;
-    height: 10vh;
+    height: 10vw;
     background-color: #333;
     text-align: center;
     position: relative;
@@ -10,17 +10,19 @@
 .copyright p {
     position: absolute;
     bottom: 0.5vh;
-    font-size: 1.8vh;
+    font-size: 1.1vw;
     left: 50%;
     transform: translateX(-50%);
 }
 
 .contact{
+    position: absolute;
+    top: 20%;
     width: 100vw;
-    height: 5vh;
+    height: 5vw;
     display: grid;
     grid-template-columns: auto auto auto;
-    font-size: 1.8vh;
+    font-size: 1.2vw;
 }
 
 

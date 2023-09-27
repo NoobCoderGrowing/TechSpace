@@ -1,19 +1,18 @@
 .profilePhoto{
     position: absolute;
-    width: 13vh;
-    height: 13vh;
+    width: 30%;
     display: block;
     border-radius: 100%;
     left: 50%;
     transform: translateX(-50%);
-    top: 3vh;
+    top: 5%;
 }
 
 .bubbleContainer{
     width: 60%;
-    height: 60vh;
+    height: 60%;
     position: absolute;
-    top: 21vh;
+    top: 25%;
     left: 50%;
     transform:translateX(-50%);
     border: 0;
