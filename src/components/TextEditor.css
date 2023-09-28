@@ -1,0 +1,17 @@
+.ql-wrapper{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+
+.ql-toolbar, .ql-container{
+    background-color: #fff;
+}
+
+.ql-editor{
+    min-height: 60vw;
+    width: 100%;
+}

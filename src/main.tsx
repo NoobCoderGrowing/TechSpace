@@ -4,11 +4,18 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import Home from './route/Home'
 import './index.module.css'
 import Resume from './route/Resume'
+import Blog from './route/Blog'
+import EidtPage from './components/EidtPage'
+
 
 const router = createBrowserRouter([
   {path:'/', element:<Home/>, 
   children: [],},
   {path:'/resume', element:<Resume/>, children: [],},
+  {path:'/blog', element:<EidtPage/>, children: [
+    // {path:'/blog/create', element:<EidtPage/>, children: [],},
+  ],},
+  // {path:'/editor', element:<TextEditor/>, children: [],},
 ]);
 
 
