@@ -12,15 +12,14 @@ const router = createBrowserRouter([
   {path:'/', element:<Home/>, 
   children: [],},
   {path:'/resume', element:<Resume/>, children: [],},
-  {path:'/blog', element:<EidtPage/>, children: [
-    // {path:'/blog/create', element:<EidtPage/>, children: [],},
-  ],},
+  {path:'/blog', element:<Blog/>, children: [],},
+  // {path:'/blog', element:<EidtPage/>, children: [],},
   // {path:'/editor', element:<TextEditor/>, children: [],},
 ]);
 
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <RouterProvider router={router}/>
-  </React.StrictMode>,
+  // <React.StrictMode>
+  <RouterProvider router={router}/>
+  // </React.StrictMode>,
 )

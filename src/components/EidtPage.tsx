@@ -4,45 +4,76 @@ import Body from "../layout/Body";
 import BodyLeft from "../layout/BodyLeft";
 import BodyRight from "../layout/BodyRight";
 import TextEditor from "./TextEditor";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import classes from './EidtPage.module.css'
-import { Button } from "antd";
+import { Button, message} from "antd";
 import ContentTable from "./ContentTable";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import moment from 'moment';
 
 
 export default function EidtPage(){
 
+    const [messageApi, contextHolder] = message.useMessage();
     const [editorValue, setEditorValue] = useState<string>('');
+    const [title, setTitle] = useState<string>('');
+    const [date, setDate] = useState<string>('');
+    const [startDate, setStartDate] = useState(new Date());
 
-    function uploadArticle(){
-        console.log(editorValue)
+    async function uploadArticle(){
+        let data = {title: title, date: date, content: editorValue}
+        let url = "http://localhost:7777/tech-space/upload/article";
+        let jsondata = JSON.stringify(data)
+        console.log(jsondata)
+        await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: jsondata
+        }).then(response => response.json()).then(result => {
+            if(result['success'] == true){
+                messageApi.success('Submit Successful!');
+            }
+        })
+    }
+
+    function handleTitleInput(e:ChangeEvent<HTMLInputElement>){
+        setTitle(e.target.value);
+    }
+
+    function datePickerHandler(pickedDate: Date){
+        const formatedDate = moment(pickedDate, "YYYY-MM-DD HH:mm:ss").format("YYYY-MM-DD"); 
+        setDate(formatedDate);
+        setStartDate(pickedDate);
     }
 
     return(
-        <main>  
+        <main> 
             <Header/>
             <Body>
                 <BodyLeft>
-                    <ContentTable/>
+                    <ContentTable setArticle={null}/>
                 </BodyLeft>
                 <BodyRight>
                     <div>
                         <div className={classes.titleDateContainer}>
                             <div className={classes.titleContainer}>
                                 <label className={classes.title}>ttile</label>
-                                <input></input>
+                                <input onChange={handleTitleInput}></input>
                             </div>
                             <div className={classes.dateSubmitContainer}>
                                 <div className={classes.dateContainer}>
                                     <label className={classes.date}>date</label>
-                                    <input></input>
+                                    <DatePicker dateFormat="yyyy-MM-dd" selected={startDate} onChange={datePickerHandler} />
                                 </div>
                                 <div className= {classes.buttonContainer}>
+                                    {contextHolder} 
                                     <Button onClick={uploadArticle} type="primary">Submit</Button>
                                 </div>
                             </div>
-
-                            
                         </div>
                         <TextEditor editorValue={editorValue} setEditorValue={setEditorValue}/>
                         

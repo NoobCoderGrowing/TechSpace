@@ -1,0 +1,8 @@
+.tableEntry p{
+    font-size: 1.3vw;
+}
+
+.tableEntry :hover{
+    cursor: pointer;
+    font-size: 1.8vw;
+}
