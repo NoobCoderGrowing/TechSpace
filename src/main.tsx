@@ -6,6 +6,7 @@ import './index.module.css'
 import Resume from './route/Resume'
 import Blog from './route/Blog'
 import EidtPage from './components/EidtPage'
+import Login from './route/Login'
 
 
 const router = createBrowserRouter([
@@ -13,8 +14,8 @@ const router = createBrowserRouter([
   children: [],},
   {path:'/resume', element:<Resume/>, children: [],},
   {path:'/blog', element:<Blog/>, children: [],},
-  // {path:'/blog', element:<EidtPage/>, children: [],},
-  // {path:'/editor', element:<TextEditor/>, children: [],},
+  {path:'/edit', element:<EidtPage/>, children: [],},
+  {path:'/login', element:<Login/>, children: [],},
 ]);
 
 

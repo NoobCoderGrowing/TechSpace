@@ -2,6 +2,7 @@ import classes from "./ContentTable.module.css"
 import { useEffect, useState} from "react";
 import TableEntry from "./TableEntry";
 import {Article} from "./TypeDefinition";
+import {Link} from 'react-router-dom'
 
 
 
@@ -14,7 +15,7 @@ export default function ContentTable({setArticle}:props){
     const [data, setData] = useState<Array<Article>>([]);
 
      function retriveArticles(){
-         let url = "http://localhost:7777/tech-space/retrieve/articles";
+         let url = "http://localhost:7777/public/retrieve/articles";
          fetch(url, {
             method: 'GET',
             headers: {
@@ -35,6 +36,7 @@ export default function ContentTable({setArticle}:props){
                 <div className={classes.entryContainer}>
                     {data.map((article) => <TableEntry setArticle={setArticle} article={article}></TableEntry>)}
                 </div>
+                <a className={classes.login}><Link to={"/login"}>Write Article</Link></a>
             </div>
         </div>
     )

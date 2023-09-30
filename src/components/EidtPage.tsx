@@ -21,9 +21,10 @@ export default function EidtPage(){
     const [date, setDate] = useState<string>('');
     const [startDate, setStartDate] = useState(new Date());
 
+
     async function uploadArticle(){
         let data = {title: title, date: date, content: editorValue}
-        let url = "http://localhost:7777/tech-space/upload/article";
+        let url = "http://localhost:7777/admin/upload/article";
         let jsondata = JSON.stringify(data)
         console.log(jsondata)
         await fetch(url, {
@@ -32,14 +33,17 @@ export default function EidtPage(){
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: jsondata
-        }).then(response => response.json()).then(result => {
-            if(result['success'] == true){
-                messageApi.success('Submit Successful!');
+            body: jsondata,
+            credentials: 'include'
+        }).then(response => response.json()).then(result=>{
+            if(result['uploaded']==true){
+                messageApi.info("Uploade Successful")
+            }else{
+                messageApi.error("Unauthorized Upload")
             }
         })
     }
-
+    
     function handleTitleInput(e:ChangeEvent<HTMLInputElement>){
         setTitle(e.target.value);
     }
