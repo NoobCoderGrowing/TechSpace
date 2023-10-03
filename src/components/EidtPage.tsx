@@ -24,9 +24,8 @@ export default function EidtPage(){
 
     async function uploadArticle(){
         let data = {title: title, date: date, content: editorValue}
-        let url = "http://localhost:7777/admin/upload/article";
+        let url = "https://localhost:7777/admin/upload/article";
         let jsondata = JSON.stringify(data)
-        console.log(jsondata)
         await fetch(url, {
             method: 'POST',
             headers: {

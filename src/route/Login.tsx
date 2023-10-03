@@ -34,7 +34,7 @@ export default function Login(){
       let formData = new FormData();
       formData.append("username", username);
       formData.append("password", password);
-      let url = "http://localhost:7777/login";
+      let url = "https://localhost:7777/login";
       await fetch(url, {
           method: 'POST',
           headers: {
@@ -44,7 +44,6 @@ export default function Login(){
           body: formData
       }).then(response => {
         const responseJson = response.json();
-        console.log(responseJson)
         return responseJson;
       }).then(result =>{
         if(result['login']== true){

@@ -15,7 +15,7 @@ export default function ContentTable({setArticle}:props){
     const [data, setData] = useState<Array<Article>>([]);
 
      function retriveArticles(){
-         let url = "http://localhost:7777/public/retrieve/articles";
+         let url = "https://localhost:7777/public/retrieve/articles";
          fetch(url, {
             method: 'GET',
             headers: {
