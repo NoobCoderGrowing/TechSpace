@@ -25,7 +25,7 @@
 .titleContainer input{
     flex-basis: 80%;
     flex-grow: 1;
-    line-height: 2vw;
+    height: 2vw;
 }
 
 .dateSubmitContainer{
@@ -47,7 +47,7 @@
 }
 
 .dateContainer input{
-    line-height: 2vw;
+    height: 2vw;
     flex-basis: 80%;
     flex-grow: 1;
 }

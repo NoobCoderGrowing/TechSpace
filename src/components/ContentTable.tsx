@@ -34,9 +34,9 @@ export default function ContentTable({setArticle}:props){
             <div className={classes.content}>
                 <h1 className={classes.header}>Table of Content</h1>
                 <div className={classes.entryContainer}>
-                    {data.map((article) => <TableEntry setArticle={setArticle} article={article}></TableEntry>)}
+                    {data.map((article) => <TableEntry key={article._id} setArticle={setArticle} article={article}></TableEntry>)}
                 </div>
-                <a className={classes.login}><Link to={"/login"}>Write Article</Link></a>
+                <div className={classes.login}><Link to={"/login"}>Write Article</Link></div>
             </div>
         </div>
     )
