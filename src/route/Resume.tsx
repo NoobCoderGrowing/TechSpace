@@ -25,7 +25,7 @@ function Resume(){
                     
                     <div className={`${classes.row} ${classes.rowOne}`}>
                         <div className={classes.left}>
-                            <h1>Wayne Yao</h1>
+                            <h1 className={classes.h1}>Wayne Yao</h1>
                         </div>
                         <div className={`${classes.contact}`}>
                             <p>Address: Robertson, Brisbane, QLD, AU</p>
@@ -38,7 +38,7 @@ function Resume(){
 
                     <div className={`${classes.row} ${classes.profession}`}>
                         <div className={classes.left}>
-                            <h3>Professional Summaary</h3>
+                            <h3 className={classes.h3}>Professional Summaary</h3>
                         </div>
                         <div className={classes.right}>
                             <p>4 months as a front-end software intern at <a href='https://appen.com/'>Appen</a> and 10 months as a java backend developer at <a href='https://www.yiyaowang.com/'>YI</a> (a leading pharmaceutical e-commerce in China). Able to design and implement large scale high availability complex distributed system.</p>
@@ -47,7 +47,7 @@ function Resume(){
 
                     <div className={classes.row}>
                         <div className={classes.left}>
-                            <h3>Skills</h3>
+                            <h3 className={classes.h3}>Skills</h3>
                         </div>
                         <div className={classes.right}>
                             <p><b>Backend:</b> SpringBoot, SpringCloud, RestTemplate, OpenFeign, Dubbo, WebFlux, MySql, Redis, Caffeine, Kafka, Nacos, Eureka, Apollo Config Center, Lucene, ElasticSearch, jmap, jstat</p>
@@ -59,7 +59,7 @@ function Resume(){
                     </div>
                     <div className={classes.row}>
                         <div className={classes.left}>
-                            <h3>Work History</h3>
+                            <h3 className={classes.h3}>Work History</h3>
                         </div>
                         <div className={classes.right}>
                             <div className={classes.workHistoryContainer}>
@@ -102,7 +102,7 @@ function Resume(){
                     </div>
                     <div className={`${classes.row} ${classes.corporate}`} >
                         <div className={classes.left}>
-                            <h3>Corporate Projects</h3>
+                            <h3 className={classes.h3}>Corporate Projects</h3>
                         </div>
                         <div className={`${classes.right}`}>
                             <div className={classes.workHistoryContainer}>
@@ -146,7 +146,7 @@ function Resume(){
                     </div>
                     <div className={classes.row}>
                         <div className={classes.left}>
-                            <h3>Personal Projects</h3>
+                            <h3 className={classes.h3}>Personal Projects</h3>
                         </div>
                         <div className={classes.right}>
                             <div className={classes.workHistoryContainer}>
@@ -211,7 +211,7 @@ function Resume(){
 
                     <div className={classes.row}>
                         <div className={classes.left}>
-                            <h3>Education</h3>
+                            <h3 className={classes.h3}>Education</h3>
                         </div>
                         <div className={`${classes.right} ${classes.educationRight}`}>
                             <div className={classes.educationContainer}>
@@ -251,7 +251,7 @@ function Resume(){
 
                     <div className={classes.row}>
                         <div className={classes.left}>
-                            <h3>Core Finished Courses </h3>
+                            <h3 className={classes.h3}>Core Finished Courses </h3>
                         </div>
                         <div className={classes.right}>
                             <p>Software engineering (Python), Advanced Software Engineering (Java), Introduction To Computer Systems, Cmputer System Principles & Programming, Data Structures & Algorithms, Dicrete Mathmatics, Calculus & Linear Algebra I, Analysis of Scientific Data, Relational Database System, Advanced Database System, Concurrency Theory and Practice, Machine Learning, Introduction to Web Design, Human Computer Interaction</p>

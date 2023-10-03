@@ -19,6 +19,8 @@
     position: relative;
     font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     font-size: 1.3vw;
+    display: flex;
+    flex-direction: column;
 }
 
 .modalContent p{
@@ -46,15 +48,17 @@
     display: flex;
     flex-direction: row;
     position: relative;
-    margin-top: 3vh;
+    margin-top: 3vw;
 }
 
 .rowOne{
     width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: row;
     position: relative;
-    margin-bottom: 5vw;
+    margin-bottom: 2vw;
+    align-items: center;
 }
 
 .left{
@@ -155,4 +159,12 @@ h3{
 
 .timeDetailSeperator{
     margin-bottom: 0.5vw;
+}
+
+.h1{
+    font-size: 2.5vw;
+}
+
+.h3{
+    font-size: 1.5vw
 }
