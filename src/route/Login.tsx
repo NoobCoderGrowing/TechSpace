@@ -34,7 +34,7 @@ export default function Login(){
       let formData = new FormData();
       formData.append("username", username);
       formData.append("password", password);
-      let url = "https://localhost:7777/login";
+      let url = "https://wenjunblog.xyz:7777/login";
       await fetch(url, {
           method: 'POST',
           headers: {
@@ -49,7 +49,7 @@ export default function Login(){
         if(result['login']== true){
           navigate('/edit')
         }else{
-          message.error("username or password wrong")
+          messageApi.error("username or password wrong")
         }
       })
   }
