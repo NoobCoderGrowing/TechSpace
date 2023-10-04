@@ -29,8 +29,8 @@
 
 .login{
     display: flex;
-    height: 3vw;
-    width: 10vw;
+    height: 5%;
+    width: 30%;
     background-color: #3b71ca;
     border-radius: 5%;
     justify-content: center;

@@ -1,0 +1,17 @@
+.react-datepicker__input-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 2.3vw;
+}
+
+.ant-btn{
+    width: 6vw;
+    height: 2.3vw;
+    font-size: 1vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}

@@ -11,6 +11,7 @@ import ContentTable from "./ContentTable";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment';
+import './EditPageAdditional.css'
 
 
 export default function EidtPage(){
@@ -78,8 +79,7 @@ export default function EidtPage(){
                                 </div>
                             </div>
                         </div>
-                        <TextEditor editorValue={editorValue} setEditorValue={setEditorValue}/>
-                        
+                        <TextEditor editorValue={editorValue} setEditorValue={setEditorValue}/>         
                     </div>
                 </BodyRight>
             </Body>
