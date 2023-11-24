@@ -355,9 +355,10 @@ function Resume(){
                         </div>
                     </div>
                 </div>
+                <Footer/>
             </div>
             </Body>
-            <Footer/>
+            
         </>
     )
 }
