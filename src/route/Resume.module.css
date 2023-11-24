@@ -9,11 +9,12 @@
     overflow: scroll;
 }
 
+
 .modalContent {
     background-color: white;
     margin: 15% auto;
     padding: 5vw 5vw 10vw 5vw; 
-    width: 60%;
+    width: 65%;
     box-shadow: 0 0.5vw 1vw 0 rgba(0, 0, 0, 0.2);
     text-align: center;
     position: relative;
@@ -21,37 +22,37 @@
     font-size: 1.3vw;
     display: flex;
     flex-direction: column;
-}
-
-.modalContent p{
+  }
+  
+  .modalContent p{
     margin: 0;
-}
-
-.close {
+  }
+  
+  .close {
     position: absolute;
     top: 0;
     right: 0;
     padding: 0 1vw 0 0;
     cursor: pointer;
     font-size: 2vw;
-}
-
-
-.container{
+  }
+  
+  
+  .container{
     width: 100%;
     display: flex;
     flex-direction: column;
-}
-
-.row{
+  }
+  
+  .row{
     width: 100%;
     display: flex;
     flex-direction: row;
     position: relative;
     margin-top: 3vw;
-}
-
-.rowOne{
+  }
+  
+  .rowOne{
     width: 100%;
     height: 100%;
     display: flex;
@@ -59,112 +60,112 @@
     position: relative;
     margin-bottom: 2vw;
     align-items: center;
-}
-
-.left{
+  }
+  
+  .left{
     flex-basis: 30%;
     text-align: left;
     padding-left: 5%;
     box-sizing: border-box;
     overflow: hidden;
-}
-
-.right{
+  }
+  
+  .right{
     flex-basis: 70%;
     text-align: left;
     padding-left: 13%;
     box-sizing: border-box;
     overflow: auto;
     /* overflow-wrap: break-word; */
-}
-
-
-.contact{
+  }
+  
+  
+  .contact{
     flex-basis: 70%;
     text-align: left;
     position: absolute;
     right: 0;
-}
-
-.contact p{
+  }
+  
+  .contact p{
     margin: 0.5vw;
     padding: 0;
     font-size: 1vw;
     color: 	#696969;
-}
-
-.contact a{
+  }
+  
+  .contact a{
     color: #696969;
-}
-
-
-
-.workHistoryContainer{
+  }
+  
+  
+  
+  .workHistoryContainer{
     margin-bottom: 2vw;
     &:last-child{margin-bottom: 0;}
-}
-
-.workHistory{
-    width: 70%;
+  }
+  
+  .workHistory{
+    width: 90%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-}
-
-
-
-
-.education{
+  }
+  
+  
+  
+  
+  .education{
     width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-}
-
-.educationContainer{
+  }
+  
+  .educationContainer{
     margin-bottom: 1vw;
     &:last-child{margin-bottom: 0;}
     
-}
-
-h3{
+  }
+  
+  h3{
     margin: 0;
-}
-
-.workHistory p{
+  }
+  
+  .workHistory p{
     margin: 0;
-}
-
-.workTimeline{
+  }
+  
+  .workTimeline{
     color: 	#696969;
     font-size: 1vw;
     margin: 0;
-}
-
-.educationTimeline{
+  }
+  
+  .educationTimeline{
     color: 	#696969;
     font-size: 1vw;
     margin: 0;
-}
-
-
-.nowrap{
+  }
+  
+  
+  .nowrap{
     white-space: nowrap;
-}
-
-
-.listContainer{
+  }
+  
+  
+  .listContainer{
     margin: 0;
-}
-
-.timeDetailSeperator{
+  }
+  
+  .timeDetailSeperator{
     margin-bottom: 0.5vw;
-}
-
-.h1{
+  }
+  
+  .h1{
     font-size: 2.5vw;
-}
-
-.h3{
+  }
+  
+  .h3{
     font-size: 1.5vw
-}
+  }

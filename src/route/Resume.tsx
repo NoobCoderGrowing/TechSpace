@@ -22,13 +22,12 @@ function Resume(){
             <div id="myModal" className={classes.modal} ref={modelRef}>
                 <div className={classes.modalContent}>
                      <Link to={"/"}><span onClick={closeModal} className={classes.close}>&times;</span></Link>
-                    
-                    <div className={`${classes.row} ${classes.rowOne}`}>
+                     <div className={`${classes.row} ${classes.rowOne}`}>
                         <div className={classes.left}>
                             <h1 className={classes.h1}>Wayne Yao</h1>
                         </div>
                         <div className={`${classes.contact}`}>
-                            <p>Address: Robertson, Brisbane, QLD, AU</p>
+                            <p>Location: Pallara, Brisbane, QLD, AU</p>
                             <p>Mobile Number: +61 410837649</p>
                             <p>Email: <a href="mailto:waynejune.yao@gmail.com">waynejune.yao@gmail.com</a></p>
                             <p>Linkedin: <a href="https://www.linkedin.com/in/wayne-yao-connect">linkedin.com/in/wayne-yao-connect</a></p>
@@ -41,7 +40,7 @@ function Resume(){
                             <h3 className={classes.h3}>Professional Summaary</h3>
                         </div>
                         <div className={classes.right}>
-                            <p>4 months as a front-end software intern at <a href='https://appen.com/'>Appen</a> and 10 months as a java backend developer at <a href='https://www.yiyaowang.com/'>YI</a> (a leading pharmaceutical e-commerce in China). Able to design and implement large scale high availability complex distributed system.</p>
+                            <p>4 months as a front-end software intern at <a href='https://www.appen.com.cn/'>Appen</a> (a machine learning data labeling service provider) and 10 months as a search engine developer (Java) at <a href='https://www.yiyaowang.com/en.html'>Yi</a> (1药网, a leading pharmaceutical e-commerce in China). Able to design and implement scalable high availability distributed data-intensive application, and undertake fullstack development and data warehousing/analysis job.</p>
                         </div>
                     </div>
 
@@ -50,35 +49,69 @@ function Resume(){
                             <h3 className={classes.h3}>Skills</h3>
                         </div>
                         <div className={classes.right}>
-                            <p><b>Backend:</b> SpringBoot, SpringCloud, RestTemplate, OpenFeign, Dubbo, WebFlux, MySql, Redis, Caffeine, Kafka, Nacos, Eureka, Apollo Config Center, Lucene, ElasticSearch, jmap, jstat</p>
-                            <p><b>Frontend:</b> React, Typesscript, antd, bootstrap, webpack, vite</p>
-                            <p><b>Machine Learning and Deep Learning:</b> sk-learn, pytorch, numpy, py-plot, wandb</p>
+                            <p><b>Language:</b> Java, Python, Javascript, C, Shell</p>
+                            <br></br>
+                            <p><b>Backend:</b> Spring Boot, Spring Cloud, Spring Security, RestTemplate, OpenFeign, Dubbo, WebFlux, MySql, JPA, MyBatis, Redis, MongoDB, Caffeine, Kafka, Nacos, Eureka, Apollo Config Center, Lucene, ElasticSearch, jmap, jstat</p>
+                            <br></br>
+                            <p><b>Data Mining and Analysis:</b> HiveSql, PgSql, Weka, Spark, Pandas, MatPlot, Seaborn</p>
+                            <br></br>
+                            <p><b>Machine Learning and Deep Learning:</b> Pytorch, Huggingface, SkLearn, Numpy, Wandb</p>
+                            <br></br>
+                            <p><b>Frontend:</b> React, Typesscript, Antd, Bootstrap, Webpack, Vite</p>
+                            <br></br>
                             <p><b>Image Processing:</b> OpenCV</p>
+                            <br></br>
                             <p><b>CI&CD:</b> Git, Docker, K8s, Jenkins</p>
                         </div>
                     </div>
+                
                     <div className={classes.row}>
                         <div className={classes.left}>
                             <h3 className={classes.h3}>Work History</h3>
                         </div>
                         <div className={classes.right}>
+                        <div className={classes.workHistoryContainer}>
+                                <div className={classes.timeDetailSeperator}>
+                                    <div className={classes.workHistory}>
+                                        <div>
+                                            <p className={classes.nowrap}><b>IT Support (Part Time)</b></p>
+                                        </div>
+                                    </div>
+                                    <div><p><a href="https://oznwfabrics.com.au/">OZ Nonwoven Fabrics Limited</a></p></div>
+                                    <p className={classes.workTimeline}>Brisbane, Australia, &nbsp;2023 Septermber 01 ~ present</p>
+                                </div>
+                                <ul className={classes.listContainer}>
+                                    <li>Transfer company website and domain from outsource IT consultant and maintain them</li>
+                                    <li>Manage corporate Office 365 accounts</li>
+                                    <li>Develop order search and management system</li>
+                                </ul>
+                                <p className={classes.leaveReason}><b>Referee:</b> </p>
+                                <p className={classes.leaveReason}>Justin Hwang (CEO)</p>
+                                <p className={classes.leaveReason}>Mobile: 0410232115</p>
+                                <p className={classes.leaveReason}>Email: justin.hwang@oznwfabrics.com.au</p>
+                            </div>
+
                             <div className={classes.workHistoryContainer}>
                                 <div className={classes.timeDetailSeperator}>
                                     <div className={classes.workHistory}>
                                         <div>
-                                            <p className={classes.nowrap}><b>Java backend developer</b></p>
+                                            <p className={classes.nowrap}><b>Search engine developer</b></p>
                                         </div>
-                                        <div><p><a href="https://www.yiyaowang.com/">YI</a></p></div>
+                                        <div><p><a href="https://www.yiyaowang.com/">Yi (1药网)</a></p></div>
                                     </div>
                                     <p className={classes.workTimeline}>Shanghai, China, &nbsp;2022 July 01 ~ 2023 April 13</p>
                                 </div>
                                 <ul className={classes.listContainer}>
-                                    <li>Participate in weekly agile development</li>
+                                    <li>Participate in developing Yi's own search engine and migrate the system from ElasticSearch</li>
+                                    <li>Develop search engine backend management system for operation department</li>
+                                    <li>Construct data warehouse and conduct data analysis (Weekly search keywords, top shops mining and search trend report generation) </li>
+                                    <li>Optimize search system response time</li>
                                     <li>Response to online bug</li>
-                                    <li>Optmize search system efficiency</li>
-                                    <li>Participate in generating search data analysis report</li>
                                 </ul>
                                 <p className={classes.leaveReason}><b>Reason to leave:</b> To seek a more challenging job.</p>
+                                <p className={classes.leaveReason}><b>Referee:</b> </p>
+                                <p className={classes.leaveReason}>Jiayi Liu (Hiring Manager, Mandarin speaking)</p>
+                                <p className={classes.leaveReason}>Mobile: +86 15026529386</p>
                             </div>
 
                             <div className={classes.workHistoryContainer}>
@@ -87,9 +120,9 @@ function Resume(){
                                         <div>
                                             <p className={classes.nowrap}><b>Frontend software intern</b></p>
                                         </div>
-                                        <div><p><a href="https://appen.com/">Appen</a></p></div>
+                                        <div><p><a href="https://www.appen.com.cn/">Appen (Shanghai)</a></p></div>
                                     </div>
-                                    <p className={classes.workTimeline}>Shanghai, China, &nbsp;2021 July 01 ~ 2021 December 01</p>
+                                    <p className={classes.workTimeline}>Shanghai, China, &nbsp;2021 July 01 ~ 2021 November 01</p>
                                 </div>
                                 
                                 <ul className={classes.listContainer}>
@@ -97,7 +130,11 @@ function Resume(){
                                     <li>Define system manual structure, and implement and integrates it into the system</li>
                                     <li>Invent frontend dev tools to enhance development efficiency</li>
                                 </ul>
-                             </div>
+                                <p className={classes.leaveReason}><b>Reason to leave:</b> Career interest shift to backend development.</p>
+                                <p className={classes.leaveReason}><b>Referee:</b> </p>
+                                <p className={classes.leaveReason}>Grace Jin (Hiring Manager)</p>
+                                <p className={classes.leaveReason}>Mobile: +86 15800919238</p>
+                                </div>
                         </div>
                     </div>
                     <div className={`${classes.row} ${classes.corporate}`} >
@@ -109,39 +146,43 @@ function Resume(){
                                 <div className={classes.timeDetailSeperator}>
                                     <div className={classes.workHistory}>
                                         <div>
-                                            <p className={classes.nowrap}><b>bird-search</b></p>
+                                            <p className={classes.nowrap}><b>bird-search (Java, SpringCloud)</b></p>
                                         </div>
-                                        <div><p><a href="https://www.yiyaowang.com/">YI</a></p></div>
+                                    </div>
+                                    <div className={classes.workHistory}>
+                                        <div><p><a href="https://mall.yaoex.com/"> Yi's pharmaceutical whosale plateform search engine</a></p></div>
                                     </div>
                                     <p className={classes.workTimeline}>Shanghai, China, &nbsp;2022 July 01 ~ 2023 April 13</p>
                                 </div>
-                                <p>bird-search is a large scale distributed commercial search engine. It consists of segmentation, inverter, indexer, recaller, fast ranker and fine ranker all developed by YI's search team. Except for weekly agile development, my main contribution to the project is beblow:</p>
+                                <p>bird-search is a large scale distributed commercial search engine. It consists of segmentation, inverter, indexer, recaller, strategy based ranker and fine ranker all developed by Yi's search team. Except for weekly agile development, my main contribution to the project is beblow:</p>
                                 <ul className={classes.listContainer}>
                                     <li>Implement N-shortest-path algorithm for sgementation</li>
                                     <li>Participate in index data structure design</li>
                                     <li>Design and implement index sharding and update strategy</li>
                                 </ul>
-                             </div>
+                                </div>
                             
-                             <div className={classes.workHistoryContainer}>
+                                <div className={classes.workHistoryContainer}>
                                 <div className={classes.timeDetailSeperator}>
                                     <div className={`${classes.workHistory}`}>
                                         <div>
-                                            <p className={classes.nowrap}><b>loonshots-web</b></p>
+                                            <p className={classes.nowrap}><b>loonshots-web (React, Typescript)</b></p>
                                         </div>
-                                        <div><p><a href="https://appen.com/">Appen</a></p></div>
                                     </div>
-                                    <p className={classes.workTimeline}>Shanghai, China, &nbsp;2022 July 01 ~ 2023 April 13</p>
+                                    <div className={`${classes.workHistory}`}>
+                                        <div><p><a href="https://www.appen.com.cn/platform-overview/">Appen's data labelling platform</a></p></div>
+                                    </div>
+                                    <p className={classes.workTimeline}>Shanghai, China, &nbsp;2021 July 01 ~ 2021 November 01</p>
                                 </div>
                                 <p>loonshots-web is a Machine Learning Data Labeling plateform, which integrates data labeling task realease, task inspection, and data labeling tools together. My main contribution to the project is below</p>
                                 <ul className={classes.listContainer}>
                                     <li>Implement task release frontend pipeline</li>
                                     <li>Incorporate Docsify as system manual</li>
                                     <li>Implement web email editor component</li>
-                                    <li>Invent duplicate localization entry checker</li>
-                                    <li>Invent SVG picture coloring and sizing library</li>
+                                    <li>Develop duplicate localization entry checker</li>
+                                    <li>Develop SVG picture coloring and sizing library</li>
                                 </ul>
-                             </div>
+                                </div>
                         </div>
                     </div>
                     <div className={classes.row}>
@@ -168,6 +209,25 @@ function Resume(){
                                 </ul>
                                 <p>Code Base: <a href="https://github.com/NoobCoderGrowing/hawk">Hawk</a></p>
                             </div>
+
+                            <div className={classes.workHistoryContainer}>
+                                <div className={classes.timeDetailSeperator}>
+                                    <div className={`${classes.workHistory}`}>
+                                        <div>
+                                            <p className={classes.nowrap}><b>Tec Space</b></p>
+                                        </div>
+                                    </div>
+                                    <p className={classes.workTimeline}>2023 Sep 22 ~ 2023 Sep 26</p>
+                                </div>
+                                <p><a href="https://wenjunblog.xyz/">Tech Space</a> is my personal website with a content editing/sharing backend system.</p>
+                                <ul className={classes.listContainer}>
+                                    <li>The frontend is developed by using react + typescript, and it integrates Quil as its online editor. </li>
+                                    <li>The backend uses Springboot as main framework, Spring Security to do role based authorization and MongoDB as document storage.</li>
+                                </ul>
+                                <p>Frontend code base: <a href="https://github.com/NoobCoderGrowing/TechSpace">TechSpace</a></p>
+                                <p>Backend code base: <a href="https://github.com/NoobCoderGrowing/tech-space-back">tech-space-back</a></p>
+                            </div>
+
                             <div className={classes.workHistoryContainer}>
                                 <div className={classes.timeDetailSeperator}>
                                     <div className={`${classes.workHistory}`}>
@@ -254,7 +314,44 @@ function Resume(){
                             <h3 className={classes.h3}>Core Finished Courses </h3>
                         </div>
                         <div className={classes.right}>
-                            <p>Software engineering (Python), Advanced Software Engineering (Java), Introduction To Computer Systems, Cmputer System Principles & Programming, Data Structures & Algorithms, Dicrete Mathmatics, Calculus & Linear Algebra I, Analysis of Scientific Data, Relational Database System, Advanced Database System, Concurrency Theory and Practice, Machine Learning, Introduction to Web Design, Human Computer Interaction</p>
+                            <p>Large Scale Data Mining(Weka), Artificial Intelligence and Machine Learning(Pytorch, SkLearn), Image Processing & Computer Vision(OpenCV, Pytorch), Machine Learning(Python), Software engineering (Python), Advanced Software Engineering (Java), Introduction To Computer Systems(Assembly and C), Cmputer System Principles & Programming(C), Data Structures & Algorithms(Java), Dicrete Mathmatics, Calculus & Linear Algebra I, Analysis of Scientific Data(R), Stochastic Modelling, Relational Database System(MySql), Advanced Database System(Oracle), Concurrency Theory and Practice(Java), Introduction to Web Design, Human Computer Interaction</p>
+                        </div>
+                    </div>
+
+                    <div className={classes.row}>
+                        <div className={classes.left}>
+                            <h3 className={classes.h3}>Availibilty</h3>
+                        </div>
+                        <div className={classes.right}>
+                            <ul>
+                                <li><p>Immediately available</p></li>
+                                <li><p>Willing to relocate during university holiday and after graduation</p></li>
+                                <li><p>Accept work from home</p></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div className={classes.row}>
+                        <div className={classes.left}>
+                            <h3 className={classes.h3}>Visa Condition</h3>
+                        </div>
+                        <div className={classes.right}>
+                            <p><b>Current visa:</b> 500 student visa</p>
+                            <br></br>
+                            <p><b>Current visa work right:</b> Full time during university holiday and 24 hours/week when university semester is in seesion (Additional hours can be negotiated).</p>
+                            <br></br>
+                            <p><b>Future visa / path to PR:</b> Eligibale for 5 years 485 graduate visa after graduation, and will seek PR via 189/190 independet-skilled visa or 186 employer nomination scheme visa </p>
+                            <br></br>
+                        </div>
+                    </div>
+                    <div className={classes.row}>
+                        <div className={classes.left}>
+                            <h3 className={classes.h3}>Language</h3>
+                        </div>
+                        <div className={classes.right}>
+                            <p><b>English:</b> fluent, IELTS overall 7 (2018), provincial university student English speech contest 3rd place winner, with a bachelor degree in English</p>
+                            <br></br>
+                            <p><b>Mandarin:</b> mother language</p>
+                            <br></br>
                         </div>
                     </div>
                 </div>
