@@ -1,6 +1,7 @@
 import classes from './ArticleView.module.css'
 import { Article } from './TypeDefinition'
-import parse from 'html-react-parser';
+import parse from 'html-react-parser'
+import elon_zuk from '../assets/elon-musk-mark-zuckerberg.gif'
 
 type props = {
     article: Article | undefined
@@ -19,8 +20,8 @@ export default function ArticleView({article}: props){
         )
     }else{
         return (
-            <div className={classes.container}>
-                <h1 className={classes.title}>Welcome to Wayne's Tech Space</h1>
+            <div className={classes.imageContainer}>
+                <img  className={classes.elonzuk} src={elon_zuk} />
             </div>
         )
     }
