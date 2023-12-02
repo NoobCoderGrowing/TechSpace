@@ -21,13 +21,13 @@ function Resume(){
             <Body>
             <div id="myModal" className={classes.modal} ref={modelRef}>
                 <div className={classes.modalContent}>
-                        
+                    <Link to={"/"}><span onClick={closeModal} className={classes.close}>&times;</span></Link>
                         <div className={`${classes.row} ${classes.rowOne}`}>
                             <div className={classes.left}>
                                 <h1 className={classes.h1}>Wayne Yao</h1>
                             </div>
                             <div className={`${classes.contact}`}>
-                                <p>Location: Pallara, Brisbane, QLD, AU</p>
+                                <p>Location: Brisbane, QLD, AU</p>
                                 <p>Mobile Number: +61 410837649</p>
                                 <p>Email: <a href="mailto:waynejune.yao@gmail.com">waynejune.yao@gmail.com</a></p>
                                 <p>Linkedin: <a href="https://www.linkedin.com/in/wayne-yao-connect">linkedin.com/in/wayne-yao-connect</a></p>
@@ -104,7 +104,7 @@ function Resume(){
                                     </div>
                                     <ul className={classes.listContainer}>
                                         <li>Transfer company website and domain from outsource IT consultant and maintain them</li>
-                                        <li>Manage corporate Office 365 accounts</li>
+                                        <li>Manage corporate Office 365 global admin accounts</li>
                                         <li>Develop order search and management system</li>
                                     </ul>
                                     <p className={classes.leaveReason}><b>Referee:</b> </p>
