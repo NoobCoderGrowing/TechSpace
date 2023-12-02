@@ -65,12 +65,12 @@ export default function EidtPage(){
                     <div>
                         <div className={classes.titleDateContainer}>
                             <div className={classes.titleContainer}>
-                                <label className={classes.title}>ttile</label>
+                                <label className={classes.title}>Title</label>
                                 <input onChange={handleTitleInput}></input>
                             </div>
                             <div className={classes.dateSubmitContainer}>
                                 <div className={classes.dateContainer}>
-                                    <label className={classes.date}>date</label>
+                                    <label className={classes.date}>Date</label>
                                     <DatePicker dateFormat="yyyy-MM-dd" selected={startDate} onChange={datePickerHandler} />
                                 </div>
                                 <div className= {classes.buttonContainer}>
