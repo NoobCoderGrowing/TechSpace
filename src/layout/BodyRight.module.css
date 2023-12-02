@@ -3,4 +3,6 @@
     flex-basis: 70vw;
     background-color: blueviolet;
     position: relative;
+    overflow-x: scroll;
+    
 }
