@@ -7,7 +7,7 @@
     box-sizing: border-box;
     padding: 2vw 5vw 2vw 5vw;
     flex-direction: column;
-
+    font-size: 1.3vw;
 }
 
 .imageContainer{
@@ -24,11 +24,13 @@
 
 .title{
     text-align: center;
+    font-size: 3vw;
 }
 
 .date{
     text-align: right;
     margin-bottom: 1vw;
+    font-size: 1.5vw;
 }
 
 .elonzuk{
