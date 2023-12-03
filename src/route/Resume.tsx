@@ -8,7 +8,6 @@ import {Link} from 'react-router-dom'
 
 function Resume(){
     
-
     const modelRef = useRef<HTMLDivElement|null>(null); 
 
     function closeModal(){
@@ -57,7 +56,7 @@ function Resume(){
                                         <p>Sensitive to computation efficience(e.g. use numeric trie to fasten numeric range search.) </p>
                                     </li>
                                     <li>
-                                        <p>Good SQL writer, having taken data warehouse migration task(translate dosens of PGSQL to HiveSQL from FineBI to Ali MaxCompute, many of which are more than a hundred lines with multiple joins), and weekly search trend analysis generation (writing SQL to facilitate visulization)</p>
+                                        <p>Good SQL writer, having taken data warehouse migration task(translate dosens of PGSQL to HiveSQL from FineBI to Ali MaxCompute, many of which are more than a hundred lines with multiple joins) and weekly search trend analysis generation (writing SQL to facilitate visulization)</p>
                                     </li>
                                     <li>
                                         <p>Have a thorough understanding of commercial vertical search engine development, of both the traditional and modern tricks, and also the architecture in industry practice.</p>
@@ -104,7 +103,7 @@ function Resume(){
                                     </div>
                                     <ul className={classes.listContainer}>
                                         <li>Transfer company website and domain from outsource IT consultant and maintain them</li>
-                                        <li>Manage corporate Office 365 global admin accounts</li>
+                                        <li>Manage corporate Office 365 global admin account</li>
                                         <li>Develop order search and management system</li>
                                     </ul>
                                     <p className={classes.leaveReason}><b>Referee:</b> </p>
@@ -130,7 +129,7 @@ function Resume(){
                                         <li>Optimize search system response time</li>
                                         <li>Response to online bug</li>
                                     </ul>
-                                    <p className={classes.leaveReason}><b>Reason to leave:</b> This job could not provide the room to deveolop IR related NLP techniques(like Vector Recall and listwise ranking), which are my current study focus.</p>
+                                    <p className={classes.leaveReason}><b>Reason to leave:</b> This job could not provide the room to deveolop IR related NLP techniques(like vector recall and listwise ranking), which are my current study focus.</p>
                                     <p className={classes.leaveReason}><b>Referee:</b> </p>
                                     <p className={classes.leaveReason}>Jiayi Liu (Hiring Manager, Mandarin speaking)</p>
                                     <p className={classes.leaveReason}>Mobile: +86 15026529386</p>
@@ -249,27 +248,7 @@ function Resume(){
                                     <p>Frontend code base: <a href="https://github.com/NoobCoderGrowing/TechSpace">TechSpace</a></p>
                                     <p>Backend code base: <a href="https://github.com/NoobCoderGrowing/tech-space-back">tech-space-back</a></p>
                                 </div>
-        
-                                <div className={classes.workHistoryContainer}>
-                                    <div className={classes.timeDetailSeperator}>
-                                        <div className={`${classes.workHistory}`}>
-                                            <div>
-                                                <p className={classes.nowrap}><b>oz-order</b></p>
-                                            </div>
-                                        </div>
-                                        <p className={classes.workTimeline}>2023 Sep 18 ~ 2023 Sep 21</p>
-                                    </div>
-                                    <p>oz-order is a order search and order management system designed for <a href="https://oznwfabrics.com.au/">OZ Nonwoven Fabrics Limited.</a></p>
-                                    <ul className={classes.listContainer}>
-                                        <li>oz-order uses react, Typesscript and antd as its front end implementation.</li>
-                                        <li>oz-order uses springboot + mybatis as its backend implementation</li>
-                                    </ul>
-                                    <p>Demonstration:</p>
-                                    <p><a href="http://wenjunblog.xyz/">Order Search</a></p>
-                                    <p><a href="http://wenjunblog.xyz/order-admin">Order Management</a></p>
-                                    <p>Frontend code base: <a href="https://github.com/NoobCoderGrowing/oz-order-front">oz-order-front</a></p>
-                                    <p>Backend code base: <a href="https://github.com/NoobCoderGrowing/oz-order-back">oz-order-back</a></p>
-                                </div>
+                                
                                 <div className={classes.workHistoryContainer}>
                                     <div className={classes.timeDetailSeperator}>
                                         <div className={`${classes.workHistory}`}>
@@ -304,7 +283,6 @@ function Resume(){
                                         <div> <p className={classes.educationTimeline}>2023 Jul 24 ~ 2024 Nov 15</p></div>
                                     </div>
                                     <p>Master of Data Analytics (Statistical Data Science Major)</p>
-                                    <p>GPA: 6.00/7.00</p>
                                 </div>
                                 <div className={classes.educationContainer}>
                                     <div className={`${classes.education}`}>
@@ -314,7 +292,6 @@ function Resume(){
                                         <div> <p className={classes.educationTimeline}>2019 Jul 28 ~ 2022 Jun 15</p></div>
                                     </div>
                                     <p>Master of Information Technology</p>
-                                    <p>GPA: 5.44/7.00</p>
                                 </div>
         
                                 <div className={classes.educationContainer}>
@@ -325,7 +302,6 @@ function Resume(){
                                         <div> <p className={classes.educationTimeline}>2014 Sep 01 ~ 2018 Jun 30</p></div>
                                     </div>
                                     <p>Bachelor of English</p>
-                                    <p>GPA: 83.00/100.00 </p>
                                 </div>
         
                             </div>
@@ -347,7 +323,7 @@ function Resume(){
                             <div className={classes.right}>
                                 <ul>
                                     <li><p>Immediately available</p></li>
-                                    <li><p>Willing to relocate during university holiday and after graduation</p></li>
+                                    <li><p>Willing to relocate upon sucessful application</p></li>
                                     <li><p>Accept work from home</p></li>
                                 </ul>
                             </div>
@@ -370,9 +346,9 @@ function Resume(){
                                 <h3 className={classes.h3}>Language</h3>
                             </div>
                             <div className={classes.right}>
-                                <p><b>English:</b> fluent, IELTS overall 7 (2018), provincial university student English speech contest 3rd place winner, with a bachelor degree in English</p>
+                                <p><b>English:</b> fluent, IELTS overall 7 (Listening 7.5 Reading 7.5 Speaking 6.5 Writing 6.5 in 2018), provincial university student English speech contest 3rd place winner, with a bachelor degree in English</p>
                                 <br></br>
-                                <p><b>Mandarin:</b> mother language</p>
+                                <p><b>Mandarin:</b> native speaker </p>
                                 <br></br>
                             </div>
                         </div>
