@@ -13,6 +13,7 @@
     "@fortawesome/fontawesome-free": "^6.4.2",
     "@reduxjs/toolkit": "^2.0.1",
     "antd": "^5.9.2",
+    "bootstrap": "^5.3.2",
     "html-react-parser": "^4.2.2",
     "katex": "^0.16.8",
     "mdb-react-ui-kit": "^6.3.0",

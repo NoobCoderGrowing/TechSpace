@@ -1,5 +1,18 @@
-.superFun{
+.textPreprocessor{
     width: 100%;
     height: 100%;
     background-color: aliceblue;
+    display: flex;
+    justify-content: center;
+
+    .textInput{
+        margin-top: 10vh;
+    }
+
+    .textArea{
+        width: 40vw;
+        height: 20vh;
+        overflow: scroll;
+
+    }
 }

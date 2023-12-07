@@ -9,6 +9,7 @@ import EidtPage from './components/EidtPage'
 import Login from './route/Login'
 import Projects from './route/Projects'
 import TextPreprocessor from './components/projects/TextPreprocessor'
+import ProjectsDefault from './components/projects/ProjectsDefault'
 
 
 
@@ -20,8 +21,8 @@ const router = createBrowserRouter([
   {path:'/edit', element:<EidtPage/>, children: [],},
   {path:'/login', element:<Login/>, children: [],},
   {path:'/projects', element:<Projects/>, children: [
-    {path:'/projects/textPreprocessor', element:<TextPreprocessor/>, children: [],},
-    {path:'/projects/chineseTokenizer', element:<TextPreprocessor/>, children: [],},
+    {path:'', element:<ProjectsDefault/>, children: [],},
+    {path:'textPreprocessor', element:<TextPreprocessor/>, children: [],},
   ],},
 ]);
 

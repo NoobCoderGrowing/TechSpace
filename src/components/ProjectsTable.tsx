@@ -8,7 +8,7 @@ export default function ProjectsTable(){
 
 
     
-    const [data, setData] = useState<Array<Project>>([{name:'Text Preprocessor', url:'textPreprocessor'},{name:'Chineses Tokenizer', url:'chineseTokenizer'}]);
+    const [data, setData] = useState<Array<Project>>([{name:'Text Preprocessor', url:'textPreprocessor'},/*{name:'Chineses Tokenizer', url:'chineseTokenizer'}/*{name:'Chineses Tokenizer', url:'chineseTokenizer'}]*/]);
     
     return(
         <div className={classes.container}>

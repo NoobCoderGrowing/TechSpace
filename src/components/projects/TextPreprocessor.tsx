@@ -1,26 +1,25 @@
-import Header from "../../layout/Header";
-import Footer from "../../layout/Footer";
-import Body from "../../layout/Body";
-import BodyLeft from "../../layout/BodyLeft";
-import BodyRight from "../../layout/BodyRight";
-import ProjectsTable from "../../components/ProjectsTable";
 import './TextPreprocessor.scss'
 
 function TextPreprocessor(){
-    return(
-        <main>  
-            <Header/>
-            <Body>
-                <BodyLeft>
-                    <ProjectsTable/>
-                </BodyLeft>
-                <BodyRight>
-                    <div className="superFun">
-                    </div>
-                </BodyRight>
-            </Body>
-            <Footer/>
-        </main>
+    return( 
+        <div className="textPreprocessor">
+            <form className='textInput'>
+                <div className="form-group">
+                    <label htmlFor="exampleInputEmail1">Please input preprocessed text</label>
+                    <textarea className={`form-control textArea`} placeholder="Enter text"/>
+                    
+                </div>
+                <div className="form-group">
+                    <label htmlFor="exampleInputPassword1">Password</label>
+                    <input type="password" className="form-control" id="exampleInputPassword1" placeholder="Password"/>
+                </div>
+                <div className="form-check">
+                    <input type="checkbox" className="form-check-input" id="exampleCheck1"/>
+                    <label className="form-check-label" htmlFor="exampleCheck1">Check me out</label>
+                </div>
+                <button type="submit" className="btn btn-primary">Submit</button>
+            </form>
+        </div>
     )
     
 }
