@@ -1,6 +1,6 @@
 .rightContainer{
     flex-grow: 1;
-    flex-basis: 70vw;
+    flex-basis: 80vw;
     background-color: blueviolet;
     position: relative;
     overflow-x: scroll;

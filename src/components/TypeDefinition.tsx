@@ -4,3 +4,8 @@ export type Article = {
     date: string,
     content: string
 }
+
+export type Project = {
+    name: string,
+    url: string
+}

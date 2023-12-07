@@ -19,7 +19,8 @@ function Header(){
                     <li><Link className={classes.link} to={"/"}>Home</Link></li>
                     <li><Link className={classes.link} to={"/resume"}>Resume</Link></li>
                     <li><Link className={classes.link} to={"/blog"}>Blog</Link></li>
-                    <li onClick={infoMessage}>Project</li>
+                    <li><Link className={classes.link} to={"/Projects"}>Projects</Link></li>
+                    {/* <li onClick={infoMessage}>Project</li> */}
                 </ul>
                 <div className={classes.searchContainer}>
                     <input type="text" className={classes.searchInput} placeholder="Search..."/>

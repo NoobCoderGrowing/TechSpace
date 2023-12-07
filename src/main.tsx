@@ -7,6 +7,9 @@ import Resume from './route/Resume'
 import Blog from './route/Blog'
 import EidtPage from './components/EidtPage'
 import Login from './route/Login'
+import Projects from './route/Projects'
+import TextPreprocessor from './components/projects/TextPreprocessor'
+
 
 
 const router = createBrowserRouter([
@@ -16,6 +19,10 @@ const router = createBrowserRouter([
   {path:'/blog', element:<Blog/>, children: [],},
   {path:'/edit', element:<EidtPage/>, children: [],},
   {path:'/login', element:<Login/>, children: [],},
+  {path:'/projects', element:<Projects/>, children: [
+    {path:'/projects/textPreprocessor', element:<TextPreprocessor/>, children: [],},
+    {path:'/projects/chineseTokenizer', element:<TextPreprocessor/>, children: [],},
+  ],},
 ]);
 
 

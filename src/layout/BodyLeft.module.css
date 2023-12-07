@@ -1,6 +1,6 @@
 .leftContainer{
     flex-grow: 1;
-    flex-basis: 30vw;
+    flex-basis: 20vw;
     position: relative;
     background-color: antiquewhite;
 }
