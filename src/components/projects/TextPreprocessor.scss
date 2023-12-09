@@ -15,4 +15,21 @@
         overflow: scroll;
 
     }
+
+    .textArea2{
+        width: 40vw;
+        height: 40vh;
+        overflow: scroll;
+    }
+
+    .form-wrapper{
+        margin-bottom: 5vh;
+    }
+
+    .buttonWrapper{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        margin-bottom: 5vh;
+    }
 }
