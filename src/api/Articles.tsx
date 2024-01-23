@@ -1,5 +1,5 @@
 function retriveArticles(){
-     let url = "https://wenjunblog.xyz:7777/public/retrieve/articles";
+     let url = "https://wenjunblog.xyz:7777/public/retrieve/articleMap";
     return fetch(url, {
         method: 'GET',
         headers: {
