@@ -2,23 +2,86 @@
     width: 100%;
     display: flex;
     background-color: #fff;
-    height: 3vw;
+    height: 5vw;
     padding: 0.5vw;
+    flex-direction: row;
     align-items: center;
+    justify-content: space-around;
+}
+
+.titleDateWrapper{
+    width: 90%;
+    display: flex;
+    background-color: #fff;
+    height: 5vw;
+    padding: 0.5vw;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .titleDateContainer label{
-    font-size: 2vw;
+    font-size: 1.5vw;
 }
 
 .titleDateContainer input{
-    font-size: 1vw;
+    font-size: 1.5vw;
+}
+
+.categoryContainer{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.categoryDisplay{
+    margin-left: 10%;
+    margin-right: 10%;
+    min-height: 3vw;
+}
+
+.dropDown{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.dropDownItemWrapper{
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+}
+
+.categoryInput{
+    position: absolute;
+}
+
+.dropDownItem{
+    display: block;
+    text-align: center;
+    background-color: #fff;
+    border: 1vw 1vw;
+    border-color: rgb(12, 0, 0);
+    border-style: solid;
+    z-index: 1;
+    margin-top: 0.3vw;
+    border-width: 0.1vw;
+    padding: 5% 5%;
+}
+
+.dropDownItem:hover{
+    cursor: pointer;
+   
 }
 
 
-.titleContainer, .dateSubmitContainer{
-    flex-basis: 50%;
+.categoryContainer .titleContainer, .dateSubmitContainer{
+    flex-basis: 33%;
     flex-grow: 1;
+}
+
+.titleContainer, .dateSubmitContainer{
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -34,11 +97,12 @@
 .titleContainer input{
     flex-basis: 80%;
     flex-grow: 1;
-    height: 2vw;
+    height: 3vw;
 }
 
 .dateSubmitContainer{
     display: flex;
+    margin-left: 5%;
 }
 
 .dateContainer{
@@ -56,8 +120,8 @@
     flex-grow: 1;
 }
 
-.dateContainer input{
-    height: 2vw;
+.react-datepicker{
+    height: 4vw;
     flex-basis: 80%;
     flex-grow: 1;
 }

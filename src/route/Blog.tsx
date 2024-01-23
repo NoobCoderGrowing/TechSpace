@@ -7,11 +7,16 @@ import ContentTable from "../components/ContentTable";
 import { useState } from "react";
 import ArticleView from "../components/ArticleView";
 import { Article } from "../components/TypeDefinition";
+import { useSelector } from 'react-redux';
+import {State} from '../components/TypeDefinition'
 
 
 function Blog(){
 
     const [article, setArticle] = useState<Article>();
+    const articles = useSelector((state : State) => {
+        return state.articles;
+    })
 
     return(
         <main>  

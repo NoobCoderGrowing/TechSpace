@@ -1,4 +1,3 @@
-import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import Home from './route/Home'
@@ -10,7 +9,8 @@ import Login from './route/Login'
 import Projects from './route/Projects'
 import TextPreprocessor from './components/projects/TextPreprocessor'
 import ProjectsDefault from './components/projects/ProjectsDefault'
-
+import { Provider } from 'react-redux';
+import sotre from './store/index'
 
 
 const router = createBrowserRouter([
@@ -27,8 +27,12 @@ const router = createBrowserRouter([
 ]);
 
 
+
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
   // <React.StrictMode>
-  <RouterProvider router={router}/>
+  <Provider store={sotre}>
+    <RouterProvider  router={router}/>
+  </Provider>
   // </React.StrictMode>,
 )

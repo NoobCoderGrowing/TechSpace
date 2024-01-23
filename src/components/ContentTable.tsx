@@ -1,9 +1,11 @@
 import classes from "./ContentTable.module.css"
 import { useEffect, useState} from "react";
-import TableEntry from "./TableEntry";
 import {Article} from "./TypeDefinition";
 import {Link} from 'react-router-dom'
 import { Spin } from 'antd';
+import TableCategory from "./TableCategory";
+import { useDispatch } from 'react-redux'
+
 
 
 
@@ -13,25 +15,32 @@ type props = {
 
 export default function ContentTable({setArticle}:props){
 
-    const [data, setData] = useState<Array<Article>>([]);
     const [loading, setLoading] = useState<boolean>(true);
+    const [data, setData] = useState<Object>({});
+    const dispatch = useDispatch();
 
-     function retriveArticles(){
-         let url = "https://wenjunblog.xyz:7777/public/retrieve/articles";
-         fetch(url, {
+     async function retriveArticleMap(){
+        let url = "http://localhost:7777/public/retrieve/articleMap";
+        //  let url = "https://wenjunblog.xyz:7777/public/retrieve/articles";
+        await fetch(url, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
         }).then(response => response.json()).then(result => {
-            setLoading(false);
             setData(result);
+            setLoading(false);
+            dispatch({
+                type:'UPDATEARTICLES',
+                payload: result
+            });
         })
     }
     useEffect(()=>{
-        retriveArticles();
+        retriveArticleMap();
     },[])
+
     return(
         <div className={classes.container}>
             <div className={classes.content}>
@@ -41,7 +50,13 @@ export default function ContentTable({setArticle}:props){
                         <Spin spinning={loading} size="large">
                         </Spin>
                     </div>
-                    {data.map((article) => <TableEntry key={article._id} setArticle={setArticle} article={article}></TableEntry>)}
+                    
+                    {
+                        Object.keys(data).map(key=>
+                         <TableCategory setArticle={setArticle} key={key} articles={data[key]} category={key}></TableCategory>
+                        )
+                    }
+                    
                 </div>
                 <div className={classes.login}><Link to={"/login"}>Write Article</Link></div>
             </div>

@@ -1,17 +1,64 @@
 import {Article} from "./TypeDefinition";
-import classes from './TableEntry.module.css';
+import './TableEntry.scss';
+import { useSelector } from 'react-redux';
+import {State} from '../components/TypeDefinition'
+import {message} from "antd";
 
 type props = {
-    article: Article | null
-    setArticle: Function | null
+    title: string | null,
+    display: string | null,
+    category: string | null,
+    setArticle: Function
 }
-export default function TableEntry({article, setArticle}: props){
+export default function TableEntry({title, display, category, setArticle}: props){
 
-    function loadContent(){
-        if(setArticle!==null)setArticle(article)
+    const [messageApi, contextHolder] = message.useMessage();
+    const articles = useSelector((state : State) => {
+        return state.articles;
+    })
+
+    function displayArticle(){
+        let id = articles[category][title]
+        let data = {id: id}
+        let jsondata = JSON.stringify(data)
+        let url = "http://localhost:7777/public/retrieve/articleByID";
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: jsondata,
+            credentials: 'include'
+        }).then(response => response.json()).then(article => {
+            setArticle(article);
+        })
+    }
+
+    function deleteArticle(){
+        let id = articles[category][title]
+        let data = {id: id}
+        let jsondata = JSON.stringify(data)
+        let url = "http://localhost:7777/public/delete/articleByID";
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: jsondata,
+            credentials: 'include'
+        }).then(response => response.json()).then(article => {
+            messageApi.success("article deleted")
+        })
     }
 
     return(
-        <a className={classes.tableEntry} onClick={loadContent}><p>{article?.title}</p></a>
+        <div style={{"display":display}} >
+            <div className="wrapper">
+            <a onClick = {displayArticle}  className="tableEntry"><p>{title}</p></a>
+            <a onClick={deleteArticle}>x</a>
+            </div>
+        </div>
     )
 }

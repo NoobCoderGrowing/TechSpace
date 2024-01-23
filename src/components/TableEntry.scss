@@ -1,3 +1,10 @@
+.wrapper{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
 .tableEntry p{
     font-size: 1.3vw;
     color: black;
