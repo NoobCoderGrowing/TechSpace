@@ -71,8 +71,7 @@ export default function EidtPage(){
             return;
         }
         let data = {title: title, date: date, content: editorValue, category: category}
-        let url = "http://localhost:7777/admin/test";
-        // let url = "https://wenjunblog.xyz:7777/admin/upload/article";
+        let url = "https://wenjunblog.xyz:7777/admin/upload/article";
         let jsondata = JSON.stringify(data)
         fetch(url, {
             method: 'POST',
