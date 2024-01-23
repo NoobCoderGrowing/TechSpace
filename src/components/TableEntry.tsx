@@ -1,21 +1,24 @@
-import {Article} from "./TypeDefinition";
 import './TableEntry.scss';
 import { useSelector } from 'react-redux';
-import {State} from '../components/TypeDefinition'
-import {message} from "antd";
+import { Button, Modal} from "antd";
+import { State } from "./TypeDefinition";
+import { useState } from "react";
+import { MessageInstance } from "antd/es/message/interface";
 
 type props = {
     title: string | null,
     display: string | null,
     category: string | null,
-    setArticle: Function
+    setArticle: Function,
+    updateArticleMap: Function,
+    messageApi: MessageInstance
 }
-export default function TableEntry({title, display, category, setArticle}: props){
+export default function TableEntry({messageApi, title, display, category, setArticle, updateArticleMap}: props){
+    const articles = useSelector((state: State) => state.articles)
+    const isOwnerLogin = useSelector((state: State) => state.login.ownerLogin)
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    const [loading, setLoading] = useState(false);
 
-    const [messageApi, contextHolder] = message.useMessage();
-    const articles = useSelector((state : State) => {
-        return state.articles;
-    })
 
     function displayArticle(){
         let id = articles[category][title]
@@ -35,11 +38,19 @@ export default function TableEntry({title, display, category, setArticle}: props
         })
     }
 
-    function deleteArticle(){
+    function openModal(){
+        setIsModalOpen(true)
+    }
+
+    function closeModal(){
+        setIsModalOpen(false)
+    }
+
+    function deleateArticle(){
         let id = articles[category][title]
         let data = {id: id}
         let jsondata = JSON.stringify(data)
-        let url = "http://localhost:7777/public/delete/articleByID";
+        let url = "http://localhost:7777/admin/delete/articleByID";
         fetch(url, {
             method: 'POST',
             headers: {
@@ -48,17 +59,40 @@ export default function TableEntry({title, display, category, setArticle}: props
             },
             body: jsondata,
             credentials: 'include'
-        }).then(response => response.json()).then(article => {
-            messageApi.success("article deleted")
+        }).then(response => response.json()).then(result => {
+            updateArticleMap();
+            console.log(result);
+            messageApi.success("article deleted");
         })
     }
 
+    
     return(
         <div style={{"display":display}} >
             <div className="wrapper">
             <a onClick = {displayArticle}  className="tableEntry"><p>{title}</p></a>
-            <a onClick={deleteArticle}>x</a>
+            <a className="deletion" style = {{"display":isOwnerLogin?'block':'none'}} onClick={openModal}><p>x</p></a>
             </div>
+            <Modal
+            open={isModalOpen}
+            title="Warning"
+            onOk={deleateArticle}
+            onCancel={closeModal}
+            footer={ [
+            <Button key="yes" type="primary" loading={loading} onClick={deleateArticle}>
+                Yes
+            </Button>,
+            <Button
+                loading={loading}
+                onClick={closeModal}
+            >
+                Cancel
+            </Button>,
+            ]}
+                >
+                <p>Are you sure to delete the article &nbsp; <span className="deleteTitle">{title}</span></p>
+            </Modal>
+           
         </div>
     )
 }

@@ -1,10 +1,13 @@
 import classes from "./ContentTable.module.css"
 import { useEffect, useState} from "react";
-import {Article} from "./TypeDefinition";
 import {Link} from 'react-router-dom'
-import { Spin } from 'antd';
+import { Spin, message } from 'antd';
 import TableCategory from "./TableCategory";
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import retriveArticles from "../api/Articles";
+import {State} from '../components/TypeDefinition'
+
+
 
 
 
@@ -16,20 +19,13 @@ type props = {
 export default function ContentTable({setArticle}:props){
 
     const [loading, setLoading] = useState<boolean>(true);
-    const [data, setData] = useState<Object>({});
+    const [messageApi, contextHolder] = message.useMessage();
     const dispatch = useDispatch();
 
-     async function retriveArticleMap(){
-        let url = "http://localhost:7777/public/retrieve/articleMap";
-        //  let url = "https://wenjunblog.xyz:7777/public/retrieve/articles";
-        await fetch(url, {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-        }).then(response => response.json()).then(result => {
-            setData(result);
+    const data = useSelector((state: State)=> state.articles); 
+
+    function getArticleMap(){
+        retriveArticles().then(result=>{
             setLoading(false);
             dispatch({
                 type:'UPDATEARTICLES',
@@ -37,12 +33,14 @@ export default function ContentTable({setArticle}:props){
             });
         })
     }
+
     useEffect(()=>{
-        retriveArticleMap();
+        getArticleMap();
     },[])
 
     return(
         <div className={classes.container}>
+            {contextHolder}
             <div className={classes.content}>
                 <h1 className={classes.header}>Table of Content</h1>
                 <div className={classes.entryContainer}>
@@ -53,7 +51,7 @@ export default function ContentTable({setArticle}:props){
                     
                     {
                         Object.keys(data).map(key=>
-                         <TableCategory setArticle={setArticle} key={key} articles={data[key]} category={key}></TableCategory>
+                         <TableCategory messageApi={messageApi} updateArticleMap={getArticleMap} setArticle={setArticle} key={key} articles={data[key]} category={key}></TableCategory>
                         )
                     }
                     

@@ -13,8 +13,9 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment';
 import './EditPageAdditional.css'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {State} from '../components/TypeDefinition'
+import retriveArticles from "../api/Articles";
 
 
 
@@ -29,8 +30,13 @@ export default function EidtPage(){
     const [display, setDisplay] = useState<string>('none');
     const [inputDisplay, setInputDisplay] = useState<string>('none');
 
+    const dispatch = useDispatch();
+
     function toggleDisplay(){
         if(display=='none'){
+            if(inputDisplay == 'block'){
+                setInputDisplay('none')
+            }
             setDisplay('block');
         }else{
             setDisplay('none');
@@ -45,7 +51,21 @@ export default function EidtPage(){
         }
     }
 
-    async function uploadArticle(){
+    function closeAll(){
+        setDisplay('none');
+        setInputDisplay('none')
+    }
+
+    async function getArticleMap(){
+        await retriveArticles().then(result=>{
+            dispatch({
+                type:'UPDATEARTICLES',
+                payload: result
+            });
+        })
+    }
+
+    function uploadArticle(){
         if(title=='' || editorValue=='' || category == '' || category == 'category'|| date == ''){
             messageApi.error("some fields are empty")
             return;
@@ -54,7 +74,7 @@ export default function EidtPage(){
         let url = "http://localhost:7777/admin/test";
         // let url = "https://wenjunblog.xyz:7777/admin/upload/article";
         let jsondata = JSON.stringify(data)
-        await fetch(url, {
+        fetch(url, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -64,7 +84,8 @@ export default function EidtPage(){
             credentials: 'include'
         }).then(response => response.json()).then(result=>{
             if(result['uploaded']==true){
-                messageApi.info("Upload successful")
+                getArticleMap();
+                messageApi.success("Upload successful")
             }else{
                 messageApi.error("Unauthorized upload or duplicate article")
             }
@@ -102,6 +123,10 @@ export default function EidtPage(){
             (e.target as HTMLInputElement).value ='';
         }
     }
+
+    const  handelCreateCategoryChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+        setCategory(e.target.value);   
+    }
     
    
     return(
@@ -120,18 +145,18 @@ export default function EidtPage(){
                                     <div className={classes.dropDown}>
                                         <div className={classes.dropDownItemWrapper}>
                                             {articleCategories.map((category)=><a style={{'display':display}} onClick={handleCategory} className={classes.dropDownItem}> {category}</a>)}
-                                            <a style={{'display':display}} onClick={createCategory} className={classes.dropDownItem}> create category</a>
+                                            <button style={{'display':display}} onClick={createCategory} className={classes.createButton}> create category</button>
                                         </div>
-                                        <input onKeyUp={handelCreateCategory} style={{'display':inputDisplay}}className={classes.categoryInput}></input>
+                                        <input onChange={handelCreateCategoryChange} onKeyUp={handelCreateCategory} style={{'display':inputDisplay}}className={classes.categoryInput}></input>
                                     </div>
                                 </div>
                                 <div className={classes.titleContainer}>
                                     <label className={classes.title}>Title</label>
-                                    <input onChange={handleTitleInput}></input>
+                                    <input className={classes.titleInput} onChange={handleTitleInput}></input>
                                 </div>
                                 <div className={classes.dateSubmitContainer}>
                                     <div className={classes.dateContainer}>
-                                        <label className={classes.date}>Date</label>
+                                        <label className={classes.dateLabel}>Date</label>
                                         <DatePicker dateFormat="yyyy-MM-dd" selected={startDate} onChange={datePickerHandler} />
                                     </div>
                                     <div className= {classes.buttonContainer}>
@@ -141,7 +166,9 @@ export default function EidtPage(){
                                 </div>
                             </div>
                         </div>
-                        <TextEditor editorValue={editorValue} setEditorValue={setEditorValue}/>         
+                        <div onClick={closeAll}>
+                            <TextEditor editorValue={editorValue} setEditorValue={setEditorValue}/>
+                        </div>         
                     </div>
                 </BodyRight>
             </Body>

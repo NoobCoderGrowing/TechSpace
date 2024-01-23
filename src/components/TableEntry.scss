@@ -15,3 +15,22 @@
     cursor: pointer;
     font-size: 1.8vw;
 }
+
+.deletion p{
+    font-size: 1.3vw;
+}
+
+.deletion :hover{
+    cursor: pointer;
+    font-size: 1.8vw;
+}
+
+.deleteTitle{
+    font-weight: bold;
+    font-size: 1.8vw;
+}
+
+.ant-modal-footer{
+    display: flex;
+    flex-direction: row-reverse;
+}

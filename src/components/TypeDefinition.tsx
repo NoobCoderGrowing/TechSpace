@@ -10,6 +10,13 @@ export type Project = {
     url: string
 }
 
-export type State = {
-    articles : Object;
+export type LoginState = {
+    ownerLogin: boolean;
 }
+
+export type State = {
+    articles: Object,
+    login: LoginState
+}
+
+

@@ -1,6 +1,7 @@
 import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import {useNavigate} from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 
 import {
     MDBContainer,
@@ -18,6 +19,7 @@ export default function Login(){
     const navigate = useNavigate();
     const [username,setUsername] = useState<string>('')
     const [password,setPassword] = useState<string>('')
+    const dispatch = useDispatch();
 
 
     function handleUsername(e:ChangeEvent<HTMLInputElement>){
@@ -48,6 +50,9 @@ export default function Login(){
         return responseJson;
       }).then(result =>{
         if(result['login']== true){
+          dispatch({
+            type: 'OWNERLOGIN'
+          })
           navigate('/edit')
         }else{
           messageApi.error("username or password wrong")

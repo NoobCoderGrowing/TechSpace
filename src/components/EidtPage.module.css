@@ -9,6 +9,14 @@
     justify-content: space-around;
 }
 
+.title {
+    margin-right: 5%;
+}
+
+.titleInput{
+    border-radius: 1vw;
+}
+
 .titleDateWrapper{
     width: 90%;
     display: flex;
@@ -38,6 +46,8 @@
     margin-left: 10%;
     margin-right: 10%;
     min-height: 3vw;
+    border-radius: 1vw;
+    border-style: solid;
 }
 
 .dropDown{
@@ -54,7 +64,10 @@
 }
 
 .categoryInput{
+    display: inline-block;
     position: absolute;
+    z-index: 1;
+    border-radius: 1vw;
 }
 
 .dropDownItem{
@@ -62,10 +75,23 @@
     text-align: center;
     background-color: #fff;
     border: 1vw 1vw;
+    border-radius: 1vw;
     border-color: rgb(12, 0, 0);
     border-style: solid;
     z-index: 1;
     margin-top: 0.3vw;
+    border-width: 0.1vw;
+    padding: 5% 5%;
+}
+
+.createButton{
+    display: inline-block;
+    text-align: center;
+    color: #fff;
+    background-color: #059729;
+    border-radius: 1vw;
+    border-style: solid;
+    z-index: 1;
     border-width: 0.1vw;
     padding: 5% 5%;
 }
@@ -111,6 +137,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.dateLabel{
+    margin-right: 5%;
 }
 
 
