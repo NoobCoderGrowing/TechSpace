@@ -22,7 +22,8 @@ export default function ContentTable({setArticle}:props){
     const [messageApi, contextHolder] = message.useMessage();
     const dispatch = useDispatch();
 
-    const data = useSelector((state: State)=> state.articles); 
+    const data = useSelector((state: State)=> {
+        return state.articles}); 
 
     function getArticleMap(){
         retriveArticles().then(result=>{
@@ -50,8 +51,10 @@ export default function ContentTable({setArticle}:props){
                     </div>
                     
                     {
-                        Object.keys(data).map(key=>
-                         <TableCategory messageApi={messageApi} updateArticleMap={getArticleMap} setArticle={setArticle} key={key} articles={data[key]} category={key}></TableCategory>
+                        Object.keys(data).map(category=>{
+                            return <TableCategory messageApi={messageApi} updateArticleMap={getArticleMap} setArticle={setArticle} key={category} titleArticles={data[category]} category={category}></TableCategory>
+                        }
+                         
                         )
                     }
                     

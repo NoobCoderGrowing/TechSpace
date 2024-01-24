@@ -45,9 +45,8 @@
 .categoryDisplay{
     margin-left: 10%;
     margin-right: 10%;
-    min-height: 3vw;
-    border-radius: 1vw;
     border-style: solid;
+    font-size: 1.5vw;
 }
 
 .dropDown{
@@ -55,6 +54,7 @@
     flex-direction: column;
     align-items: center;
     position: relative;
+    font-size: 1.5vw;
 }
 
 .dropDownItemWrapper{

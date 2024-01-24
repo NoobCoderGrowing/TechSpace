@@ -21,7 +21,7 @@ export default function TableEntry({messageApi, title, display, category, setArt
 
 
     function displayArticle(){
-        let id = articles[category][title]
+        let id = articles[category][title]['id']
         let data = {id: id}
         let jsondata = JSON.stringify(data)
         let url = "https://wenjunblog.xyz:7777/public/retrieve/articleByID";
@@ -47,9 +47,10 @@ export default function TableEntry({messageApi, title, display, category, setArt
     }
 
     function deleateArticle(){
-        let id = articles[category][title]
+        let id = articles[category][title]['id']
         let data = {id: id}
         let jsondata = JSON.stringify(data)
+        // let url = "http://localhost:7777/admin/delete/articleByID";
         let url = "https://wenjunblog.xyz:7777/admin/delete/articleByID";
         fetch(url, {
             method: 'POST',

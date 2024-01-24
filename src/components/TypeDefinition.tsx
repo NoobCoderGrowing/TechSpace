@@ -1,8 +1,9 @@
 export type Article = {
-    _id: string,
+    id: string,
     title: string,
     date: string,
-    content: string
+    content: string,
+    category: string
 }
 
 export type Project = {
