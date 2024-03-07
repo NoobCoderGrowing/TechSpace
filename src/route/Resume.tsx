@@ -39,7 +39,7 @@ function Resume(){
                                 <h3 className={classes.h3}>Professional Summary</h3>
                             </div>
                             <div className={classes.right}>
-                                <p>4 months as a front-end software intern at <a href='https://www.appen.com.cn/'>Appen</a> (a machine learning data labeling service provider) and 10 months as a search engine developer (Java) at <a href='https://www.yiyaowang.com/en.html'>Yi</a> (1药网, a leading pharmaceutical e-commerce in China). Able to design and implement scalable high availability distributed data-intensive application, and undertake fullstack development and data warehousing/analysis job.</p>
+                                <p>4 months as a software intern at <a href='https://www.appen.com.cn/'>Appen</a> (a machine learning data provider) and 1 year as a vertical search engine developer (Java) at <a href='https://www.yiyaowang.com/en.html'>Yi</a> (1药网, a leading pharmaceutical whosaler e-commerce in China). During my work at YI, I was the main contributor of YI's own search engine and the main developer and maintainer of their fine ranking service.</p>
                             </div>
                         </div>
         
@@ -50,16 +50,16 @@ function Resume(){
                             <div className={classes.right}>
                                 <ul>
                                     <li>
-                                        <p>Good at byte level optimization(e.g. use variable length int, long to reduce in memory numeric value index size, and FST to strings) </p>
+                                        Good mathmatical foundation in areas of machine learning, digital signal processing and numerical optimization, and familiar with NLP task related LLMs. 
                                     </li>
                                     <li>
-                                        <p>Sensitive to computation efficience(e.g. use numeric trie to fasten numeric range search.) </p>
+                                        Good at distributed system design, with hands on experience in developing high availability distributed data intensive backend system. 
                                     </li>
                                     <li>
-                                        <p>Good SQL writer, having taken data warehouse migration task(translate dosens of PGSQL to HiveSQL from FineBI to Ali MaxCompute, many of which are more than a hundred lines with multiple joins) and weekly search trend analysis generation (writing SQL to facilitate visulization)</p>
+                                        <p>Great intuion with data and good SQL writer, with extensive experience in doing data warehousing, data analysis, data visulization utilizing ODPS such as Ali Maxcompute and FineBI, and feature selection using Weka</p>
                                     </li>
                                     <li>
-                                        <p>Have a thorough understanding of commercial vertical search engine development, of both the traditional and modern tricks, and also the architecture in industry practice.</p>
+                                        <p>Sensitive to computation efficience and memory usage, able to design/utilize approporiate data structure/algorithm to speed up computation and save memory</p>
                                     </li>
                                 </ul>
                             </div>
@@ -70,17 +70,15 @@ function Resume(){
                                 <h3 className={classes.h3}>Skills</h3>
                             </div>
                             <div className={classes.right}>
-                                <p><b>Language:</b> Java, Python, Javascript, C, Shell</p>
+                                <p><b>Language:</b> Java, Python, Javascript, C, Shell, R</p>
                                 <br></br>
-                                <p><b>Backend:</b> Spring Boot, Spring Cloud, Spring Security, Maven, MySql, JPA, MyBatis, LZ4, Lucene, ElasticSearch, RestTemplate, OpenFeign, Dubbo, WebFlux, Redis, MongoDB, Caffeine, Kafka, Nacos, Eureka, Apollo Config Center, jmap, jstat</p>
+                                <p><b>Backend:</b> Spring Boot, Spring Cloud, Spring Security, Apache Curator, Apache Kafka,Maven, MySQL, Oracle SQL, HiveSQL, Hibernate, MyBatis, Lucene, ElasticSearch, RestTemplate, OpenFeign, Dubbo, WebFlux, Redis, MongoDB, Caffeine, Nacos, Eureka, Ctrip Apollo Config Center</p>
                                 <br></br>
-                                <p><b>Data Mining and Analysis:</b> HiveSql, PgSql, Weka, Spark, Pandas, MatPlot, Seaborn</p>
+                                <p><b>Machine Learning and Deep Learning:</b> Scikit, Pytorch, Huggingface, Wandb</p>
                                 <br></br>
-                                <p><b>Machine Learning and Deep Learning:</b> Pytorch, Huggingface, SkLearn, Numpy, Wandb</p>
+                                <p><b>Frontend:</b> React, Typesscript, Redux, Bootstrap, Webpack, Rollup</p>
                                 <br></br>
-                                <p><b>Frontend:</b> React, Typesscript, Antd, Bootstrap, Webpack, Vite</p>
-                                <br></br>
-                                <p><b>Image Processing:</b> OpenCV</p>
+                                <p><b>Digital Signal Processing</b> Librosa,OpenCV</p>
                                 <br></br>
                                 <p><b>CI&CD:</b> Git, Docker, K8s, Jenkins, AWS, Google Cloud</p>
                             </div>
@@ -91,48 +89,29 @@ function Resume(){
                                 <h3 className={classes.h3}>Work History</h3>
                             </div>
                             <div className={classes.right}>
-                            <div className={classes.workHistoryContainer}>
-                                    <div className={classes.timeDetailSeperator}>
-                                        <div className={classes.workHistory}>
-                                            <div>
-                                                <p className={classes.nowrap}><b>IT Support (Part Time)</b></p>
-                                            </div>
-                                        </div>
-                                        <div><p><a href="https://oznwfabrics.com.au/">OZ Nonwoven Fabrics Limited</a></p></div>
-                                        <p className={classes.workTimeline}>Brisbane, Australia, &nbsp;2023 Septermber 01 ~ present</p>
-                                    </div>
-                                    <ul className={classes.listContainer}>
-                                        <li>Transfer company website and domain from outsource IT consultant and maintain them</li>
-                                        <li>Manage corporate Office 365 global admin account</li>
-                                        <li>Develop order search and management system</li>
-                                    </ul>
-                                    <p className={classes.leaveReason}><b>Referee:</b> </p>
-                                    <p className={classes.leaveReason}>Justin Hwang (CEO)</p>
-                                    <p className={classes.leaveReason}>Mobile: 0410232115</p>
-                                    <p className={classes.leaveReason}>Email: justin.hwang@oznwfabrics.com.au</p>
-                                </div>
-        
+                            
                                 <div className={classes.workHistoryContainer}>
                                     <div className={classes.timeDetailSeperator}>
                                         <div className={classes.workHistory}>
                                             <div>
-                                                <p className={classes.nowrap}><b>Search engine developer</b></p>
+                                                <p className={classes.nowrap}><b>Vertical search engine developer</b></p>
                                             </div>
                                             <div><p><a href="https://www.yiyaowang.com/">Yi (1药网)</a></p></div>
                                         </div>
                                         <p className={classes.workTimeline}>Shanghai, China, &nbsp;2022 July 01 ~ 2023 April 13</p>
                                     </div>
                                     <ul className={classes.listContainer}>
-                                        <li>Participate in developing Yi's own search engine and migrate the system from ElasticSearch</li>
-                                        <li>Develop search engine backend management system for operation department</li>
-                                        <li>Construct data warehouse and conduct data analysis (Weekly search keywords, top shops mining and search trend report generation) </li>
-                                        <li>Optimize search system response time</li>
+                                        <li>Train and deploy the fine ranking LambdaMart model by using LightGBM</li>
+                                        <li>Dominated the design and the implementation of the searche engine index storage file format and in memory data structure. </li>
+                                        <li>Design and implement the master-slave search engine recaller architecture by utilizing Apache Curator to facilitate the index updating/syncing everyday</li>
+                                        <li>Developed the search engine backend management system for operation department</li>
+                                        <li>Construct data warehouse and conduct data analysis and data visulization (Weekly search keywords, top shops mining and search trend report generation) by using ODPS such as Alibaba Maxcompute and fineBI </li>
+                                        <li>Conduct feature selection by using Weka</li>
+                                        <li>Optimize search system response time by data compression during transmission and exploiting the power of in-memory database such as Redis</li>
+                                        <li>Decrease system pressure during peak time by utilizing message queue such as RabbitMQ</li>
                                         <li>Response to online bug</li>
                                     </ul>
-                                    <p className={classes.leaveReason}><b>Reason to leave:</b> This job could not provide the room to deveolop IR related NLP techniques(like vector recall and listwise ranking), which are my current study focus.</p>
-                                    <p className={classes.leaveReason}><b>Referee:</b> </p>
-                                    <p className={classes.leaveReason}>Jiayi Liu (Hiring Manager, Mandarin speaking)</p>
-                                    <p className={classes.leaveReason}>Mobile: +86 15026529386</p>
+                                    <p className={classes.leaveReason}><b>Reason to leave:</b> Manager change and limited resource and room for growth.</p>
                                 </div>
         
                                 <div className={classes.workHistoryContainer}>
@@ -152,10 +131,26 @@ function Resume(){
                                         <li>Invent frontend dev tools to enhance development efficiency</li>
                                     </ul>
                                     <p className={classes.leaveReason}><b>Reason to leave:</b> Career interest shift to backend development.</p>
-                                    <p className={classes.leaveReason}><b>Referee:</b> </p>
-                                    <p className={classes.leaveReason}>Grace Jin (Hiring Manager)</p>
-                                    <p className={classes.leaveReason}>Mobile: +86 15800919238</p>
+                                </div>
+
+                                <div className={classes.workHistoryContainer}>
+                                    <div className={classes.timeDetailSeperator}>
+                                        <div className={classes.workHistory}>
+                                            <div>
+                                                <p className={classes.nowrap}><b>IT Support (Part Time)</b></p>
+                                            </div>
+                                        </div>
+                                        <div><p><a href="https://oznwfabrics.com.au/">OZ Nonwoven Fabrics Ltd.</a></p></div>
+                                        <p className={classes.workTimeline}>Brisbane, Australia, &nbsp;2023 Septermber 01 ~ present</p>
                                     </div>
+                                    <ul className={classes.listContainer}>
+                                        <li>Develop and maintain company marketing website</li>
+                                        <li>Manage exchange server</li>
+                                        <li>Install hardware/driver/software</li>
+                                        <li>Manage in office server/router/network</li>
+                                        <li>Respond to onsite problems</li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                         <div className={`${classes.row} ${classes.corporate}`} >
@@ -167,7 +162,7 @@ function Resume(){
                                     <div className={classes.timeDetailSeperator}>
                                         <div className={classes.workHistory}>
                                             <div>
-                                                <p className={classes.nowrap}><b>bird-search (SpringCloud, LGBM, Caffeine)</b></p>
+                                                <p className={classes.nowrap}><b>bird-search (SpringCloud, LightGBM, Caffeine )</b></p>
                                             </div>
                                         </div>
                                         <div className={classes.workHistory}>
@@ -175,11 +170,14 @@ function Resume(){
                                         </div>
                                         <p className={classes.workTimeline}>Shanghai, China, &nbsp;2022 July 01 ~ 2023 April 13</p>
                                     </div>
-                                    <p>bird-search is a large scale distributed commercial search engine. It consists of text correction, name entity recognition, segmentation, category prediction, inverter, indexer, recaller, strategy based ranker, fine ranker(liswise ranking) and etc. (in total 17 projects) all developed by Yi's search team. Except for weekly agile development, my main contribution to the project is beblow:</p>
+                                    <p>bird-search is a Java based large scale distributed commercial vertical search engine. It consists of text correction, name entity recognition, segmentation, category prediction, indexer, recaller, strategy based ranker, fine ranker(learning to ranking) and etc. (in total 17 projects) all developed by Yi's search team. Except for weekly agile development, my main contribution to the project is beblow:</p>
                                     <ul className={classes.listContainer}>
-                                        <li>Implement N-shortest-path algorithm for sgementation</li>
-                                        <li>Participate in index data structure design</li>
-                                        <li>Design and implement index sharding and update strategy</li>
+                                        <li>Main contributor of segmentation, indexer, recaller  and fine ranker</li>
+                                        <li>Using N-shortest-path algorithm to address Chiness word segmentation problem</li>
+                                        <li>Using variable length integer, FST to improve memory usage and numeric trie to speed up numeric range search </li>
+                                        <li>Utilizing Apache Curator to do leader election within recaller cluster in order to facilitate the index updating between the indexer and recallers and syncing between recallers everyday</li>
+                                        <li>Using Weka to do feature selection and Caffeine to store features locally </li>
+                                        <li>Train and deploy LigtGBM based LambdaMart using PMML</li>
                                     </ul>
                                     </div>
                                 
@@ -220,10 +218,10 @@ function Resume(){
                                         </div>
                                         <p className={classes.workTimeline}>2023 Apr 14 ~ 2023 July 07</p>
                                     </div>
-                                    <p>Hawk is an ideal implementation of traditional vertical search engine (N-gram model and tf-idf based). It takes advantage of both bird-search, Lucene and Elasticsearch.</p>
+                                    <p>Hawk is an ideal implementation of distributed vertical search engine (N-gram model and tf-idf based). It takes advantage of both bird-search, Lucene and Elasticsearch.</p>
                                     <ul className={classes.listContainer}>
-                                        <li>Hawk uses nacos to regsiter different services, webflux to do asynchronous index download(pull instead of push), and supports hot index switch </li>
-                                        <li>Use variable length int, long data structure to compress numeric value in inverted index, and lz4 algorithm to compress positive index as Lucence does</li>
+                                        <li>Just like bird-search, hawk's recaller cluster use Apache Curator to do leader election</li>
+                                        <li>Hawk uses variable length int, long data structure to compress numeric value in inverted index, and lz4 algorithm to compress positive index as Lucence does</li>
                                         <li>Hawk uses FST to store inverted dictionary and numeric trie to do range search as Lucene does</li>
                                         <li>Unlike bird-search, Hawk uses statiscal N-shortest-path algorithm to do segementation, which is based on statistical language model</li>
                                         <li>Unlike Elasticsearch, Hawk seperates indexer and recaller, which doesn't influence engine's performance during indexing, and offers hot index switch</li>
@@ -242,30 +240,11 @@ function Resume(){
                                     </div>
                                     <p><a href="https://wenjunblog.xyz/">Tech Space</a> is my personal website with a content editing/sharing backend system.</p>
                                     <ul className={classes.listContainer}>
-                                        <li>The frontend is developed by using react + typescript, and it integrates Quil as its online editor. </li>
+                                        <li>The frontend is developed by using react, typescript and redux, and it integrates Quil as its online editor. </li>
                                         <li>The backend uses Springboot as main framework, Spring Security to do role based authorization and MongoDB as document storage.</li>
                                     </ul>
                                     <p>Frontend code base: <a href="https://github.com/NoobCoderGrowing/TechSpace">TechSpace</a></p>
                                     <p>Backend code base: <a href="https://github.com/NoobCoderGrowing/tech-space-back">tech-space-back</a></p>
-                                </div>
-                                
-                                <div className={classes.workHistoryContainer}>
-                                    <div className={classes.timeDetailSeperator}>
-                                        <div className={`${classes.workHistory}`}>
-                                            <div>
-                                                <p className={classes.nowrap}><b>Meow</b></p>
-                                            </div>
-                                        </div>
-                                        <p className={classes.workTimeline}>2023 Aug 25 ~ 2023 Aug 27</p>
-                                    </div>
-                                    <p>Meow is a chrome extension plugin that uwuify your webpages uwu. It would scrape the DOM from each webpage and change the text into uwu speak, as well as plaster cat photos over all visible images. The first version of Meow is developed during UQCS hackathon 2023.</p>
-                                    <ul className={classes.listContainer}>
-                                        <li>Use Flask as serverside framwork and openCV to overlay cat image on the original one</li>
-                                        <li>Pure JS scraper</li>
-                                    </ul>
-                                    <p><b>Note</b>: The serverside of original version is down now. For demonstration and installation, please see latest code base README.md</p>
-                                    <p>Latest Code Base: <a href="https://github.com/AncientMeme/uwuify">Meow</a></p>
-                                    <p>Original Code Base: <a href="https://github.com/NoobCoderGrowing/Meow">Meow</a></p>
                                 </div>
                             </div>
                         </div>
@@ -280,7 +259,7 @@ function Resume(){
                                         <div>
                                             <p className={classes.nowrap}><b>Queensland University of Technology</b></p>
                                         </div>
-                                        <div> <p className={classes.educationTimeline}>2023 Jul 24 ~ 2024 Nov 15</p></div>
+                                        <div> <p className={classes.educationTimeline}>2023 Jul 24 ~ 2024 Dec 15</p></div>
                                     </div>
                                     <p>Master of Data Analytics (Statistical Data Science Major)</p>
                                 </div>
@@ -312,10 +291,20 @@ function Resume(){
                                 <h3 className={classes.h3}>Core Finished Courses </h3>
                             </div>
                             <div className={classes.right}>
-                                <p>Large Scale Data Mining(Weka), Artificial Intelligence and Machine Learning(Pytorch, SkLearn), Image Processing & Computer Vision(OpenCV, Pytorch), Machine Learning(Python), Software engineering (Python), Advanced Software Engineering (Java), Introduction To Computer Systems(Assembly and C), Cmputer System Principles & Programming(C), Data Structures & Algorithms(Java), Dicrete Mathmatics, Calculus & Linear Algebra I, Analysis of Scientific Data(R), Stochastic Modelling, Relational Database System(MySql), Advanced Database System(Oracle), Concurrency Theory and Practice(Java), Introduction to Web Design, Human Computer Interaction</p>
+                                <p>Large Scale Data Mining, Artificial Intelligence and Machine Learning, Image Processing & Computer Vision(OpenCV, Pytorch), Machine Learning, Software engineering (Python), Advanced Software Engineering (Java), Introduction To Computer Systems(Assembly and C), Cmputer System Principles & Programming(C), Data Structures & Algorithms(Java), Dicrete Mathmatics, Calculus & Linear Algebra, Analysis of Scientific Data(R), Stochastic Modelling, Relational Database System(MySql), Advanced Database System(Oracle), Concurrency Theory and Practice(Java), Introduction to Web Design, Human Computer Interaction</p>
                             </div>
                         </div>
-        
+
+                        <div className={classes.row}>
+                            <div className={classes.left}>
+                                <h3 className={classes.h3}>Extra Curriculum Courses/Books </h3>
+                            </div>
+                            <div className={classes.right}>
+                                <p>Matrix Calculus, Algorithms for optimization, Transformers for Natural Language Processing, Embedded systems, Audio Signal Processing for Machine Learning</p>
+                            </div>
+                        </div>
+
+{/*         
                         <div className={classes.row}>
                             <div className={classes.left}>
                                 <h3 className={classes.h3}>Availibilty</h3>
@@ -327,8 +316,8 @@ function Resume(){
                                     <li><p>Accept work from home</p></li>
                                 </ul>
                             </div>
-                        </div>
-                        <div className={classes.row}>
+                        </div> */}
+                        {/* <div className={classes.row}>
                             <div className={classes.left}>
                                 <h3 className={classes.h3}>Visa Condition</h3>
                             </div>
@@ -340,8 +329,8 @@ function Resume(){
                                 <p><b>Future visa / path to PR:</b> Eligible for 4 years 485 graduate visa after graduation, and will seek PR via 189/190 independet-skilled visa or 186 employer nomination scheme visa </p>
                                 <br></br>
                             </div>
-                        </div>
-                        <div className={classes.row}>
+                        </div> */}
+                        {/* <div className={classes.row}>
                             <div className={classes.left}>
                                 <h3 className={classes.h3}>Language</h3>
                             </div>
@@ -351,7 +340,7 @@ function Resume(){
                                 <p><b>Mandarin:</b> native speaker </p>
                                 <br></br>
                             </div>
-                        </div>
+                        </div> */}
                 </div>
                 <Footer/>
             </div>

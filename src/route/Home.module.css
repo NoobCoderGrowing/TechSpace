@@ -1,6 +1,6 @@
 .profilePhoto{
     position: absolute;
-    width: 30%;
+    width: 50%;
     display: block;
     border-radius: 100%;
     left: 50%;
@@ -9,8 +9,8 @@
 }
 
 .bubbleContainer{
-    width: 60%;
-    height: 60%;
+    width: 80%;
+    height: 50%;
     position: absolute;
     top: 25%;
     left: 50%;

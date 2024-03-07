@@ -7,10 +7,10 @@ function BubbleBox(){
             <div className={classes.bubbleText}>           
                 <p>Hi, my name is Wayne. I am currently doing my Master of  Data Analytics program (Statistical Data Science major) in Queensland University of Technology.</p>
                 <p> 
-                I'm a full stack developer, and my technical stack is React + Spring, and I have about 1 year industry experience in developing commercial vertical search engine. 
+                I'm a full stack developer with 1 year industry experience. I specialize in distributed vertical search engine development, and my technical stack is React + Spring + Pytorch.
                 </p>
 
-                <p>I'm currently seeking an intership/part time job, and willing to relocate. My interest includes full stack, backend, frontend and search engine relevant development.</p>
+                <p>Except from above, my technical interests include digital/audio signal processing, speech recognition, embedded system programing and NLP related development.</p>
             </div>
         </div>
     )
