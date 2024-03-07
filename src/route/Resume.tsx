@@ -39,7 +39,7 @@ function Resume(){
                                 <h3 className={classes.h3}>Professional Summary</h3>
                             </div>
                             <div className={classes.right}>
-                                <p>4 months as a software intern at <a href='https://www.appen.com.cn/'>Appen</a> (a machine learning data provider) and 1 year as a vertical search engine developer (Java) at <a href='https://www.yiyaowang.com/en.html'>Yi</a> (1药网, a leading pharmaceutical whosaler e-commerce in China). During my work at YI, I was the main contributor of YI's own search engine and the main developer and maintainer of their fine ranking service.</p>
+                                <p>4 months as a software intern at <a href='https://www.appen.com.cn/'>Appen</a> (a machine learning data provider) and 1 year as a vertical search engine developer (Java) at <a href='https://www.yiyaowang.com/en.html'>Yi</a> (1药网, a leading pharmaceutical whosale e-commerce in China). During my work at YI, I was the main contributor of YI's own search engine and the main developer and maintainer of their fine ranking service.</p>
                             </div>
                         </div>
         
