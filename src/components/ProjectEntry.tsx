@@ -1,4 +1,4 @@
-import './TableEntry.scss';
+import './ProjectEntry.scss';
 import {Link} from 'react-router-dom'
 import { Project } from './TypeDefinition';
 
@@ -10,7 +10,7 @@ export default function ProjectEntry({project}: props){
     if(project){
         return(
             <>
-                <Link className="tableEntry" to={"/projects/"+ project.url}><p>{project.name}</p></Link>
+                <Link className="projectEntry" to={"/projects/"+ project.url}><p className='projectName'>{project.name}</p></Link>
             </>
         )
     }

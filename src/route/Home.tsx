@@ -56,7 +56,6 @@ function Home(){
           return responseJson;
         }).then(result =>{
             let ret = result['likesCount']
-            // console.log(ret)
             dispatch({
                 type:'INCHOMELIKES',
                 payload: ret

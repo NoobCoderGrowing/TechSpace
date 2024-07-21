@@ -1,0 +1,41 @@
+
+
+.container{
+    width: 100vw;
+    min-width: 100vw;
+    background-color: purple;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.content{
+    min-height: 60vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80%;
+    background-color: white;
+    text-align: center;
+}
+
+.header{
+    font-weight: bold;
+    margin-top: 3vw;
+    width: 100%;
+    margin-bottom: 5vw;
+}
+
+.entryContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    overflow-y: scroll;
+    
+}
+
+.container h1{
+    font-size: 2vw;
+}
+
