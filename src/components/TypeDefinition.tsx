@@ -15,9 +15,16 @@ export type LoginState = {
     ownerLogin: boolean;
 }
 
+export type LikesState = {
+    homeLikes: number;
+}
+
 export type State = {
     articles: Object,
     login: LoginState
+    likes: LikesState
 }
+
+
 
 

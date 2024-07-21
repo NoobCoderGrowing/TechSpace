@@ -15,7 +15,7 @@ function Gallery(){
     }
     return(
         <div className={classes.gallery}>   
-            <img onClick={navigateTo} className={classes.galleryImg} src={top1} alt="Image 1"/>
+            {/* <img onClick={navigateTo} className={classes.galleryImg} src={top1} alt="Image 1"/> */}
             <img onClick={infoMessage} className={classes.galleryImg}  src={dog} alt="Image 2"/>
             <img onClick={infoMessage} className={classes.galleryImg}  src={dog} alt="Image 3"/>
             <img onClick={infoMessage} className={classes.galleryImg}  src={dog} alt="Image 3"/>

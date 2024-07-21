@@ -1,7 +1,5 @@
 import { createStore, combineReducers } from 'redux';
-import {LoginState} from '../components/TypeDefinition'
-
-
+import {LikesState, LoginState} from '../components/TypeDefinition'
 
 const ArticlesReducer = (state : Object = {}, action) => {
     switch (action.type) {
@@ -26,9 +24,23 @@ const LoginReducer = (state: LoginState = {ownerLogin: false}, action) => {
   }
 }
 
+const LikesReducer = (state : LikesState = {homeLikes: 0}, action) => {
+  switch (action.type) {
+    case 'GETHOMELIKES':
+      state.homeLikes = action.payload;
+      return state;
+    case 'INCHOMELIKES':
+      state.homeLikes = action.payload;
+      return state;
+    default:
+      return state;
+  }
+};
+
 const allReducers = combineReducers({
   articles: ArticlesReducer,
-  login: LoginReducer
+  login: LoginReducer,
+  likes: LikesReducer
 })
 
   

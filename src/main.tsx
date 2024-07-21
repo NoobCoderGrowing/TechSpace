@@ -16,7 +16,7 @@ import sotre from './store/index'
 const router = createBrowserRouter([
   {path:'/', element:<Home/>, 
   children: [],},
-  {path:'/resume', element:<Resume/>, children: [],},
+  // {path:'/resume', element:<Resume/>, children: [],},
   {path:'/blog', element:<Blog/>, children: [],},
   {path:'/edit', element:<EidtPage/>, children: [],},
   {path:'/login', element:<Login/>, children: [],},

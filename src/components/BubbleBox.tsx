@@ -5,12 +5,8 @@ function BubbleBox(){
     return(
         <div className={classes.bubbleBorder}>
             <div className={classes.bubbleText}>           
-                <p>Hi, my name is Wayne. I am currently doing my Master of  Data Analytics program (Statistical Data Science major) in Queensland University of Technology.</p>
-                <p> 
-                I'm a full stack developer with 1 year industry experience. I specialize in distributed vertical search engine development, and my technical stack is React + Spring + Pytorch.
-                </p>
-
-                <p>Except from above, my technical interests include digital/audio signal processing, speech recognition, embedded system programing and NLP related development.</p>
+                <p>你好，我是文俊，欢迎来到我的博客空间。</p>
+                <p>好记性不如烂笔头，我专注于搜索引擎研发，这里记录着我的所学所悟，如果我的笔记也对你有所帮助，给我点个赞吧 :)</p>
             </div>
         </div>
     )

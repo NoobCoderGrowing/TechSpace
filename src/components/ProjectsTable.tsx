@@ -1,5 +1,5 @@
 import classes from "./ContentTable.module.css"
-import { useEffect, useState} from "react";
+import {useState} from "react";
 import ProjectEntry from "./ProjectEntry";
 import { Project } from "./TypeDefinition";
 

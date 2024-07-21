@@ -17,7 +17,7 @@ function Header(){
             <div className={classes.headerRightContainer}>
                 <ul className={classes.navigation}>
                     <li><Link className={classes.link} to={"/"}>Home</Link></li>
-                    <li><Link className={classes.link} to={"/resume"}>Resume</Link></li>
+                    {/* <li><Link className={classes.link} to={"/resume"}>Resume</Link></li> */}
                     <li><Link className={classes.link} to={"/blog"}>Blog</Link></li>
                     {/* <li><Link className={classes.link} to={"/Projects"}>Projects</Link></li> */}
                     <li onClick={infoMessage}>Project</li>

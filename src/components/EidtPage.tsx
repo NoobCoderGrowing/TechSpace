@@ -70,10 +70,11 @@ export default function EidtPage(){
             messageApi.error("some fields are empty")
             return;
         }
+        const baseURL:string = import.meta.env.VITE_BASE_URL
+        let url = baseURL + "admin/upload/article"  
         let data = {title: title, date: date, content: editorValue, category: category}
-        // let url = "http://localhost:7777/admin/upload/article";
-        let url = "https://wenjunblog.xyz:7777/admin/upload/article";
         let jsondata = JSON.stringify(data)
+        
         fetch(url, {
             method: 'POST',
             headers: {

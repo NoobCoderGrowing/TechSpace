@@ -1,6 +1,8 @@
 function retriveArticles(){
-    // let url = "http://localhost:7777/public/retrieve/articleMap";
-     let url = "https://wenjunblog.xyz:7777/public/retrieve/articleMap";
+
+    const baseURL:string = import.meta.env.VITE_BASE_URL
+    let url = baseURL + "public/retrieve/articleMap"  
+    
     return fetch(url, {
         method: 'GET',
         headers: {

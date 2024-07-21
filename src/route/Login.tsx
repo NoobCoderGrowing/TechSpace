@@ -20,6 +20,7 @@ export default function Login(){
     const [username,setUsername] = useState<string>('')
     const [password,setPassword] = useState<string>('')
     const dispatch = useDispatch();
+    const baseURL:string = import.meta.env.VITE_BASE_URL
 
 
     function handleUsername(e:ChangeEvent<HTMLInputElement>){
@@ -36,8 +37,8 @@ export default function Login(){
       let formData = new FormData();
       formData.append("username", username);
       formData.append("password", password);
-      // let url = "http://localhost:7777/login";
-      let url = "https://wenjunblog.xyz:7777/login";
+      let url = baseURL + "login"  
+      
       await fetch(url, {
           method: 'POST',
           headers: {
