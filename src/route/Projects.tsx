@@ -1,6 +1,7 @@
 import Header from "../layout/Header";
 import Footer from "../layout/Footer";
 import ProjectsTable from "../components/ProjectsTable";
+import { Outlet } from "react-router-dom";
 
 
 
@@ -9,6 +10,7 @@ function Projects(){
         <main>  
             <Header/>
                 <ProjectsTable/>
+                <Outlet/>
             <Footer/>
         </main>
     )

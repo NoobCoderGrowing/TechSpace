@@ -19,6 +19,10 @@ export type LikesState = {
     homeLikes: number;
 }
 
+export type VisibleState = {
+    projectTableV: boolean;
+}
+
 export type State = {
     articles: Object,
     login: LoginState

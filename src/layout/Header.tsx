@@ -1,6 +1,7 @@
 import classes from './Header.module.css'
 import {message, Button} from 'antd'
 import {Link} from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 
 
 function Header(){
@@ -8,6 +9,16 @@ function Header(){
     function infoMessage(){
         message.warning('still under development')
     }
+
+    const dispatch = useDispatch();
+
+    function showProjectTable(){
+        dispatch({
+            type:'SHOWPROJECTT',
+            payload: ''
+        });    
+    }
+    
     
     return(
         <header className={classes.headerContainer}>
@@ -19,7 +30,7 @@ function Header(){
                     <li><Link className={classes.link} to={"/"}>Home</Link></li>
                     {/* <li><Link className={classes.link} to={"/resume"}>Resume</Link></li> */}
                     <li><Link className={classes.link} to={"/blog"}>Blog</Link></li>
-                    <li><Link className={classes.link} to={"/Projects"}>Projects</Link></li>
+                    <li><Link onClick={showProjectTable} className={classes.link} to={"/Projects"}>Projects</Link></li>
                     <li onClick={infoMessage}>Project</li>
                 </ul>
                 <div className={classes.searchContainer}>

@@ -4,13 +4,14 @@ import { Project } from './TypeDefinition';
 
 type props = {  
     project: Project | null
+    onClick: Function | any
 }
-export default function ProjectEntry({project}: props){
+export default function ProjectEntry({project, onClick}: props){
     
     if(project){
         return(
             <>
-                <Link className="projectEntry" to={"/projects/"+ project.url}><p className='projectName'>{project.name}</p></Link>
+                <Link onClick={onClick} className="projectEntry" to={"/projects/"+ project.url}><p className='projectName'>{project.name}</p></Link>
             </>
         )
     }

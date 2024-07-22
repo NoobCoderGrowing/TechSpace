@@ -1,5 +1,6 @@
 import { createStore, combineReducers } from 'redux';
-import {LikesState, LoginState} from '../components/TypeDefinition'
+import {LikesState, LoginState, VisibleState} from '../components/TypeDefinition'
+
 
 const ArticlesReducer = (state : Object = {}, action) => {
     switch (action.type) {
@@ -37,10 +38,24 @@ const LikesReducer = (state : LikesState = {homeLikes: 0}, action) => {
   }
 };
 
+const VisibleReducer = (state : VisibleState = {projectTableV: true}, action) => {
+  switch (action.type) {
+    case 'SHOWPROJECTT':
+      state.projectTableV = true;
+      return state;
+    case 'HIDEPROJECTT':
+      state.projectTableV = false;
+      return state;
+    default:
+      return state;
+  }
+};
+
 const allReducers = combineReducers({
   articles: ArticlesReducer,
   login: LoginReducer,
-  likes: LikesReducer
+  likes: LikesReducer,
+  visible: VisibleReducer 
 })
 
   
