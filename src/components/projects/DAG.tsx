@@ -1,17 +1,11 @@
 import React, { useCallback, useState } from 'react';
 import {
   ReactFlow,
-  useNodesState,
-  useEdgesState,
   addEdge,
   MiniMap,
   Controls,
   Background,
-  Node,
-  Edge,
   ConnectionMode,
-  MarkerType,
-  BezierEdge,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 
@@ -25,18 +19,16 @@ const edgeTypes = {
 
 
 const DAG = (props:any) => {
-  const [nodes, , onNodesChange] = useNodesState(props.initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(props.initialEdges);
 
   const onConnect = useCallback(
     (params) => setEdges((eds) => addEdge(params, eds)),
     [],
   );
-  const { visibility, setVisibility } = props;
+  const { visibility, nodes, onNodesChange, edges, setEdges, onEdgesChange} = props;
   
 
   return (
-    <div  style={{ display: visibility?'block':'none', width: '80vw', height:'40vw', backgroundColor:'deeppink', marginBottom: '5vw'}}>
+    <div  style={{ display: visibility?'block':'none', width: '60vw', height:'30vw', backgroundColor:'deeppink', marginBottom: '5vw'}}>
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -50,7 +42,7 @@ const DAG = (props:any) => {
         connectionMode={ConnectionMode.Loose}
       >
         <Controls />
-        <MiniMap/>
+        {/* <MiniMap/> */}
         <Background />
       </ReactFlow>
     </div>

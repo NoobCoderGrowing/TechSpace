@@ -19,12 +19,27 @@
     }
     .form-wrapper{
         margin-bottom: 5vh;
+        display: flex;
+        flex-direction: row;
+        justify-content: left;
+        align-items: center;
+    }
+
+    .label-wrapper{
+        margin-right: 1vw;
     }
 
     .buttonWrapper{
         width: 100%;
         display: flex;
-        justify-content: center;
+        justify-content: space-around;
         margin-bottom: 5vh;
     }
+
+    .NPaths{
+        border: 0.1vw solid;
+        text-align: center;
+        background-color: aquamarine;
+    }
+
 }
