@@ -24,7 +24,9 @@ export default function TableEntry({messageApi, title, display, category, setArt
         let id = articles[category][title]['id']
         let data = {id: id}
         let jsondata = JSON.stringify(data)
-        let url = "https://wenjunblog.xyz:7777/public/retrieve/articleByID";
+
+        const baseURL:string = import.meta.env.VITE_BASE_URL
+        let url = baseURL + "public/retrieve/articleByID"  
         fetch(url, {
             method: 'POST',
             headers: {
