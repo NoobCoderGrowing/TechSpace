@@ -8,14 +8,14 @@ function Footer(){
                     <p>Email: <a href="mailto:waynejune.yao@gmail.com">waynejune.yao@gmail.com</a></p>
                 </div>
                 <div className={classes.linkedIn}>
-                    <p>LinkedIn: <a href="https://www.linkedin.com/in/wayne-yao-connect/">linkedin.com/in/wayne-yao-connect</a></p>
+                    <p>Weibo: <a href="">to be updated</a></p>
                 </div>
                 <div className={classes.mobileNumber}>
-                    <p>Mobile Number: +61 410837649</p>
+                    <p>Mobile Number: +86 13309661021</p>
                 </div>
              </div>
             <div className={classes.copyright}>
-                <p>&copy; 2023 Wayne June Yao. &nbsp;All rights reserved.</p>
+                <p>&copy; 2023 Wenjun Yao. &nbsp;All rights reserved.</p>
             </div>
         </footer>
     )
