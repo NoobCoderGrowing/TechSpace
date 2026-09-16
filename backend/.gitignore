@@ -1,0 +1,8 @@
+target/
+*.iml
+*.idea
+.idea/
+src/main/resources/pfx-password.txt
+src/main/resources/pfx-password.txt
+src/main/resources/application.properties
+.vscode/
