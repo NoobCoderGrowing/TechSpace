@@ -1,6 +1,19 @@
-version: '3.1'
+# 本地开发依赖服务，对应 backend/src/main/resources/application-dev.properties
+# 启动: docker compose up -d      停止: docker compose down
+# 注意: mongo 固定用 7.x —— Spring Boot 3.1.4 带的 mongodb 驱动为 4.9.x，
+#       官方兼容到 MongoDB 7.0，升 8.0 需要先升驱动。
 services:
   redis:
     image: redis:alpine
     ports:
       - "6379:6379"
+
+  mongo:
+    image: mongo:7
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:

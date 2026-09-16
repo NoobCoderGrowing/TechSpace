@@ -24,22 +24,28 @@ TechSpace/
 | --- | --- |
 | Node.js | 18+ |
 | JDK | 17 |
-| MongoDB | 本地 27017 |
-| Redis | 6379（可用 docker compose 启动） |
+| Docker | 用于起 MongoDB / Redis（见下） |
+| MongoDB | 27017 |
+| Redis | 6379 |
 
 ## 本地开发
 
 ### 1. 启动依赖
 
+`docker-compose.yml` 同时提供 Redis（6379）和 MongoDB（27017）：
+
 ```bash
-docker compose up -d          # Redis
+docker compose up -d          # redis + mongo
+docker compose ps             # 确认两个都 healthy
 ```
 
-MongoDB 需自行在本地 27017 启动。
+MongoDB 固定用 7.x：Spring Boot 3.1.4 带的 mongodb 驱动是 4.9.x，官方兼容到
+MongoDB 7.0，升 8.0 需要先升驱动。
 
 ### 2. 后端
 
-后端启动 profile 由 `backend/src/main/resources/application.properties` 决定，该文件不入库，需要自己创建：
+后端启动 profile 由 `backend/src/main/resources/application.properties` 决定，
+该文件不入库，需要自己创建：
 
 ```properties
 spring.profiles.active=dev
@@ -52,7 +58,12 @@ cd backend
 ./mvnw spring-boot:run
 ```
 
-接口地址见 `backend/src/main/resources/application-dev.properties`。
+dev profile 监听 **7777**（与 `frontend/.env.dev` 的 `VITE_BASE_URL` 一致），
+数据源为 localhost 的 MongoDB(blog 库) 与 Redis，详见
+`backend/src/main/resources/application-dev.properties`。
+
+注意 MongoDB 的 `blog` 库初始为空，文章列表为空属正常；发文章需要先登录
+（账号硬编码在 `SecurityConfig`）。
 
 ### 3. 前端
 
