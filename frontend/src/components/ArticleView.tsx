@@ -5,6 +5,9 @@ import parse, { DOMNode } from 'html-react-parser'
 import katex from 'katex'
 import elon_zuk from '../assets/elon-musk-mark-zuckerberg.gif'
 import { highlightCode } from '../lib/highlight'
+// asEl / textOf 原先定义在这个文件里，评论区也要用同一套节点判定，
+// 所以抽到 lib/domNode.ts 共用，而不是复制一份各自演化。
+import { asEl, textOf } from '../lib/domNode'
 // KaTeX 的样式跟着渲染端走。它原先 import 在 TextEditor.tsx 里（Quill 的
 // formula 模块要用），编辑器那边现在只负责输入，样式归这里。
 import 'katex/dist/katex.min.css'
@@ -13,39 +16,12 @@ import './ArticleContent.css'
 
 type props = {
   article: Article | undefined
-}
-
-/**
- * 鸭子类型的元素判定。
- *
- * 不用 `domNode instanceof Element`：Element 来自 domhandler，而
- * html-react-parser 和 html-dom-parser 各自依赖它，版本一旦不去重，
- * instanceof 会静默返回 false —— 表现就是公式和代码高亮全都不渲染，
- * 而且一个错都不报。判字段则跟包的实例无关。
- */
-type AnyEl = {
-  name: string
-  attribs: Record<string, string>
-  children: DOMNode[]
-}
-
-// 参数收 unknown 而不是 DOMNode：这个判定完全靠字段鸭子类型，
-// 所以它对已经归一化过的 AnyEl 同样成立，没必要为了类型在两个辅助函数之间
-// 来回断言。
-function asEl(node: unknown): AnyEl | null {
-  const n = node as Partial<AnyEl>
-  if (!n || typeof n !== 'object') return null
-  if (typeof n.name !== 'string' || typeof n.attribs !== 'object' || n.attribs === null) return null
-  return { name: n.name, attribs: n.attribs, children: (n.children ?? []) as DOMNode[] }
-}
-
-/** 取元素的纯文本（递归），用于拿代码块的源码 */
-function textOf(node: unknown): string {
-  if ((node as { type?: string })?.type === 'text') {
-    return (node as { data?: string }).data ?? ''
-  }
-  const el = asEl(node)
-  return el ? el.children.map(textOf).join('') : ''
+  /**
+   * 卡片下方的内容。文章页用它挂评论区，Blog 页不传。
+   * 用 children 而不是让 ArticleView 直接认识评论：
+   * 这个组件只该知道"文章"，不该知道"评论"。
+   */
+  children?: React.ReactNode
 }
 
 function renderMath(latex: string, displayMode: boolean) {
@@ -129,7 +105,7 @@ function replaceNode(domNode: DOMNode) {
   return
 }
 
-export default function ArticleView({ article }: props) {
+export default function ArticleView({ article, children }: props) {
   const content = article?.content
 
   // parse 会把整篇文档过一遍，里面还夹着 KaTeX 渲染和 highlight.js 高亮，
@@ -154,6 +130,10 @@ export default function ArticleView({ article }: props) {
           <h5 className={classes.date}>{article.date}</h5>
           <div className="article-content">{rendered}</div>
         </div>
+        {/* 评论区挂在卡片**外面**：它自己是一张白卡，和文章卡同级。
+            放进卡片里的话，评论会变成"文章的一部分"，而且卡片那个
+            flex-grow: 1 会把评论一起拉长、投影也只包到文章为止。 */}
+        {children}
       </div>
     )
   } else {

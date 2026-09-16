@@ -74,6 +74,14 @@
 
 .article-content strong { font-weight: 600; }
 
+/* 删除线。正文那边 TipTap 的 Strike 序列化出的是 <s>，而评论的
+   Markdown ~~x~~ 出来的是 <del>，两个都得有，否则评论里的删除线无样式。 */
+.article-content del,
+.article-content s {
+  text-decoration: line-through;
+  color: #6a737d;
+}
+
 .article-content a {
   color: #3b71ca;
   text-decoration: none;
@@ -349,4 +357,42 @@
 
 .article-content div[data-type='detailsContent'] > p:last-child {
   margin-bottom: 0;
+}
+
+/* ============================================================================
+ * 评论正文
+ *
+ * 评论的 HTML 由后端 Markdown 渲染 + 白名单消毒产出，能出现的元素
+ * （p / br / strong / em / del / code / pre / blockquote / ul / ol / li / a）
+ * 上面每一节都已经覆盖了，所以评论直接复用 .article-content，不另写一套。
+ * 元素一旦加进后端白名单，记得回来这里补规则 —— 否则新元素会退回浏览器默认样式。
+ *
+ * 这里只做一件事：把字号压低一档，让评论从属于正文。
+ *
+ * 写成 .article-content.comment-body 这个复合选择器（0,2,0）而不是单写
+ * .comment-body（0,1,0），是为了压过上面 .article-content 的 font-size。
+ * 注意 .comment-body 是个**全局类名**（和 .article-content 一样，
+ * 不由 CSS Modules 改写），它和 .article-content 挂在同一个 div 上。
+ * ========================================================================== */
+
+.article-content.comment-body {
+  font-size: 1.05vw;
+  /* 评论比正文短、引用块和列表也更零碎，行距收一点更紧凑 */
+  line-height: 1.7;
+}
+
+.article-content.comment-body p {
+  margin: 0 0 0.6vw;
+}
+
+.article-content.comment-body ul,
+.article-content.comment-body ol {
+  margin: 0.5vw 0;
+  padding-left: 1.6vw;
+}
+
+/* 评论里的代码块通常只有两三行，留 1vw 的上下外边距会显得空 */
+.article-content.comment-body pre {
+  margin: 0.7vw 0;
+  padding: 0.7vw 1vw;
 }

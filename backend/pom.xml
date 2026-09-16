@@ -17,6 +17,10 @@
         <java.version>17</java.version>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
+        <!-- Markdown 渲染与 HTML 消毒。两个库版本都显式钉住：
+             评论正文的消毒是本站唯一的安全边界，不能让版本随传递依赖浮动。 -->
+        <commonmark.version>0.30.0</commonmark.version>
+        <html-sanitizer.version>20260313.1</html-sanitizer.version>
     </properties>
     <dependencies>
         <dependency>
@@ -68,6 +72,34 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-config</artifactId>
+        </dependency>
+
+        <!-- 评论正文：Markdown -> HTML。
+             注意 commonmark 默认会把内联/块级 HTML **原样透传**，光有它等于开了一个
+             XSS 直通车；下面的消毒器是兜底，但渲染时也要显式 escapeHtml(true)。 -->
+        <dependency>
+            <groupId>org.commonmark</groupId>
+            <artifactId>commonmark</artifactId>
+            <version>${commonmark.version}</version>
+        </dependency>
+        <!-- 裸写的 URL 自动变链接，评论里贴个地址很常见 -->
+        <dependency>
+            <groupId>org.commonmark</groupId>
+            <artifactId>commonmark-ext-autolink</artifactId>
+            <version>${commonmark.version}</version>
+        </dependency>
+        <!-- ~~删除线~~ -> <del> -->
+        <dependency>
+            <groupId>org.commonmark</groupId>
+            <artifactId>commonmark-ext-gfm-strikethrough</artifactId>
+            <version>${commonmark.version}</version>
+        </dependency>
+        <!-- 白名单消毒器。任何有 GitHub 账号的人都能立刻发布评论，
+             所以这一层是互联网和后台之间的唯一屏障，不要自己写正则替代。 -->
+        <dependency>
+            <groupId>com.googlecode.owasp-java-html-sanitizer</groupId>
+            <artifactId>owasp-java-html-sanitizer</artifactId>
+            <version>${html-sanitizer.version}</version>
         </dependency>
     </dependencies>
 

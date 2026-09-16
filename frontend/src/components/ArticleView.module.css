@@ -21,6 +21,9 @@
     box-sizing: border-box;
     padding: 1.5vw 11vw 4vw;
     flex-direction: column;
+    /* 文章卡和评论卡之间那条缝。用 gap 而不是给评论卡加 margin-top：
+       .card 上有 flex-grow: 1，加 margin 会和它分剩余空间的算法纠缠在一起。 */
+    row-gap: 1.5vw;
     font-size: 1.3vw;
 }
 

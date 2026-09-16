@@ -5,6 +5,7 @@ import Header from "../layout/Header";
 import Footer from "../layout/Footer";
 import Body from "../layout/Body";
 import ArticleView from "../components/ArticleView";
+import CommentSection from "../components/CommentSection";
 import { retrieveArticleById } from "../api/Articles";
 import { Article } from "../components/TypeDefinition";
 import classes from "./ArticlePage.module.css";
@@ -19,6 +20,10 @@ function ArticlePage(){
     const [article, setArticle] = useState<Article|undefined>(undefined);
     const [loading, setLoading] = useState<boolean>(true);
     const [notFound, setNotFound] = useState<boolean>(false);
+
+    // 评论区需要文章 id。优先取后端返回的 _id（权威），退到路由段 ——
+    // 两者相同，但以文章对象为准不会因为将来路径形态变了就失配。
+    const articleId = article?._id || id || '';
 
     useEffect(()=>{
         let cancelled = false;
@@ -79,7 +84,18 @@ function ArticlePage(){
                               </div>
                             // ArticleView 在 article 为 undefined 时会显示那个 GIF 占位图，
                             // 所以只在确定拿到文章的分支渲染它，占位图在独立页上永远不会出现。
-                            : <div className={classes.articleWrap}><ArticleView article={article}/></div>
+                            // 评论区作为 children 传给 ArticleView，由它渲染在
+                            // 文章卡下方（同一个浅底滚动容器里）。
+                            // 用 article._id 而不是路由里的 id：前者是后端回来的
+                            // 权威 id，后者只是路径段。两者相同，但一旦将来路径
+                            // 换了形态，以文章对象为准不会错。
+                            : <div className={classes.articleWrap}>
+                                  <ArticleView article={article}>
+                                      {articleId
+                                          ? <CommentSection articleId={articleId}/>
+                                          : null}
+                                  </ArticleView>
+                              </div>
                     }
                 </div>
             </Body>

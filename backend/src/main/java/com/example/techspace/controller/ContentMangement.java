@@ -4,6 +4,7 @@ package com.example.techspace.controller;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import com.example.techspace.ArticleRepository;
+import com.example.techspace.CommentRepository;
 import com.example.techspace.entity.Article;
 import com.example.techspace.service.ArticleService;
 import jakarta.annotation.Resource;
@@ -37,6 +38,9 @@ public class ContentMangement {
 
     @Resource
     ArticleService articleService;
+
+    @Resource
+    CommentRepository commentRepository;
 
     @RequestMapping(value = "/upload/article", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
@@ -72,6 +76,9 @@ public class ContentMangement {
         while(!articleLock.writeLock().tryLock()){}
         try {
             articleRepository.deleteById(id);
+            // 文章没了，它的评论就再也读不到了（读接口按 articleId 查）。
+            // 不清的话这些行只会在库里越积越多，成为永远不可见的孤儿。
+            commentRepository.deleteByArticleId(id);
             response.put("success", true);
             return response;
         }finally {
