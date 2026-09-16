@@ -1,0 +1,95 @@
+# ==============================================================================
+# TechSpace —— 仓库统一忽略规则
+#
+# 本文件覆盖整个 monorepo，frontend/ 与 backend/ 下不再各留一份（原来那两份
+# 的规则已全部并入此处）。按「规则来自谁」分节，方便增删。
+#
+# 重要：.gitignore 只对「未跟踪」文件生效。已经提交进版本库的文件，在这里
+# 加规则并不会让它消失，必须用 git rm --cached 显式移出索引；而历史提交里的
+# 副本要 filter-repo / BFG 才能清掉。
+# ==============================================================================
+
+# ---------- 操作系统 ----------
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ---------- 编辑器 / IDE ----------
+.idea/
+.vscode/
+.cursor/
+*.iml
+*.iws
+*.ipr
+*.swp
+*.swo
+*~
+# Eclipse / STS
+.classpath
+.project
+.settings/
+.factorypath
+.apt_generated
+.springBeans
+.sts4-cache
+
+# ---------- 日志与临时文件 ----------
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.orig
+*.rej
+
+# ---------- 密钥与口令 ----------
+# 私钥、证书、密钥库一律不入库。
+# 注意：backend/src/main/resources/inforetrieval.com.cn.pfx 是「已被跟踪」的
+# 历史遗留，下面的规则拦不住它 —— 要真正移除得先 git rm --cached，并且因为
+# 它连同口令已经进过历史，应当视为已泄露、直接轮换证书。
+*.pfx
+*.p12
+*.jks
+*.keystore
+*.key
+*.pem
+*.cer
+*.crt
+# 口令文件（backend 原本单独忽略的 pfx-password.txt 也在此列）
+*-password.txt
+
+# ---------- Java / Maven ----------
+target/
+*.class
+# 兜底：原 backend/lib/ 下堆过一堆没用到的 jar，别再进库。
+# Maven Wrapper 的 jar 是要入库的，所以在其后放行（规则靠后的生效）。
+*.jar
+!**/.mvn/wrapper/maven-wrapper.jar
+# release / flatten 插件产物
+dependency-reduced-pom.xml
+.flattened-pom.xml
+release.properties
+pom.xml.tag
+pom.xml.next
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+
+# ---------- Node / 前端构建 ----------
+node_modules/
+dist/
+coverage/
+.vite/
+*.tsbuildinfo
+.eslintcache
+# Vite 的本地覆盖文件（放本机地址、密钥用）。
+# 注意 .env / .env.dev / .env.prod 是**有意入库**的，这里不要写 `.env` 那种
+# 通配规则，否则后来者会误以为它们该被忽略。
+.env.local
+.env.*.local
+
+# ---------- 本项目专有 ----------
+# 前端 update.sh 发布时写入的 token
+frontend/accessToken.txt
+# 前端部署证书
+frontend/ssl/
