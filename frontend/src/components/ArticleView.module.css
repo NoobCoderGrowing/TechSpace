@@ -1,11 +1,21 @@
+/* 左右 14vw 是按行宽定的，不是随手给的间距。
+   这里 font-size 是 1.3vw，正文行宽要在 55em 上下才好读（`box-sizing` 是
+   border-box，所以 100vw - 14vw*2 = 72vw ≈ 55em）。原来只留 5vw，正文铺到
+   90vw、一行 69em 合 130 多个字符，屏幕两边基本顶死。
+   编辑器的留白在 TextEditor.css 的 .ProseMirror，那边容器是 BodyRight 的
+   80vw，所以给的是 6vw —— 两处按同一个行宽对齐，草稿和发布页换行位置才一致。
+   改这里要连带改 ArticlePage.module.css 的 .backBar，返回链接得和正文左边缘对齐。 */
 .container{
     width: 100%;
     height: 100%;
-    overflow: scroll;
+    /* 原来是 overflow: scroll —— 两个轴都会常驻滚动条，正文底部因此总挂着
+       一条没用到的横向滚动条轨道。auto 改成按需出现：纵向长文照常滚，
+       超宽表格/公式需要横向滚动时也照常出现，只是不再白占一条。 */
+    overflow: auto;
     background-color: #fff;
     display: flex;
     box-sizing: border-box;
-    padding: 2vw 5vw 2vw 5vw;
+    padding: 2vw 14vw;
     flex-direction: column;
     font-size: 1.3vw;
 }

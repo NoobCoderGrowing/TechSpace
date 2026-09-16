@@ -1,14 +1,12 @@
 import Header from "../layout/Header";
 import Footer from "../layout/Footer";
 import Body from "../layout/Body";
-import BodyLeft from "../layout/BodyLeft";
 import BodyRight from "../layout/BodyRight";
 import TextEditor from "./TextEditor";
 import { ChangeEvent, KeyboardEventHandler, useEffect, useState } from "react";
 import classes from './EidtPage.module.css'
 import type { MenuProps } from 'antd';
 import { Button, message} from "antd";
-import ContentTable from "./ContentTable";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment';
@@ -64,6 +62,14 @@ export default function EidtPage(){
             });
         })
     }
+
+    // 左栏的 ContentTable 移掉了，而它原本是这个页面唯一拉文章目录的地方
+    // （分类下拉框读的是 redux 里的 state.articles）。不在这里补一次，
+    // 下拉框就只剩占位文字 "category"，已有分类一个都选不到。
+    // 上传成功后的刷新仍由 uploadArticle 里的 getArticleMap() 负责。
+    useEffect(()=>{
+        getArticleMap();
+    },[])
 
     function uploadArticle(){
         if(title=='' || editorValue=='' || category == '' || category == 'category'|| date == ''){
@@ -134,9 +140,8 @@ export default function EidtPage(){
         <main> 
             <Header/>
             <Body>
-                <BodyLeft>
-                    <ContentTable/>
-                </BodyLeft>
+                {/* 只有 BodyRight。Body 是 flex row，BodyRight 带 flex-grow:1，
+                    所以它会自动从 80vw 撑满整行，不需要改任何 CSS。 */}
                 <BodyRight>
                     <div>
                         <div className={classes.titleDateContainer}>
@@ -160,16 +165,21 @@ export default function EidtPage(){
                                         <label className={classes.dateLabel}>Date</label>
                                         <DatePicker dateFormat="yyyy-MM-dd" selected={startDate} onChange={datePickerHandler} />
                                     </div>
-                                    <div className= {classes.buttonContainer}>
-                                        {contextHolder} 
-                                        <Button onClick={uploadArticle} type="primary">Submit</Button>
-                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div onClick={closeAll}>
                             <TextEditor editorValue={editorValue} setEditorValue={setEditorValue}/>
-                        </div>         
+                        </div>
+                    </div>
+                    {/* 固定在视口右下角。祖先链上没有任何 transform/filter/will-change，
+                        所以这里的 position:fixed 就是相对视口，滚动时不动，也不会被
+                        BodyRight 的 overflow-x 裁掉。
+                        contextHolder 必须跟着按钮走 —— antd 的 message context 得挂在
+                        能渲染到的地方，uploadArticle 里的 messageApi 才会生效。 */}
+                    <div className={classes.submitDock}>
+                        {contextHolder}
+                        <Button onClick={uploadArticle} type="primary">Submit</Button>
                     </div>
                 </BodyRight>
             </Body>

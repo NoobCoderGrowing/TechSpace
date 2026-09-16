@@ -1,9 +1,16 @@
+/* 左右 6vw 必须和 TextEditor.css 里 .tiptap-toolbar / .ProseMirror 的
+   左右 padding 相等，否则标题栏和下面的工具栏、正文左边缘会错开。
+
+   box-sizing 也得显式写：项目里没有全局的 border-box 规则，不写的话
+   width:100% + padding 是 content-box，这条栏会比 BodyRight 宽出 12vw，
+   而 BodyRight 是 overflow-x: scroll —— 编辑页会常驻一条横向滚动条。 */
 .titleDateContainer{
     width: 100%;
+    box-sizing: border-box;
     display: flex;
     background-color: #fff;
     height: 5vw;
-    padding: 0.5vw;
+    padding: 0.5vw 6vw;
     flex-direction: row;
     align-items: center;
     justify-content: space-around;
@@ -17,8 +24,12 @@
     border-radius: 1vw;
 }
 
+/* 原来是 width: 90%，在 100% 的父栏里再内缩 5%。改成 100% 让这条栏的
+   实际内容宽度等于正文的 68vw（80vw - 6vw*2），三者才对齐。 */
 .titleDateWrapper{
-    width: 90%;
+    width: 100%;
+    /* 同 .titleDateContainer：不写 border-box 就是 100% + 1vw，撑破父栏 */
+    box-sizing: border-box;
     display: flex;
     background-color: #fff;
     height: 5vw;
@@ -156,11 +167,12 @@
     flex-grow: 1;
 }
 
-.buttonContainer{
-    flex-basis: 30%;
-    flex-grow: 1;
-    display: flex;
-    justify-content:left;
-    align-items: center;
-    padding-left: 2vw;
+/* Submit 的固定停靠点。z-index 取 10：要压过编辑器工具栏（TextEditor.css 里
+   定的 5）和正文，但必须低于 antd 的 Modal(1000) / message(1010) / Dropdown(1050)，
+   否则提交反馈和确认框会被这个按钮盖住。 */
+.submitDock{
+    position: fixed;
+    right: 2vw;
+    bottom: 2vw;
+    z-index: 10;
 }

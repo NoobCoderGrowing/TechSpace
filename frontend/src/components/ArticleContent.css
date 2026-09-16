@@ -1,0 +1,352 @@
+/* ============================================================================
+ * 正文排版。编辑器和阅读页共用这一份 —— 同一个 class 名 `.article-content`
+ * 同时挂在 ProseMirror 的 contenteditable 和 ArticleView 的容器上，
+ * 保证"写的时候长什么样，发出来就是什么样"。
+ *
+ * 为什么必须自己写：换掉 Quill 之前，正文的标题/段落/引用/代码块/列表样式
+ * 100% 来自 quill 的 snow.css（靠 ArticleView 上那个 `ql-editor` class）。
+ * 那三个 CSS 文件一删，所有元素就退回浏览器默认样式 —— 最典型的症状是
+ * `<li>` 里多出双倍行距、`<pre>` 没有背景也没有横向滚动、表格没有边框。
+ *
+ * 元素清单是照着 extensions.ts 里所有扩展的 renderHTML 逐个推出来的。
+ * 以后往工具栏加新扩展，记得回来对着它的 renderHTML 补规则。
+ *
+ * 单位一律 vw，跟 ArticleView.module.css 的 1.3vw / EidtPage.module.css 的
+ * 1.5vw 保持一致 —— 全站靠 vw 缩放，混进 px 会在大屏上明显失调。
+ * ========================================================================== */
+
+.article-content {
+  font-size: 1.3vw;
+  line-height: 1.75;
+  color: #24292f;
+  word-wrap: break-word;
+  /* 长 URL、长公式不撑破容器。anywhere 比 break-word 更狠，
+     它允许在没有断点的地方硬断，这是唯一能治住超长 LaTeX 的办法。 */
+  overflow-wrap: anywhere;
+}
+
+/* ---------------------------------------------------------------- 段落标题 */
+
+.article-content p {
+  margin: 0 0 0.9vw;
+}
+
+/* TrailingNode 会在文档尾部自动补一个 <p></p>，
+   不把这最后一段的 margin 收掉，文章末尾就会多出一截空白。 */
+.article-content > p:last-child {
+  margin-bottom: 0;
+}
+
+.article-content h1,
+.article-content h2,
+.article-content h3,
+.article-content h4,
+.article-content h5,
+.article-content h6 {
+  margin: 1.6vw 0 0.8vw;
+  line-height: 1.35;
+  font-weight: 600;
+}
+
+.article-content h1 {
+  font-size: 2.2vw;
+  padding-bottom: 0.4vw;
+  border-bottom: 0.08vw solid #e5e7eb;
+}
+
+.article-content h2 {
+  font-size: 1.9vw;
+  padding-bottom: 0.3vw;
+  border-bottom: 0.08vw solid #eef0f3;
+}
+
+.article-content h3 { font-size: 1.7vw; }
+.article-content h4 { font-size: 1.5vw; }
+.article-content h5 { font-size: 1.4vw; }
+.article-content h6 { font-size: 1.3vw; color: #57606a; }
+
+/* 第一个元素不要顶部外边距，否则标题会从容器顶部往下掉一截 */
+.article-content > :first-child {
+  margin-top: 0;
+}
+
+/* -------------------------------------------------------------- 行内标记 */
+
+.article-content strong { font-weight: 600; }
+
+.article-content a {
+  color: #3b71ca;
+  text-decoration: none;
+}
+
+.article-content a:hover {
+  text-decoration: underline;
+}
+
+/* mark 的颜色由 Highlight 扩展写成内联 style（background-color），
+   这里只管内边距和圆角，不要去覆盖它的 background-color。 */
+.article-content mark {
+  padding: 0.05vw 0.25vw;
+  border-radius: 0.2vw;
+  color: inherit;
+}
+
+/* 行内代码。注意 <pre> 里的 <code> 也命中这条，
+   下面 pre 的规则会把它重置掉，这里不用额外排除。 */
+.article-content code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.92em;
+  background: #f2f3f5;
+  padding: 0.12vw 0.3vw;
+  border-radius: 0.25vw;
+}
+
+.article-content sup,
+.article-content sub {
+  font-size: 0.75em;
+}
+
+/* ------------------------------------------------------------------ 引用 */
+
+.article-content blockquote {
+  margin: 1vw 0;
+  padding: 0.3vw 1.2vw;
+  border-left: 0.3vw solid #d0d7de;
+  background: #f8f9fb;
+  color: #57606a;
+}
+
+.article-content blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+/* ---------------------------------------------------------------- 代码块 */
+
+.article-content pre {
+  margin: 1vw 0;
+  padding: 1vw 1.2vw;
+  background: #f6f8fa;
+  border: 0.06vw solid #e5e7eb;
+  border-radius: 0.5vw;
+  /* 代码不折行，宽了就横向滚动。折行会把缩进结构毁掉。 */
+  overflow-x: auto;
+  line-height: 1.55;
+}
+
+.article-content pre code,
+.article-content pre code.hljs {
+  /* 把上一节给行内 code 的灰底和内边距抢回来。
+     写在 pre 层级上也顺带跟 CSS 的 import 顺序解耦。 */
+  background: transparent;
+  padding: 0;
+  font-size: 0.95em;
+  white-space: pre;
+  display: block;
+}
+
+/* --- 语法高亮配色 ---
+   highlight.js 的 token 类。自己写而不用 highlight.js/styles/*.css：
+   项目的正文样式本来就全部由我们持有，多引一个主题文件只会引入
+   跟 ArticleContent.css 的优先级纠缠。 */
+.article-content .hljs-comment,
+.article-content .hljs-quote { color: #6a737d; font-style: italic; }
+
+.article-content .hljs-keyword,
+.article-content .hljs-selector-tag,
+.article-content .hljs-literal,
+.article-content .hljs-type { color: #d73a49; }
+
+.article-content .hljs-string,
+.article-content .hljs-regexp,
+.article-content .hljs-addition { color: #032f62; }
+
+.article-content .hljs-number,
+.article-content .hljs-symbol,
+.article-content .hljs-bullet { color: #005cc5; }
+
+.article-content .hljs-title,
+.article-content .hljs-title.function_,
+.article-content .hljs-section,
+.article-content .hljs-name { color: #6f42c1; }
+
+.article-content .hljs-attr,
+.article-content .hljs-attribute,
+.article-content .hljs-variable,
+.article-content .hljs-template-variable { color: #e36209; }
+
+.article-content .hljs-built_in,
+.article-content .hljs-class .hljs-title { color: #005cc5; }
+
+.article-content .hljs-meta,
+.article-content .hljs-doctag { color: #735c0f; }
+
+.article-content .hljs-deletion { color: #b31d28; background: #ffeef0; }
+
+.article-content .hljs-emphasis { font-style: italic; }
+.article-content .hljs-strong { font-weight: 600; }
+
+/* ------------------------------------------------------------------ 列表 */
+
+.article-content ul,
+.article-content ol {
+  margin: 0.6vw 0;
+  padding-left: 2vw;
+}
+
+.article-content li {
+  margin: 0.25vw 0;
+}
+
+/* ListItem 的 content 是 `paragraph block*`，所以每个 <li> 里都包着一个 <p>。
+   不收掉这个 margin，每个列表项之间会出现双倍间距。 */
+.article-content li > p {
+  margin: 0;
+}
+
+.article-content li > ul,
+.article-content li > ol {
+  margin: 0.25vw 0;
+}
+
+/* -------- 任务列表（ListKit 的 TaskList / TaskItem） --------
+   固定结构：li[data-type=taskItem] > label > input[type=checkbox] + span，然后是 div */
+.article-content ul[data-type='taskList'] {
+  list-style: none;
+  padding-left: 0.4vw;
+}
+
+.article-content li[data-type='taskItem'] {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5vw;
+}
+
+.article-content li[data-type='taskItem'] > label {
+  flex: 0 0 auto;
+  margin-top: 0.35vw;
+  user-select: none;
+}
+
+/* TaskItem 会渲染一个空的 <span>，视觉上没用，藏掉 */
+.article-content li[data-type='taskItem'] > label > span {
+  display: none;
+}
+
+.article-content li[data-type='taskItem'] > div {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.article-content li[data-type='taskItem'] > div > p {
+  margin: 0;
+}
+
+.article-content li[data-type='taskItem'][data-checked='true'] > div {
+  color: #8b949e;
+  text-decoration: line-through;
+}
+
+/* ---------------------------------------------------------------- 分割线 */
+
+.article-content hr {
+  margin: 1.6vw 0;
+  border: 0;
+  border-top: 0.08vw solid #e5e7eb;
+}
+
+/* ------------------------------------------------------------------ 图片 */
+
+.article-content img {
+  max-width: 100%;
+  /* height:auto 不是可选项。Image 扩展开了 resize 之后会把用户拖出来的
+     width/height 写进 HTML 属性（无单位 px），不覆盖它，窄屏上就会溢出变形。 */
+  height: auto;
+  display: block;
+  margin: 1vw auto;
+  border-radius: 0.3vw;
+}
+
+/* ------------------------------------------------------------------ 公式 */
+
+.article-content .article-math-inline {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.article-content .article-math-block {
+  margin: 1vw 0;
+  /* 宽公式横向滚动，不要撑破正文栏 */
+  overflow-x: auto;
+  overflow-y: hidden;
+  text-align: center;
+}
+
+.article-content .article-math-error {
+  color: #cf1322;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+/* ------------------------------------------------------------------ 表格 */
+
+.article-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1vw 0;
+  font-size: 0.95em;
+}
+
+.article-content th,
+.article-content td {
+  border: 0.06vw solid #d0d7de;
+  padding: 0.5vw 0.7vw;
+  vertical-align: top;
+  text-align: left;
+}
+
+.article-content th {
+  background: #f2f3f5;
+  font-weight: 600;
+}
+
+/* 单元格里也是 <p>，同样要收掉 margin */
+.article-content th > p,
+.article-content td > p {
+  margin: 0;
+}
+
+/* --------------------------------------------------------------- YouTube */
+
+.article-content [data-youtube-video] {
+  margin: 1vw 0;
+}
+
+.article-content [data-youtube-video] iframe {
+  max-width: 100%;
+  aspect-ratio: 16 / 9;
+  height: auto;
+  border: 0;
+  border-radius: 0.3vw;
+}
+
+/* -------------------------------------------------------------- 折叠区块 */
+
+.article-content details {
+  margin: 1vw 0;
+  padding: 0.6vw 1vw;
+  border: 0.06vw solid #e5e7eb;
+  border-radius: 0.4vw;
+  background: #fafbfc;
+}
+
+.article-content summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.article-content div[data-type='detailsContent'] {
+  padding-top: 0.6vw;
+}
+
+.article-content div[data-type='detailsContent'] > p:last-child {
+  margin-bottom: 0;
+}

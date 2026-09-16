@@ -8,8 +8,10 @@
     flex-direction: column;
 }
 
+/* 左右必须跟 ArticleView.module.css 的 .container 一致（14vw），
+   否则返回链接会飘在正文左边缘外面。 */
 .backBar{
-    padding: 1.5vw 5vw 0 5vw;
+    padding: 1.5vw 14vw 0 14vw;
 }
 
 .backLink{
