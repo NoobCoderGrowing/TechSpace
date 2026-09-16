@@ -1,4 +1,3 @@
-import {Article} from "./TypeDefinition";
 import './TableCategory.scss';
 import TableEntry from "./TableEntry";
 import { useEffect, useState } from "react";
@@ -7,12 +6,11 @@ import { MessageInstance } from "antd/es/message/interface";
 type props = {
     titleArticles: Object | null,
     category: string | null,
-    setArticle: Function,
     updateArticleMap: Function,
     messageApi: MessageInstance
 
 }
-export default function TableCategory({messageApi, titleArticles, category, setArticle, updateArticleMap}: props){
+export default function TableCategory({messageApi, titleArticles, category, updateArticleMap}: props){
 
     const[display, setDisplay] = useState<string>('none');
     const[titleDateArray, setTitleDataArray] = useState([]);
@@ -44,7 +42,7 @@ export default function TableCategory({messageApi, titleArticles, category, setA
     return(
         <div className='categoryContainer'>
             <a className='category' onClick={toggelContent}><p>{category}</p></a>
-            {titleDateArray.map((titleDate)=><TableEntry messageApi={messageApi} updateArticleMap={updateArticleMap} key={titleDate[0]} setArticle={setArticle} category={category} display = {display} title={titleDate[0]} ></TableEntry>)}  
+            {titleDateArray.map((titleDate)=><TableEntry messageApi={messageApi} updateArticleMap={updateArticleMap} key={titleDate[0]} category={category} display = {display} title={titleDate[0]} ></TableEntry>)}
         </div>
     )
 }

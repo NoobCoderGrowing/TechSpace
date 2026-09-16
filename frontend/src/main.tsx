@@ -3,6 +3,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import Home from './route/Home'
 import './index.module.css'
 import Blog from './route/Blog'
+import ArticlePage from './route/ArticlePage'
 import EidtPage from './components/EidtPage'
 import Login from './route/Login'
 import Projects from './route/Projects'
@@ -17,6 +18,8 @@ const router = createBrowserRouter([
   children: [],},
   // {path:'/resume', element:<Resume/>, children: [],},
   {path:'/blog', element:<Blog/>, children: [],},
+  // 标题段只是装饰，id 才是查询依据；:title? 可省，/blog/<id> 也能打开
+  {path:'/blog/:id/:title?', element:<ArticlePage/>, children: [],},
   {path:'/edit', element:<EidtPage/>, children: [],},
   {path:'/login', element:<Login/>, children: [],},
   {path:'/projects', element:<Projects/>, children: [

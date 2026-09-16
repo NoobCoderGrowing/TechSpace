@@ -12,11 +12,7 @@ import {State} from '../components/TypeDefinition'
 
 
 
-type props = {
-    setArticle: Function | null
-}
-
-export default function ContentTable({setArticle}:props){
+export default function ContentTable(){
 
     const [loading, setLoading] = useState<boolean>(true);
     const [messageApi, contextHolder] = message.useMessage();
@@ -52,7 +48,7 @@ export default function ContentTable({setArticle}:props){
                     
                     {
                         Object.keys(data).map(category=>{
-                            return <TableCategory messageApi={messageApi} updateArticleMap={getArticleMap} setArticle={setArticle} key={category} titleArticles={data[category]} category={category}></TableCategory>
+                            return <TableCategory messageApi={messageApi} updateArticleMap={getArticleMap} key={category} titleArticles={data[category]} category={category}></TableCategory>
                         }
                          
                         )

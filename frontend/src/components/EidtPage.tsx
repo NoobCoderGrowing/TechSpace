@@ -135,7 +135,7 @@ export default function EidtPage(){
             <Header/>
             <Body>
                 <BodyLeft>
-                    <ContentTable setArticle={null}/>
+                    <ContentTable/>
                 </BodyLeft>
                 <BodyRight>
                     <div>

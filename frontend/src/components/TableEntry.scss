@@ -5,6 +5,13 @@
     justify-content: space-between;
 }
 
+/* 换成 <Link> 后这里会渲染成带 href 的真 <a>，浏览器默认加下划线；
+   原来的 <a onClick> 没有 href，所以没有。下划线只能在锚点上去掉 ——
+   text-decoration 会透传到行内后代，写在内层 <p> 上不生效。 */
+.tableEntry{
+    text-decoration: none;
+}
+
 .tableEntry p{
     font-size: 1.3vw;
     color: black;
