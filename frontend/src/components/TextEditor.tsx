@@ -6,7 +6,11 @@ import Quill from 'quill';
 import katex from "katex";
 import "katex/dist/katex.min.css";
 import './TextEditor.css'
-window.katex = katex;
+// Quill 的 formula 模块从全局 window.katex 取渲染器。
+// katex 的 `export as namespace katex` 让 TS 把 window.katex 推断为模块命名空间类型，
+// 与运行时实际赋的默认导出对象({ version, render, renderToString, ParseError })不一致，
+// 故此处用 any 跳过该类型检查，运行时行为不变。
+(window as any).katex = katex;
 
 type props = {
   editorValue: string;
