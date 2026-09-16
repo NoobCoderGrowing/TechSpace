@@ -3,9 +3,14 @@
  * 这里只管：工具栏、编辑区容器、占位符、公式/图片的 NodeView 辅助样式、弹框。
  * ========================================================================== */
 
+/* 这层负责铺底色。必须铺在这里而不是靠给下面两个白色块加 margin ——
+   BodyRight.module.css 是 background-color: blueviolet（调试配色），
+   中间任何一段露出缝隙，透出来的就是紫色。
+   取值和 ArticleView.module.css 的 .container / EidtPage.module.css 的
+   .titleDateContainer 保持一致。 */
 .tiptap-wrapper {
   width: 100%;
-  background: #fff;
+  background: #eef1f5;
 }
 
 /* ---------------------------------------------------------------- 工具栏 */
@@ -15,11 +20,16 @@
   flex-wrap: wrap;
   align-items: center;
   row-gap: 0.3vw;
-  /* 左右取 6vw，和下面 .ProseMirror 的 body 内边距是同一个值 ——
-     工具栏按钮的左边缘因此跟正文首字对齐。右边那个字数统计（.tb-count
-     靠 margin-left:auto 顶到最右）也跟着落在正文右边缘上。
-     改这里要连 .ProseMirror 一起改，两个数必须相等。 */
-  padding: 0.4vw 6vw;
+  /* 工具栏、标题栏、正文台面是同一条 72vw 的白柱：外沿都在 4vw
+     （margin，露出.tiptap-wrapper 的底色），内容都在 6vw
+     （外沿 4vw + 自身 padding 2vw）。
+     所以这两个数要连 .ProseMirror 和 EidtPage.module.css 的
+     .titleDateContainer 一起改，三处的外沿和内缩必须成对相等，
+     否则按钮、标题框、正文首字会互相错开。
+     右边那个字数统计（.tb-count 靠 margin-left:auto 顶到最右）
+     也因此落在正文右边缘上。 */
+  margin: 0 4vw;
+  padding: 0.4vw 2vw;
   background: #fff;
   border-bottom: 0.06vw solid #e5e7eb;
   /* z-index 定在 5，必须低于 EidtPage.module.css 里 .submitDock 的 10，
@@ -95,15 +105,23 @@
 
 /* -------------------------------------------------------------- 编辑区 */
 
-/* 左右 6vw 是按行宽定的。编辑器挂在 BodyRight 里（flex-basis: 80vw），
-   80vw - 6vw*2 = 68vw，配上 .article-content 的 1.3vw 字号约合 52em 一行 ——
-   和阅读页的 72vw / 55em 基本对齐，草稿和发布后的换行位置才不会差太多。
-   原来是 2vw，正文在 80vw 的栏里铺到 76vw，右侧贴着屏幕边。
-   两个数（这里和 .tiptap-toolbar 的左右 padding）必须相等，否则按钮和正文错位。 */
+/* 白台面：外沿 4vw（margin，两侧露出 .tiptap-wrapper 的底色），
+   内缩 2vw，所以正文左右落在 6vw，行宽 80 - 4*2 - 2*2 = 68vw。
+   配上 .article-content 的 1.3vw 字号约合 52em 一行，和阅读页的
+   72vw / 55em 基本对齐，草稿和发布后的换行位置才不会差太多。
+   原来是 padding: 1.5vw 2vw，正文在 80vw 的栏里铺到 76vw，右侧贴着屏幕边。
+
+   width 必须是 auto：这里同时挂着 .article-content，而 .ProseMirror 是块级，
+   auto 才会按 margin 收窄；留着 100% 会连 margin 一起撑出去、把
+   BodyRight 的横向滚动条顶出来。
+
+   按选定方案这里**不加**圆角/投影/强调线（那是阅读页 .card 的待遇），
+   编辑器是工作区，白台面保持平的。 */
 .ProseMirror {
   min-height: 60vw;
-  width: 100%;
-  padding: 2vw 6vw;
+  width: auto;
+  margin: 0 4vw;
+  padding: 2vw 2vw;
   outline: none;
   background: #fff;
   box-sizing: border-box;

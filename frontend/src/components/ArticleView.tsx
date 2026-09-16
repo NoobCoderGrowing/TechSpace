@@ -144,10 +144,16 @@ export default function ArticleView({ article }: props) {
 
   if (article !== null && article !== undefined) {
     return (
+      // .container 是那层浅色底（顺带负责长文滚动），.card 才是白卡。
+      // 卡片必须是个真元素而不是靠 .container 的 background + padding 拼出来 ——
+      // 圆角、投影和顶部那条强调线都要求有一个独立盒子，挂在 .container 上
+      // 会让圆角长在滚动容器的边上，投影也会被 overflow: auto 裁掉。
       <div className={classes.container}>
-        <h1 className={classes.title}>{article.title}</h1>
-        <h5 className={classes.date}>{article.date}</h5>
-        <div className="article-content">{rendered}</div>
+        <div className={classes.card}>
+          <h1 className={classes.title}>{article.title}</h1>
+          <h5 className={classes.date}>{article.date}</h5>
+          <div className="article-content">{rendered}</div>
+        </div>
       </div>
     )
   } else {

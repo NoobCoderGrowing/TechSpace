@@ -1,10 +1,14 @@
-/* 左右 14vw 是按行宽定的，不是随手给的间距。
-   这里 font-size 是 1.3vw，正文行宽要在 55em 上下才好读（`box-sizing` 是
-   border-box，所以 100vw - 14vw*2 = 72vw ≈ 55em）。原来只留 5vw，正文铺到
-   90vw、一行 69em 合 130 多个字符，屏幕两边基本顶死。
-   编辑器的留白在 TextEditor.css 的 .ProseMirror，那边容器是 BodyRight 的
-   80vw，所以给的是 6vw —— 两处按同一个行宽对齐，草稿和发布页换行位置才一致。
-   改这里要连带改 ArticlePage.module.css 的 .backBar，返回链接得和正文左边缘对齐。 */
+/* 正文页 = 浅色底 + 一张白卡。底色取值和 TextEditor.css 的
+   .tiptap-wrapper / EidtPage.module.css 的 .titleDateContainer 是同一个，
+   两页必须一致，否则草稿和发布页切换时会跳。
+
+   横向 11vw 是卡片外的留白，卡片自己再有 3vw 内边距，所以正文左边缘落在
+   11 + 3 = 14vw。改这三个数（11 / 3 / 14）任何一个都要一起算：
+   100vw - 11vw*2 - 3vw*2 = 72vw ≈ 55em，这是按 1.3vw 字号定的可读行宽，
+   也是 TextEditor 那边 68vw 要对齐的目标（编辑器容器只有 BodyRight 的 80vw）。
+
+   纵向留 1.5vw 是因为 overflow: auto 的裁剪边界是 padding box ——
+   顶部不给这点余量，卡片投影的上半截会被裁掉。 */
 .container{
     width: 100%;
     height: 100%;
@@ -12,12 +16,43 @@
        一条没用到的横向滚动条轨道。auto 改成按需出现：纵向长文照常滚，
        超宽表格/公式需要横向滚动时也照常出现，只是不再白占一条。 */
     overflow: auto;
-    background-color: #fff;
+    background-color: #eef1f5;
     display: flex;
     box-sizing: border-box;
-    padding: 2vw 14vw;
+    padding: 1.5vw 11vw 4vw;
     flex-direction: column;
     font-size: 1.3vw;
+}
+
+/* 正文卡片。观感照搬 Resume.module.css 的 .modalContent（白底 + 同一条
+   box-shadow），保持站点里"卡片"只有一种长相。
+   顶部那条 0.25vw 的 #3b71ca 是站点唯一的强调色（ContentTable 的下拉高亮
+   和 .backLink 用的都是它），压一条在卡顶，留白才不是纯空白。
+   border-top 会跟着 border-radius 走，不用再叠一层伪元素。 */
+.card{
+    /* 卡片的最低高度。正文一短白卡就缩成一小截（"边框过短"），根因是
+       .container 虽高，但它是纵向 flex，而 align-items: stretch 只管横轴，
+       卡片纵向仍然按内容高度走。
+
+       两条机制一起上，各补一个坑：
+         flex-grow: 1 —— 吃掉 .container 纵向的剩余空间。.container 的高度
+           由 .page 的 min-height: 60vw 兜底，于是卡片自动对齐那条页面节奏线
+           （约 56vw 减去 .container 上下 1.5vw / 4vw 的内边距 ≈ 50.5vw）。
+           坑在于它依赖 .container 的 height: 100% 能解析成 flex 算出的高度；
+           万一解析成 auto，就没有剩余空间可吃，这条会静默失效。
+         min-height: 50vw —— 确定生效的地板。取值刻意贴近上面算出的 50.5vw，
+           这样两条机制同时成立时不会互相打架；机制一失效时它接手，
+           结果几乎一样。想调卡片最矮多高，改这一个数就行。
+
+       长文时 flex-basis 已经超过容器、没有剩余空间，而 min-height: auto
+       兜住内容高度不让卡片被压扁，卡片照旧撑开，由 .container 滚动。 */
+    flex-grow: 1;
+    min-height: 50vw;
+    background-color: #fff;
+    border-radius: 0.6vw;
+    border-top: 0.25vw solid #3b71ca;
+    box-shadow: 0 0.5vw 1vw rgba(0, 0, 0, 0.2);
+    padding: 2vw 3vw 3vw;
 }
 
 .imageContainer{

@@ -1,16 +1,23 @@
-/* 左右 6vw 必须和 TextEditor.css 里 .tiptap-toolbar / .ProseMirror 的
-   左右 padding 相等，否则标题栏和下面的工具栏、正文左边缘会错开。
+/* 这一层铺底色，白面交给下面的 .titleDateWrapper。
+   编辑器这一列的白柱外沿统一在 4vw、内容统一在 6vw，三处（这里 /
+   .tiptap-toolbar / .ProseMirror）必须成对一致，否则标题框、工具栏按钮、
+   正文首字会互相错开。底色取值和 ArticleView.module.css 的 .container 相同 ——
+   也正因为铺在这一层，它才必须满宽：BodyRight 的底是 blueviolet，
+   留出任何缝隙都会透出紫色。
 
    box-sizing 也得显式写：项目里没有全局的 border-box 规则，不写的话
-   width:100% + padding 是 content-box，这条栏会比 BodyRight 宽出 12vw，
-   而 BodyRight 是 overflow-x: scroll —— 编辑页会常驻一条横向滚动条。 */
+   width:100% + padding 是 content-box，这条栏会比 BodyRight 宽，而
+   BodyRight 是 overflow-x: scroll —— 编辑页会常驻一条横向滚动条。 */
 .titleDateContainer{
     width: 100%;
     box-sizing: border-box;
     display: flex;
-    background-color: #fff;
+    background-color: #eef1f5;
     height: 5vw;
-    padding: 0.5vw 6vw;
+    /* 纵向不留内边距：白面靠 .titleDateWrapper 的 height:100% 顶满整条，
+       和下面的工具栏白柱连成一片。留了的话中间会夹出一道底色细缝，
+       看着像渲染瑕疵。 */
+    padding: 0 4vw;
     flex-direction: row;
     align-items: center;
     justify-content: space-around;
@@ -25,15 +32,20 @@
 }
 
 /* 原来是 width: 90%，在 100% 的父栏里再内缩 5%。改成 100% 让这条栏的
-   实际内容宽度等于正文的 68vw（80vw - 6vw*2），三者才对齐。 */
+   实际内容宽度等于正文的 72vw，三者才对齐；左右再各留 2vw 内边距，
+   控件就落在 4 + 2 = 6vw，和正文首字对齐。
+
+   height 从固定的 5vw 改成 100%：父栏高度是 5vw，写死 5vw 没有溢出余地，
+   一旦父栏以后加了纵向内边距就会向下冒出去，那截白边会盖在下面
+   .tiptap-wrapper 的底色上。100% 让它永远跟着父栏的内容盒。 */
 .titleDateWrapper{
     width: 100%;
-    /* 同 .titleDateContainer：不写 border-box 就是 100% + 1vw，撑破父栏 */
+    /* 同 .titleDateContainer：不写 border-box 就是 100% + padding，撑破父栏 */
     box-sizing: border-box;
     display: flex;
     background-color: #fff;
-    height: 5vw;
-    padding: 0.5vw;
+    height: 100%;
+    padding: 0.5vw 2vw;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;

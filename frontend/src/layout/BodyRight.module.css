@@ -3,6 +3,9 @@
     flex-basis: 80vw;
     background-color: blueviolet;
     position: relative;
-    overflow-x: scroll;
-    
+    /* 原来是 overflow-x: scroll —— 它会常驻一条横向滚动条，即使内容根本不溢出，
+       编辑页和 article 页底部因此一直挂着一根没用的轨道。
+       改成 auto 只在真的溢出时出现。（注意：无论 scroll 还是 auto，
+       overflow-y 都会按规范被算成 auto，所以纵向行为完全没变。） */
+    overflow-x: auto;
 }
