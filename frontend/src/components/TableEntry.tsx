@@ -66,6 +66,15 @@ export default function TableEntry({messageApi, title, display, category, update
         <div style={{"display":display}} >
             <div className="wrapper">
             <Link to={articleLink} className="tableEntry"><p>{title}</p></Link>
+            {/* 编辑入口，和删除 x 并排、同一个开关。链接用**不可变的 _id** 拼，
+                所以改标题不会让这个链接过期（标题段是装饰性的，
+                见 lib/articleLink 的注释）。
+                这里必须判 articleProperties 是否存在：删除按钮在点击回调里才取
+                id，正好躲过了上面说的那一帧竞态；而 href 是渲染期算的，
+                不判就会渲染出一个 /edit/undefined。 */}
+            {articleProperties &&
+                <Link className="edit" to={'/edit/' + articleProperties['id']}
+                      style = {{"display":isOwnerLogin?'block':'none'}}><p>✎</p></Link>}
             <a className="deletion" style = {{"display":isOwnerLogin?'block':'none'}} onClick={openModal}><p>x</p></a>
             </div>
             <Modal

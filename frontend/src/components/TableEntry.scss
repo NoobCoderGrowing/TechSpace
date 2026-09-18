@@ -31,6 +31,24 @@
     font-size: 1.8vw;
 }
 
+/* 编辑入口。这里是个 <Link>（不是像删除那样的裸 <a onClick>），
+   所以**必须**自己去掉下划线 —— 它会渲染成带 href 的真锚点，
+   浏览器默认给锚点加下划线；text-decoration 会透传到行内后代，
+   写在内层 <p> 上不生效（和上面 .tableEntry 是同一个坑）。
+   其余规则照抄 .deletion，两个图标并排看着才是一对。 */
+.edit{
+    text-decoration: none;
+}
+
+.edit p{
+    font-size: 1.3vw;
+}
+
+.edit :hover{
+    cursor: pointer;
+    font-size: 1.8vw;
+}
+
 .deleteTitle{
     font-weight: bold;
     font-size: 1.8vw;

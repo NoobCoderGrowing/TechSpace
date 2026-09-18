@@ -20,7 +20,10 @@ const router = createBrowserRouter([
   {path:'/blog', element:<Blog/>, children: [],},
   // 标题段只是装饰，id 才是查询依据；:title? 可省，/blog/<id> 也能打开
   {path:'/blog/:id/:title?', element:<ArticlePage/>, children: [],},
+  // /edit 是新建（Login 成功后跳的是它），/edit/:id 是编辑已有文章。
+  // 两条都指向 EidtPage，它按有没有 id 决定往哪个接口提交。
   {path:'/edit', element:<EidtPage/>, children: [],},
+  {path:'/edit/:id', element:<EidtPage/>, children: [],},
   {path:'/login', element:<Login/>, children: [],},
   {path:'/projects', element:<Projects/>, children: [
     {path:'textPreprocessor', element:<TextPreprocessor/>, children: [],},

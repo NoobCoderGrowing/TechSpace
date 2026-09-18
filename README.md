@@ -126,14 +126,24 @@ npm run dev                   # vite --mode dev
 ### 前端
 
 `frontend/update.sh` 在**前端目录内**执行，它负责 `rm -rf ./dist && npm run build`，
-再 `scp` 到 `root@inforetrieval.com.cn:/var/ssl` 并重启 nginx：
+再 `scp` 到 `root@inforetrieval.com.cn:/var/ssl`，然后把本地的 `frontend/nginx.conf`
+推到远端主配置 `/etc/nginx/nginx.conf`：
 
 ```bash
 cd frontend
 ./update.sh
 ```
 
-`frontend/nginx.conf` 是服务器上该站点的 nginx 配置（静态托管 `/var/ssl`）。
+静态文件那一步**不会重启 nginx**（nginx 每个请求都从磁盘读，换文件立刻生效，
+而 `systemctl restart` 会掐断在线连接）。只有 `nginx.conf` 真的变了才会
+`nginx -s reload`（平滑重载）。配置的更新顺序是「先 `nginx -t` 校验、再落盘」，
+失败时线上配置一个字节都不动；落盘前会留一份带时间戳的备份
+`/etc/nginx/nginx.conf.bak.<时间戳>`，reload 失败会自动还原。想跳过这段配置更新
+（比如临时在服务器上手工改配置）：`SKIP_NGINX_CONF=1 ./update.sh`。
+
+`frontend/nginx.conf` 是服务器上的主配置（`events` + `http` 两个块，静态托管 `/var/ssl`），
+覆盖的目标就是 `/etc/nginx/nginx.conf` —— 如果这台机器上还有别的站点配置，
+先确认它们不在这个文件里，否则会被一起覆盖掉。
 
 ### 后端
 
