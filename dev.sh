@@ -11,6 +11,8 @@
 # Ctrl-C 一次即同时停掉前后端（依赖服务的容器保留运行）。
 #
 # 启动前先做一次完整构建：前端 npm run build，后端 ./mvnw clean spring-boot:run。
+# 前后端都以 dev 环境启动：后端 profile=dev（SPRING_PROFILES_ACTIVE 覆盖
+# application.properties 里的 prod），前端 vite --mode dev（读 .env.dev）。
 
 set -euo pipefail
 
@@ -43,7 +45,7 @@ warn() { printf '%s[dev] 警告:%s %s\n' "$C_INFO" "$RST" "$*" >&2; }
 fail() { printf '%s[dev] 错误:%s %s\n' "$C_ERR" "$RST" "$*" >&2; exit 1; }
 
 usage() {
-  sed -n '3,13p' "${BASH_SOURCE[0]}" | sed 's/^#\s\?//'
+  sed -n '3,15p' "${BASH_SOURCE[0]}" | sed 's/^#\s\?//'
 }
 
 while [ $# -gt 0 ]; do
@@ -79,12 +81,39 @@ if [ "$RUN_FRONTEND" = 1 ]; then
   fi
 fi
 
-# 后端 dev profile 由本地 application.properties 决定，该文件不入库
+# ---------- 后端 profile ----------
+#
+# 后端必须跑 dev profile，否则本地起来的是个"半个后端"：
+# application-prod.properties 里钉了 server.ssl.* （TLS）和
+# server.servlet.session.cookie.secure=true，7777 上是个 **HTTPS** 监听；
+# 而 frontend/.env.dev 的 VITE_BASE_URL 是 http://localhost:7777/ —— 明文 HTTP
+# 打到 TLS 端口上连握手都过不去，浏览器里就是一片网络错误。就算绕过去，
+# secure cookie 在 HTTP 下也不会被浏览器存/回传，现象是"登录成功，下一个请求
+# 又是匿名的"。
+#
+# 为什么不能改 application.properties 来定这件事（原先就是这么写的）：
+#   ① 那个文件**是入库的**：git ls-files 能看到它，.gitignore 里没有它的条目
+#      （文件里"本文件被 .gitignore 忽略，不会提交"那句注释是错的），里面写着
+#      spring.profiles.active=prod。所以原先那个 `if [ ! -f "$props" ]` 永远不成立，
+#      从来就没生效过，./dev.sh 一直在起 prod。
+#   ② 就算文件不存在时补一份也没用 —— 它是**打包进 jar 的默认 profile**，
+#      backend/update.sh 在服务器上跑的就是它；把本地那个文件改成 dev，
+#      等于顺手把上线产物也改了。
+#
+# 所以就显式传环境变量：环境变量优先级高于 properties 文件（实测过），
+# 且只作用于 dev.sh 拉起的这个进程，磁盘上的文件一个字节都不动。
+BACKEND_PROFILE=dev
+
 if [ "$RUN_BACKEND" = 1 ]; then
-  props="$BACKEND_DIR/src/main/resources/application.properties"
-  if [ ! -f "$props" ]; then
-    printf 'spring.profiles.active=dev\n' > "$props"
-    info "已创建 backend/src/main/resources/application.properties (profile=dev)"
+  [ -f "$BACKEND_DIR/src/main/resources/application-$BACKEND_PROFILE.properties" ] \
+    || fail "找不到 application-$BACKEND_PROFILE.properties，profile=$BACKEND_PROFILE 无从加载"
+
+  # 文件里写的是别的 profile 就说一声。不说的话，将来看到日志里是 dev、文件里是 prod
+  # 的人会以为是哪儿串了 —— 这里明确它是被覆盖掉的。
+  file_profile="$(sed -nE 's/^[[:space:]]*spring\.profiles\.active[[:space:]]*=[[:space:]]*([^[:space:]]+).*/\1/p' \
+    "$BACKEND_DIR/src/main/resources/application.properties" | tail -n 1)"
+  if [ -n "$file_profile" ] && [ "$file_profile" != "$BACKEND_PROFILE" ]; then
+    info "application.properties 里写的是 profile=$file_profile，本次用 SPRING_PROFILES_ACTIVE=$BACKEND_PROFILE 覆盖（只影响这次启动）"
   fi
 fi
 
@@ -271,12 +300,19 @@ trap 'cleanup; exit 130' INT TERM HUP
 set -m
 
 if [ "$RUN_BACKEND" = 1 ]; then
-  info "后端启动中…${DIM}clean 全量重编，首次会久一点${RST} Spring Boot → http://localhost:${BACKEND_PORT}"
-  start_service backend "$C_BACK" "$BACKEND_DIR" ./mvnw clean spring-boot:run
+  info "后端启动中…${DIM}clean 全量重编，首次会久一点${RST} Spring Boot (profile=${BACKEND_PROFILE}) → http://localhost:${BACKEND_PORT}"
+  # 用 env 只给后端这一个进程带上 profile：写成 export 的话前端那份环境也会跟着脏
+  start_service backend "$C_BACK" "$BACKEND_DIR" \
+    env "SPRING_PROFILES_ACTIVE=$BACKEND_PROFILE" ./mvnw clean spring-boot:run
 fi
 if [ "$RUN_FRONTEND" = 1 ]; then
-  info "前端启动中… Vite → http://localhost:${FRONTEND_PORT}"
-  start_service frontend "$C_FRONT" "$FRONTEND_DIR" npm run dev
+  info "前端启动中… Vite (mode=dev → .env.dev) → http://localhost:${FRONTEND_PORT}"
+  # `npm run dev` 本身已经是 `vite --mode dev`，这里再显式带一次是为了让
+  # "dev 环境"这个承诺不依赖 package.json 里那一行脚本：谁把它改成裸 vite，
+  # vite 就退回 mode=development、只读 .env（不再读 .env.dev），
+  # 而 VITE_BASE_URL 恰恰只写在 .env.dev 里 —— 接口地址会变成 undefined。
+  # 重复传两次 --mode 无副作用（后者生效，实测过）。
+  start_service frontend "$C_FRONT" "$FRONTEND_DIR" npm run dev -- --mode dev
 fi
 
 set +m

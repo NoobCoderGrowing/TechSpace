@@ -43,8 +43,9 @@ TechSpace/
 当前哪些在跑 → 用到的镜像本地是否已有（Docker Hub 拉不动时打印国内镜像源的补救命令）。
 `up -d` 本身幂等，服务已在跑时不会重启容器。
 
-`dev.sh` 还会校验环境、按需创建本地 `application.properties`、缺 `node_modules`
-时自动 `npm install`。
+`dev.sh` 还会校验环境、缺 `node_modules` 时自动 `npm install`，并**强制后端以
+dev profile 启动**（`SPRING_PROFILES_ACTIVE=dev`，覆盖 `application.properties`
+里打包用的那个 prod）；前端走 `vite --mode dev`，即读 `.env.dev`。
 
 拉起服务前先做一次完整构建（日志前缀 `[build]`）：
 
@@ -85,19 +86,20 @@ MongoDB 7.0，升 8.0 需要先升驱动。
 
 #### 2. 后端
 
-后端启动 profile 由 `backend/src/main/resources/application.properties` 决定，
-该文件不入库，需要自己创建：
-
-```properties
-spring.profiles.active=dev
-```
-
-然后：
-
 ```bash
 cd backend
-./mvnw spring-boot:run
+SPRING_PROFILES_ACTIVE=dev ./mvnw spring-boot:run
 ```
+
+**profile 必须显式给**。`backend/src/main/resources/application.properties`
+是**入库**的，里面写的是 `spring.profiles.active=prod` —— 那是打包进 jar 时用的
+默认值（服务器上 `backend/update.sh` 打的就是这个包），所以裸跑
+`./mvnw spring-boot:run` 会以 **prod** 起来：`application-prod.properties` 里钉了
+`server.ssl.*`（TLS）和 `server.servlet.session.cookie.secure=true`，7777 上是个
+HTTPS 监听，而前端 `.env.dev` 指的是 `http://localhost:7777/` —— 明文 HTTP 打到
+TLS 端口上连握手都过不去；就算绕过去，secure cookie 在 HTTP 下也不会被回传，
+现象是"登录成功，下一个请求又是匿名的"。环境变量优先级高于 properties 文件，
+`./dev.sh` 就是这么做的，且只覆盖这一次启动，磁盘上那个文件不会被改。
 
 dev profile 监听 **7777**（与 `frontend/.env.dev` 的 `VITE_BASE_URL` 一致），
 数据源为 localhost 的 MongoDB(blog 库) 与 Redis，详见
