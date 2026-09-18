@@ -93,3 +93,8 @@ coverage/
 frontend/accessToken.txt
 # 前端部署证书
 frontend/ssl/
+
+github.secret
+
+**/inforetrieval.com.cn.pfx
+**/application-prod.properties
