@@ -84,7 +84,9 @@ function Home(){
                 </BodyLeft>
                 <BodyRight>
                     <div className={classes.title}>
-                        <h1>Recent Top 5 Hits</h1>
+                        {/* 不再是 "Recent Top 5 Hits"：这个榜按浏览量排，
+                            和新近程度无关，留着 Recent 是误导。 */}
+                        <h1>Top 5 Hits</h1>
                     </div>
                     <div className={classes.galleryContainer}>
                         <Gallery/>

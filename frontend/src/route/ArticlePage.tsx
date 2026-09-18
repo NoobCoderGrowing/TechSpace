@@ -6,7 +6,7 @@ import Footer from "../layout/Footer";
 import Body from "../layout/Body";
 import ArticleView from "../components/ArticleView";
 import CommentSection from "../components/CommentSection";
-import { retrieveArticleById } from "../api/Articles";
+import { retrieveArticleById, reportArticleView } from "../api/Articles";
 import { Article } from "../components/TypeDefinition";
 import classes from "./ArticlePage.module.css";
 
@@ -45,6 +45,17 @@ function ArticlePage(){
                 if(cancelled) return;
                 if(result && result._id){
                     setArticle(result);
+                    // 浏览量在这里上报，**只在确实取到文章之后** ——
+                    // 404 不上报，否则随便谁乱猜 id 都能把计数打上去。
+                    //
+                    // 用 result._id（后端回来的权威 id）而不是路由段 id，
+                    // 和下面 articleId 的取值原则一致。
+                    //
+                    // 不 await、不放进 then 链：上报失败不该影响阅读，
+                    // 所以必须自己接住异常，否则会变成 unhandled rejection。
+                    // 依赖数组是 [id]，同一篇文章重复渲染不会重复上报；
+                    // 后端那层会话去重是第二道保险（比如 StrictMode 让 effect 双跑）。
+                    reportArticleView(result._id).catch(()=>{});
                 }else{
                     setNotFound(true);
                 }

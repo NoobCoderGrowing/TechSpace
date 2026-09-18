@@ -5,6 +5,7 @@ import { Button, Modal} from "antd";
 import { State } from "./TypeDefinition";
 import { useState } from "react";
 import { MessageInstance } from "antd/es/message/interface";
+import { articlePath } from "../lib/articleLink";
 
 type props = {
     title: string | null,
@@ -19,15 +20,14 @@ export default function TableEntry({messageApi, title, display, category, update
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [loading, setLoading] = useState(false);
 
-    // 逐段编码，不能对拼好的整串做（那会把分隔符 / 也编成 %2F）。
-    // 标题里的中文、#、?、/ 都靠它兜住。
+    // 链接拼法抽到了 lib/articleLink（首页 Top 5 的 Gallery 也要用同一套）。
     // 这里必须用可选链：TableCategory 的 titleDateArray 存在 state 里、只在
     // useEffect 里重算，所以删文章之后会有一帧 articles 已更新而列表项还在，
     // 此时 articles[category][title] 是 undefined，直接取 ['id'] 会在渲染期抛错。
     // 旧代码在点击回调里取值，恰好躲过了这一枪。
     const articleProperties = articles?.[category]?.[title]
     const articleLink = articleProperties
-        ? "/blog/" + encodeURIComponent(articleProperties['id']) + "/" + encodeURIComponent(title)
+        ? articlePath(articleProperties['id'], title)
         : "/blog"
 
     function openModal(){

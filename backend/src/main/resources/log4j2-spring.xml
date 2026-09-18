@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  项目日志配置（Log4j2）。
+
+  ★ 文件名必须带 -spring：只有 log4j2-spring.xml 里的 <SpringProfile> 才生效。
+    改名成 log4j2.xml 会让**分支里的设置全部失效**，而且是实测过的：
+    往 <SpringProfile name="prod"> 里塞一条 org.apache.catalina=DEBUG（这个 logger
+    在任何 properties 里都没配置项），改名后重启，Tomcat 的 DEBUG 行一条都没有；
+    同时 dev/prod 两个分支里的设置一起消失，全都退回 Root 的 INFO。
+
+    它**不是**静默的，控制台上会先冒两行：
+      ERROR StatusConsoleListener Exception processing class
+      org.springframework.boot.logging.log4j2.SpringProfileArbiter: Ignoring and including children
+    那句 "Ignoring and including children"（忽略该节点并包含其子节点）很误导 ——
+    实测两个分支里的子节点一个都没被采纳，看到这两行直接回头看文件名就对了。
+
+    容易漏掉的地方：日志本身照常输出，只是这些分支没了 —— 文件 appender 正常轮转、
+    服务正常起来，看上去不像配置坏了，只有那两行 ERROR 和"级别怎么调都不生效"。
+
+  两个输出目标的分工 —— 这不是重复输出，是故意的：
+    · Console  → 被 nohup 重定向接住（发布脚本里是 logs/console.log）
+    · RollingFile → logs/backend.log
+
+  Console 那份存在的意义是：日志框架自己看不到的东西只会出现在那儿 —— JVM 崩溃、
+  OutOfMemoryError、启动横幅、以及日志系统初始化**之前**发生的错误。那些内容不会
+  进 backend.log，出事时那是唯一的线索。所以两份都要留。
+-->
+<Configuration status="WARN">
+
+  <Properties>
+    <!-- 日志目录。默认相对当前工作目录，于是：
+           dev  —— dev.sh 在 backend/ 下跑 mvnw spring-boot:run，落在 backend/logs/
+           prod —— 发布脚本先 cd 到部署目录再 java -jar，落在 <部署目录>/logs/
+         想改就传 -Dlog.dir=/var/log/tech-space（${sys:...} 优先于默认值）。
+         注意两份日志的**文件名必须和发布脚本里 nohup 的目标错开**：同一个文件被
+         nohup 和 Log4j2 两个写入方同时追加，行会交错；更糟的是发布脚本按大小轮转时
+         用 mv 把文件改名，而 Log4j2 手里开着旧的 inode，会继续往那个已经不存在的
+         名字里写 —— 现象是"日志轮转之后新日志不见了"。所以那边叫 console.log。 -->
+    <Property name="LOG_DIR">${sys:log.dir:-logs}</Property>
+
+    <!-- 控制台样式。**故意不上色**（不用 %highlight / %style）：这里的"控制台"其实
+         是个文件（nohup 重定向），而 %highlight 是无条件输出 ANSI 转义序列的，
+         会把 console.log 弄成一堆 ^[[32m 之类的垃圾；dev.sh 还会再往每行前面套一层
+         自己的颜色前缀，两套混在一起更糊。 -->
+    <Property name="CONSOLE_PATTERN">%d{HH:mm:ss.SSS} %-5level %logger{36} - %msg%n</Property>
+
+    <!-- 文件样式比控制台多两样：完整日期（文件要跨天留存，只有时分秒没法定位）和
+         线程名（Tomcat 是每请求一线程，"哪个请求打的"常常是排查的第一入口）。 -->
+    <Property name="FILE_PATTERN">%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%t] %logger{40} - %msg%n</Property>
+  </Properties>
+
+  <Appenders>
+
+    <Console name="Console" target="SYSTEM_OUT">
+      <PatternLayout pattern="${CONSOLE_PATTERN}"/>
+    </Console>
+
+    <!-- 按天 + 按大小双重轮转，历史文件 gzip 压缩。
+         filePattern 里的 %i 是"同一天内的第几个分片"，配合 SizeBasedTriggeringPolicy
+         才会有值；只写按天的话单日文件没有上限（prod 现在开着 Spring Security 的
+         DEBUG，一天涨到几个 G 是有可能的）。 -->
+    <RollingFile name="File"
+                 fileName="${LOG_DIR}/backend.log"
+                 filePattern="${LOG_DIR}/backend-%d{yyyy-MM-dd}-%i.log.gz"
+                 append="true">
+      <PatternLayout pattern="${FILE_PATTERN}"/>
+      <Policies>
+        <!-- modulate=true 让按天滚动发生在 00:00 而不是"启动时刻 + 24h"，
+             否则一天的分界线取决于服务是几点起的。 -->
+        <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+        <SizeBasedTriggeringPolicy size="20 MB"/>
+      </Policies>
+      <!-- max=20 是"单日最多 20 个分片"的**兜底**（20 × 20MB = 单日上限 400MB），
+           真正的保留策略是下面按时间删：超过 30 天的滚掉。两个一起用的原因 ——
+           只按数量限制的话，日志少的日子里旧文件会被过早删掉；只按时间限制的话，
+           日志暴走的一天能在 30 天内把磁盘填满。
+           Delete 失败只会在 Log4j2 自己的 status 里报错，不影响写日志，所以即使
+           这里的路径有问题也不会导致丢日志。 -->
+      <DefaultRolloverStrategy max="20">
+        <Delete basePath="${LOG_DIR}" maxDepth="1">
+          <IfFileName glob="backend-*.log.gz"/>
+          <IfLastModified age="30d"/>
+        </Delete>
+      </DefaultRolloverStrategy>
+    </RollingFile>
+
+  </Appenders>
+
+  <Loggers>
+
+    <!-- 业务代码。目前一条日志都没有（全项目没有 LoggerFactory / @Slf4j），
+         这一行是留给以后加业务日志时的开关，现在写 INFO 等于没配。 -->
+    <Logger name="com.example.techspace" level="INFO"/>
+
+    <!-- ★ 日志级别**以这个文件为准**。
+         原来 application-dev/prod.properties 里各有一行
+         logging.level.org.springframework.security=DEBUG，写这份配置时把那两行删掉了，
+         原因见下面「谁覆盖谁」。现在的级别和改动前完全一致，行为没变。
+
+         两个分支都写出来、而不是只写一行共用的，是为了让"给某个环境单独调级别"
+         有一个显眼的落点：生产上想降噪就把 prod 那行的 DEBUG 改成 INFO。
+
+         为什么生产上建议降：DEBUG 会把每个请求的鉴权判定、session 查找、过滤器链
+         逐条打出来，量很大（上面的轮转参数就是按这个量级设的），而且请求细节会落盘。
+
+         ── 谁覆盖谁（实测过，不是照文档抄的）──
+         Spring Boot 会把 properties 里的 logging.level.* 在启动时应用到 Log4j2 上，
+         **优先级高于本文件的 <Logger>**。当时这样验证：把
+         application-prod.properties 里的那行改成 INFO、同时让本文件 prod 分支保持
+         DEBUG，重启后 org.springframework.security 的 DEBUG 行**一条都没有** ——
+         也就是说 properties 赢了、这里的配置被顶掉了。两边都写的话，改这里不生效、
+         改那里才生效，是个很难查的坑（现象是"改了配置没反应"）。
+         所以级别只在**一处**配置，就是这个文件。
+         顺带同一轮验证了 <SpringProfile> 确实被采纳：往 prod 分支里临时加了一条
+         org.apache.catalina=DEBUG（这个 logger 在任何 properties 里都没有配置项），
+         重启后 Tomcat 的 DEBUG 行成批出现，说明分支真的短路生效了、不是被忽略。 -->
+    <SpringProfile name="dev">
+      <Logger name="org.springframework.security" level="DEBUG"/>
+    </SpringProfile>
+    <SpringProfile name="prod">
+      <Logger name="org.springframework.security" level="DEBUG"/>
+    </SpringProfile>
+
+    <!-- 框架噪声。Mongo 驱动每次建连接会打一整行 MongoClientSettings（单行几 KB，
+         里面是完整的连接池/编解码器/集群配置），正常运行时完全是干扰。
+         默认保留原样不打出来影响面，需要时取消注释即可。 -->
+    <!-- <Logger name="org.mongodb.driver" level="WARN"/> -->
+
+    <Root level="INFO">
+      <AppenderRef ref="Console"/>
+      <AppenderRef ref="File"/>
+    </Root>
+
+  </Loggers>
+
+  <!-- 没有配 monitorInterval（配置热重载）。它确实能免重启改级别，但热重载时会重新
+       求值所有插件，而 <SpringProfile> 依赖 Spring Boot 通过 context 传进来的 profile，
+       重载后那个上下文还在不在我没有验证过。代价是改级别要重启 —— 发布脚本一条命令
+       的事 —— 而风险是日志**静默消失**，不值得为这个便利换。要开的话先实测一遍。 -->
+
+</Configuration>

@@ -23,9 +23,30 @@
         <html-sanitizer.version>20260313.1</html-sanitizer.version>
     </properties>
     <dependencies>
+        <!-- ── 日志：用 Log4j2 取代默认的 Logback ───────────────────────────────
+             Spring Boot 默认的日志实现是 Logback，由 spring-boot-starter-logging 带来。
+             它不在下面任何一条依赖里显式出现，而是**经由 spring-boot-starter 传递**进来的。
+
+             Maven 的 <exclusions> 只作用于「声明它的那一条依赖及其子树」，没有全局写法，
+             所以要把 Logback 摘干净，就得把通往 spring-boot-starter 的每一条直接依赖
+             各排一次 —— 实测正好 5 条：data-mongodb / data-redis / security / web / test。
+             漏掉任何一条，Logback 和 Log4j2 就会同时躺在 classpath 上，SLF4J 只会挑
+             一个绑定并打 warning，实际用哪个变得不确定（在 IDE 里和打包后还可能不一样）。
+
+             改完这样验证，应当**一条都查不到**：
+               ./mvnw dependency:tree -Dincludes=ch.qos.logback:logback-classic
+             配置文件是 src/main/resources/log4j2-spring.xml，注意文件名里的 -spring：
+             只有它才认 <SpringProfile>（按 profile 分环境），叫 log4j2.xml 就只是个纯
+             Log4j2 配置，profile 分支会被忽略。 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-mongodb</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 <!--    session management-->
         <dependency>
@@ -35,11 +56,23 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 <!--        security-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 <!--        docker compose-->
 <!--        <dependency>-->
@@ -50,6 +83,20 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- Logback 被上面 5 条排掉之后，由这个 starter 补上 Log4j2：
+             log4j-core + log4j-slf4j2-impl（SLF4J 2.x 的绑定）+ log4j-jul。
+             版本由 spring-boot-starter-parent 管（3.1.4 → Log4j2 2.20.0），不用写。 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-log4j2</artifactId>
         </dependency>
 
         <dependency>
@@ -61,6 +108,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>

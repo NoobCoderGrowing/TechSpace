@@ -45,39 +45,10 @@
     color: #fff;
 }
 
-.searchContainer {
-    display: flex;
-    align-items: center;
-    position: absolute;
-    width: 40vw;
-    bottom: 30%;
-    left: 50%;
-    transform: translateX(-50%);
-    
-}
-
-.searchInput {
-    padding: 1.1vw;
-    border: 0.1vw solid #ccc;
-    border-radius: 1vw;
-    font-size: 1vw;
-    flex-grow: 1;
-    margin-right: 1vw;
-}
-
-.searchButton {
-    background-image: url('../assets/search-icon.png');
-    width: 2.5vw;
-    height: 2.5vw;
-    background-size: cover;
-    transition: filter 0.3s ease;
-}
-
-.searchButton:hover {
-    cursor: pointer;
-    filter: brightness(1.5);
-    transform: scale(1.2);
-}
+/* .searchContainer / .searchInput / .searchButton 搬到了
+   components/ArticleSearch.module.css —— 那个组件把它下面的结果面板一起管，
+   位置和层叠（z-index: 100）必须和输入框放在一起，否则改一个忘一个。
+   .headerRightContainer 的 position: relative 是它的包含块，**不能动**。 */
 
 .navigation li:hover{
     cursor: pointer;

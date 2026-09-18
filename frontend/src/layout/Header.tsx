@@ -1,14 +1,10 @@
 import classes from './Header.module.css'
-import {message, Button} from 'antd'
 import {Link} from 'react-router-dom'
 import { useDispatch } from 'react-redux'
+import ArticleSearch from '../components/ArticleSearch'
 
 
 function Header(){
-
-    function infoMessage(){
-        message.warning('still under development')
-    }
 
     const dispatch = useDispatch();
 
@@ -33,10 +29,10 @@ function Header(){
                     <li><Link onClick={showProjectTable} className={classes.link} to={"/Projects"}>Projects</Link></li>
                     {/* <li onClick={infoMessage}>Project</li> */}
                 </ul>
-                <div className={classes.searchContainer}>
-                    <input type="text" className={classes.searchInput} placeholder="Search..."/>
-                    <div onClick={infoMessage} className={classes.searchButton}/>
-                </div>
+                {/* 搜索框连同它下面那块结果面板整个搬进了 ArticleSearch ——
+                    面板必须挂在这个组件里，否则点面板外关闭的判定和
+                    .searchContainer 的 z-index 都不好放。 */}
+                <ArticleSearch/>
             </div>
         </header>
     )
