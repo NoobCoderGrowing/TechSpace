@@ -29,6 +29,11 @@ TechSpace/
 | MongoDB | 27017 |
 | Redis | 6379 |
 
+> JDK 要**正好 17**，不是"17 及以上"：23 起 javac 不再自动运行只挂在 classpath 上的
+> 注解处理器，Lombok 会静默失效 —— 编译报几十条 `cannot find symbol`（`getTitle()`
+> 之类），却没有一句跟注解处理有关的警告，看着像代码被改坏了。`dev.sh` 和
+> `backend/update.sh` 会自己挑 17（挑不到就退出），但在 IDE 里手动跑 maven 时要自己管。
+
 ## 本地开发
 
 ### 一条命令启动（推荐）

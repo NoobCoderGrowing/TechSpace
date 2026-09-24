@@ -11,7 +11,7 @@
 # 和 frontend/update.sh 分工：那边发静态文件到 /var/ssl，这边发 jar。
 #
 # 可覆盖的环境变量（放在命令前即可，例如 REMOTE_HOST=1.2.3.4 ./update.sh）：
-#   REMOTE_USER / REMOTE_HOST / SSH_PORT / REMOTE_DIR / PROFILE
+#   REMOTE_USER / REMOTE_HOST / SSH_PORT / REMOTE_DIR / PROFILE / JAVA_HOME
 #   REMOTE_JAVA  用哪个 java 起服务。**一般不用设** —— 留空时远端自己探测
 #                （找主版本 >= 17 的，含 /usr/java/*/bin/java）。探测结果每次都会
 #                打印出来。只有探测挑错了才需要显式指定全路径。
@@ -668,13 +668,59 @@ if [ -n "$(cd "$SCRIPT_DIR/.." && git status --porcelain 2>/dev/null || true)" ]
 fi
 info "代码版本：$GIT_DESC"
 
+# ── 本地构建用的 JDK ────────────────────────────────────────────────────────
+#
+# 这条 ./mvnw 用的是**本地环境里的 java**，可能不是 17 —— 而 JDK 23 起 javac 不再
+# 自动运行「只出现在 classpath 上」的注解处理器（要显式 -proc:full / --processor-path），
+# Lombok 恰恰就是这样挂进来的（pom 里是 <optional> 依赖，没配 annotationProcessorPaths）。
+# 于是 @Data 不生成任何 getter/setter，构建以几十条
+#     cannot find symbol: method getTitle() / isDeleted() / get_id() ...
+# 失败，报错全指向业务代码，而 javac 对此**不打任何警告**。
+# 实测：JDK 25 下 59 条错误，JDK 17 下 0 条。
+#
+# 别指望上面 prepare 挑的那个 java：它管的是**远端运行** jar（>= 17 就行），
+# 和这里的编译期要求是两件事。所以本地也钉到 17，找不到就硬失败 —— 理由和上面
+# PFX 那段一样：构建期就能确定的事，不要留到远端去报。要换 JDK 用 JAVA_HOME 指过来。
+#
+# 下面这个函数和 prepare 里远端那份 java_major_of 是同一套写法（不锚行号 ——
+# JAVA_TOOL_OPTIONS 会把版本行挤到第 2 行；取前两段 —— Java 8 的 "1.8.0_392"
+# 主版本号在第二段）。远端脚本在 heredoc 里，本地用不到它，所以这里留一份。
+local_java_major_of() {
+  "$1" -version 2>&1 \
+    | sed -nE 's/.*version "([0-9]+)(\.([0-9]+))?.*/\1 \3/p' \
+    | head -1 | awk '{ print ($1 == 1 && $2 != "") ? $2 : $1 }'
+}
+
+LOCAL_JAVA_HOME=""
+_jtried=""
+for _jh in "${JAVA_HOME:-}" /usr/lib/jvm/* /usr/java/* /usr/local/* /opt/* /opt/*/* \
+           "$HOME"/.sdkman/candidates/java/*; do
+  [ -n "$_jh" ] && [ -x "$_jh/bin/java" ] || continue
+  _jm="$(local_java_major_of "$_jh/bin/java" || true)"
+  [ -n "$_jm" ] || continue
+  _jtried="${_jtried}${_jh}(java${_jm}) "
+  [ "$_jm" = 17 ] && { LOCAL_JAVA_HOME="$_jh"; break; }
+done
+
+if [ -z "$LOCAL_JAVA_HOME" ]; then
+  fail "本地没有 JDK 17，而这个项目必须用它编译（见本段上面的说明）
+${DIM}       试过的候选：${_jtried:-（一个都没找到）}
+       装一个 JDK 17，或显式指一个：
+         JAVA_HOME=/path/to/jdk-17 ./update.sh${RST}"
+fi
+[ "$LOCAL_JAVA_HOME" = "${JAVA_HOME:-}" ] \
+  || info "本地 JDK：$LOCAL_JAVA_HOME${DIM}（不用环境里那个 java，原因见上面的注释）${RST}"
+
 MVN_ARGS=(clean package)
 if [ "$SKIP_TESTS" = 1 ]; then
   MVN_ARGS+=(-DskipTests)
 fi
 
 info "构建中…${DIM}./mvnw ${MVN_ARGS[*]}${RST}"
-( cd "$SCRIPT_DIR" && ./mvnw "${MVN_ARGS[@]}" ) || fail "构建失败，已中止（远端没有被改动）"
+# JAVA_HOME 只给这条 mvnw 带上（临时赋值），不改这个脚本自己的环境 ——
+# 下面还有 ssh/scp 要跑，不需要它们看见这个变量。
+( cd "$SCRIPT_DIR" && JAVA_HOME="$LOCAL_JAVA_HOME" ./mvnw "${MVN_ARGS[@]}" ) \
+  || fail "构建失败，已中止（远端没有被改动）"
 
 # clean 之后 target 下只应有这一个 jar。排除 .original —— spring-boot:repackage 会把
 # 未被 repackage 的原件改名为 *.jar.original，名字里同样带 .jar。

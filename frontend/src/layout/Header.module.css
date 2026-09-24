@@ -55,3 +55,103 @@
     transform: scale(1.2);
     filter: brightness(1.2);
 }
+
+/* ── Projects 下拉 ────────────────────────────────────────────────────────────
+   配色是从站点头部那张背景照片上取的：黑猫、逆光的暖棕轮廓毛、一双黄绿色的
+   眼睛。所以面板是一块暖黑色的板子而不是 antd 默认的白卡片，正文沿用导航条本来
+   的那个 antiquewhite（照片上这排字就是这个颜色），黄绿只当强调色、而且**只**
+   用在 hover / 聚焦上 —— 整块菜单就这一个亮点。
+   弹层挂在 body 的 Portal 上，什么都继承不到（.navigation 的 font-size: 3vw
+   也传不过来），颜色和字号都得在这里写死。
+   rootClassName 给的是弹层根节点（.ant-dropdown），拿它当父类把特异度提到
+   (0,2,0) —— 和 CommentSection.module.css 里 .antdScope :global(.ant-btn) 是同一个
+   处理。不过 (0,2,0) 只够管住面板本身，菜单项还得再抬，见下。
+
+   下面那些带 !important 的声明是因为 (0,2,0) 对菜单项**不够**：antd 5 给菜单项生成的规则是
+
+       :where(.css-hash).ant-dropdown .ant-dropdown-menu .ant-dropdown-menu-item
+
+   :where() 不贡献特异度，剩下 .ant-dropdown / .ant-dropdown-menu / .ant-dropdown-menu-item
+   三个类，(0,3,0)，压得住 rootClassName 这层。实测就是这样：面板背景/描边/圆角全生效，
+   而字号、颜色、内边距一条都没生效（全被按回 antd 的 14px、rgba(0,0,0,.88)）。
+   两条路：照抄 antd 那串类名把选择器凑到 (0,4,0)，或者给声明标 !important。
+   这里选后者 —— 那串类名是 antd 的内部结构，换个版本就可能变，而 !important 失败时
+   至少失败得明明白白。（antd 官方推荐的 StyleProvider layer 也能一劳永逸，但那会改变
+   全站所有 antd 组件的层叠关系，为一个四行的菜单不值当。） */
+.projectMenu :global(.ant-dropdown-menu) {
+    /* 不透明度压到 0.96 而不是更透：这块面板正好盖在头部右下角，底下就是那个橙色的
+       搜索按钮和白输入框 —— 透一点它们就从面板里渗出来，成一片洗不掉的色斑。
+       这里本来还跟了一条 backdrop-filter: blur()，压到 0.96 之后就等于白挂 ——
+       后面那 4% 什么都看不出来，索性去掉（少一个合成层，也少一个偷改包含块的坑）。 */
+    background: rgba(20, 18, 16, 0.96);
+    border: 1px solid rgba(250, 235, 215, 0.22);   /* antiquewhite 压到 22% */
+    border-radius: 0.55vw;
+    padding: 0.35vw;
+    /* 13vw 在手机上只有 48px 宽，会挤成一柱，所以兜一个 px 底 */
+    min-width: max(13vw, 170px);
+    box-shadow: 0 0.8vw 2vw rgba(0, 0, 0, 0.5);
+}
+
+/* 分组标题："这四个是去 GitHub 的"。压在正文下面一层，但别压到看不见。 */
+.projectMenu :global(.ant-dropdown-menu-item-group-title) {
+    color: rgba(250, 235, 215, 0.62) !important;
+    font-size: max(0.95vw, 12px) !important;
+    line-height: 1.4 !important;
+    padding: 0.45vw 1vw 0.4vw !important;
+}
+
+/* 字号：导航条那排字是 3vw，菜单项不能只有 1vw —— 差太远会像两块不相干的东西。
+   1.35vw 在 1440 宽下约 19px，摆在 43px 的 "Projects" 下面才接得住。 */
+.projectMenu :global(.ant-dropdown-menu-item) {
+    border-radius: 0.35vw !important;
+    padding: max(0.5vw, 6px) 1vw !important;
+    font-size: max(1.35vw, 13px) !important;
+    line-height: 1.5 !important;
+    color: rgba(250, 235, 215, 0.9) !important;
+    transition: background-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* hover / 聚焦：一行里只发生一件事 —— 底色亮一点，左边一抹黄绿keyline 划进来 */
+.projectMenu :global(.ant-dropdown-menu-item:hover) {
+    background-color: rgba(207, 224, 106, 0.12) !important;
+    box-shadow: inset 2px 0 0 0 rgba(207, 224, 106, 0.85);
+}
+
+.projectMenu :global(.ant-dropdown-menu-item a) {
+    color: inherit !important;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.2vw;
+}
+
+.projectMenu :global(.ant-dropdown-menu-item:hover) a {
+    color: #fff !important;
+}
+
+.projectMenu :global(.ant-dropdown-menu-item a:focus-visible) {
+    outline: 2px solid rgba(207, 224, 106, 0.7);
+    outline-offset: -2px;
+    border-radius: 0.35vw;
+}
+
+/* 每项右边那个 ↗。它说明的是"点了会离开本站"，所以留着；但它是注脚不是正文 ——
+   默认压到 0.4、字号也收一档，别跟仓库名抢注意力，hover 时才亮起来。 */
+.projectArrow {
+    font-size: 0.72em;
+    opacity: 0.4;
+    transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.projectMenu :global(.ant-dropdown-menu-item:hover) .projectArrow {
+    opacity: 1;
+    transform: translate(0.15vw, -0.15vw);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .projectMenu :global(.ant-dropdown-menu-item),
+    .projectMenu :global(.ant-dropdown-menu-item a),
+    .projectArrow {
+        transition: none;
+    }
+}

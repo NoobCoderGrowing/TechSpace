@@ -6,11 +6,8 @@ import Blog from './route/Blog'
 import ArticlePage from './route/ArticlePage'
 import EidtPage from './components/EidtPage'
 import Login from './route/Login'
-import Projects from './route/Projects'
-import TextPreprocessor from './components/projects/TextPreprocessor'
 import { Provider } from 'react-redux';
 import sotre from './store/index'
-import DAG from './components/projects/DAG'
 
 
 const router = createBrowserRouter([
@@ -25,12 +22,21 @@ const router = createBrowserRouter([
   {path:'/edit', element:<EidtPage/>, children: [],},
   {path:'/edit/:id', element:<EidtPage/>, children: [],},
   {path:'/login', element:<Login/>, children: [],},
-  {path:'/projects', element:<Projects/>, children: [
-    {path:'textPreprocessor', element:<TextPreprocessor/>, children: [],},
-  ],},
-  // {path:'/DAG', element:<DAG/>, children: [],},
-  // {path:'/projects/textPreprocessor', element:<TextPreprocessor/>, children: [],}
 ]);
+
+// 分词 demo（components/projects/）**故意不接线**。
+//
+// 原来它挂在 /projects/textPreprocessor：导航条上 Projects 指向站内那张
+// ProjectsTable，从表里点进 demo。现在导航上那一项改成了 GitHub 外链的下拉，
+// 站内不再有 Projects 页面 —— ProjectsTable / ProjectEntry 和 /projects 这条路由
+// 一起删了，**但 demo 代码原样留着**（和被注释掉的 /resume、留在仓库里没入口的
+// route/Resume.tsx 是同一个状态）。
+//
+// 想挂回来，两处一起加，别只加一处：
+//   ① 文件头 import TextPreprocessor from './components/projects/TextPreprocessor'
+//   ② 路由 {path:'/textPreprocessor', element:<TextPreprocessor/>, children: [],},
+// 另外 demo 里还在 dispatch HIDEPROJECTT（TextPreprocessor.tsx 的 useEffect，原来是
+// "进了 demo 就把那张表藏起来"），store 里那套 visible 切片是跟着它留的，别顺手删。
 
 
 

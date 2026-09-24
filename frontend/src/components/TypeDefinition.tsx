@@ -40,11 +40,6 @@ export type ArticleLeaf = {
  */
 export type ArticleMap = Record<string, Record<string, ArticleLeaf>>
 
-export type Project = {
-    name: string,
-    url: string
-}
-
 export type LoginState = {
     ownerLogin: boolean;
 }

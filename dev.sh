@@ -13,6 +13,10 @@
 # 启动前先做一次完整构建：前端 npm run build，后端 ./mvnw clean spring-boot:run。
 # 前后端都以 dev 环境启动：后端 profile=dev（SPRING_PROFILES_ACTIVE 覆盖
 # application.properties 里的 prod），前端 vite --mode dev（读 .env.dev）。
+#
+# 后端固定用 JDK 17 编译（pick_jdk17 挑，挑不到就退出）：环境里的 java 若是更高的
+# 版本，Lombok 会**静默**失效 —— 编译报几十条 cannot find symbol 而没有一句
+# 相关警告。原因和实测数字见下面 pick_jdk17 那段注释。
 
 set -euo pipefail
 
@@ -65,12 +69,81 @@ port_open() {
   timeout 1 bash -c "</dev/tcp/127.0.0.1/$1" 2>/dev/null
 }
 
+# ---------- 后端 JDK ----------
+#
+# 本项目**编译期**必须是 JDK 17，不是"17 及以上"。原因在 Lombok：
+#
+#   JDK 23 起 javac 不再自动运行「只出现在 classpath 上」的注解处理器（要显式
+#   -proc:full 或 --processor-path），而 Lombok 恰恰就是这样挂进来的 —— pom 里它是
+#   一条 <optional> 依赖，没有配 annotationProcessorPaths。于是 @Data 不生成任何
+#   getter/setter，编译一次性报几十条
+#       cannot find symbol: method getTitle() / isDeleted() / get_id() ...
+#   全部指向业务代码，看着像代码被改坏了，实际只是用错了 JDK。
+#
+# 实测：JDK 25 下 59 条错误，JDK 17 下 0 条。最坑的是 javac 对此**一句警告都不打**
+# （输出里没有任何 "annotation processing" 字样），所以症状和"有人删了 getter"一模一样。
+# 踩到的机器正是这种两套 JDK 并存的环境：JAVA_HOME 指向 JDK 25，PATH 上的 java 是 17
+# —— mvnw 认 JAVA_HOME，所以只看 PATH 上那个 java 的版本检查会说"没问题"。
+#
+# 所以挑不到 17 就**硬失败**，而不是像原来那样只 warn 一句再照常启动 —— 只警告的
+# 下场就是上面那堆看不懂的报错（backend/update.sh 里为同一个教训写过一整段）。
+# 要换 JDK 就用 JAVA_HOME 指过来，它是候选里的第一个。
+
+# 取 java 主版本号。和 backend/update.sh 里远端那份 java_major_of 是同一套写法
+# （两边各留一份，脚本都是自包含的）：不锚行号 —— 设了 JAVA_TOOL_OPTIONS 时版本行
+# 会被挤到第 2 行；取前两段 —— Java 8 的 "1.8.0_392" 主版本号在第二段，只看第一段
+# 会读成 "1"。
+java_major_of() {
+  "$1" -version 2>&1 \
+    | sed -nE 's/.*version "([0-9]+)(\.([0-9]+))?.*/\1 \3/p' \
+    | head -1 | awk '{ print ($1 == 1 && $2 != "") ? $2 : $1 }'
+}
+
+# 挑一个主版本正好是 17 的 JDK，根目录写进 BACKEND_JAVA_HOME；挑不到返回 1（试过的
+# 候选留给调用方打错误信息）。候选顺序：$JAVA_HOME → PATH 上那个 java 所属的 JDK →
+# 常见安装目录。
+#
+# 只认 17、不认 ">= 17"，理由见上面那段。别对着 backend/update.sh 抄：那边挑 >= 17
+# 是在挑**运行** jar 的 JVM（class 61 谁都能跑），和这里的编译期要求是两件事。
+pick_jdk17() {
+  local h java m
+  local homes=()
+  [ -n "${JAVA_HOME:-}" ] && homes+=("$JAVA_HOME")
+  # PATH 上的 java 不能直接砍掉 /bin/java 当成 JDK 根：它可能是 sdkman 之类的
+  # shim（$HOME/.sdkman/candidates/java/current/bin/java），砍完得到的是 shim 目录。
+  # readlink -f 解到真实文件，再往上两层才是根；解不出来就跳过，目录扫描一般能兜住。
+  if command -v java >/dev/null 2>&1; then
+    java="$(readlink -f "$(command -v java)" 2>/dev/null || true)"
+    [ -n "$java" ] && homes+=("${java%/bin/java}")
+  fi
+  for h in /usr/lib/jvm/* /usr/java/* /usr/local/* /opt/* /opt/*/* \
+           "$HOME"/.sdkman/candidates/java/*; do
+    [ -d "$h" ] && homes+=("$h")
+  done
+  JDK_TRIED=""
+  for h in "${homes[@]}"; do
+    [ -x "$h/bin/java" ] || continue
+    m="$(java_major_of "$h/bin/java" || true)"
+    [ -n "$m" ] || continue
+    JDK_TRIED="${JDK_TRIED}${h}(java${m}) "
+    [ "$m" = 17 ] && { BACKEND_JAVA_HOME="$h"; return 0; }
+  done
+  return 1
+}
+
 # ---------- 前置检查 ----------
 
 if [ "$RUN_BACKEND" = 1 ]; then
-  command -v java >/dev/null 2>&1 || fail "找不到 java，需要 JDK 17"
-  java_major="$(java -version 2>&1 | sed -nE '1s/.*"([0-9]+).*/\1/p')"
-  [ "$java_major" = "17" ] || warn "检测到 Java ${java_major:-未知}，本项目按 JDK 17 开发"
+  BACKEND_JAVA_HOME=""
+  if ! pick_jdk17; then
+    fail "找不到 JDK 17（本项目编译期必须用它，高版本会让 Lombok 静默失效）
+${DIM}       试过的候选：${JDK_TRIED:-（一个都没找到）}
+       装一个 JDK 17，或显式指一个：
+         JAVA_HOME=/path/to/jdk-17 ./dev.sh
+       来龙去脉见脚本里 pick_jdk17 上面那段注释。${RST}"
+  fi
+  [ "$BACKEND_JAVA_HOME" = "${JAVA_HOME:-}" ] \
+    || info "后端 JDK：${BACKEND_JAVA_HOME}${DIM}（不用环境里那个 java，原因见脚本注释）${RST}"
 fi
 
 if [ "$RUN_FRONTEND" = 1 ]; then
@@ -301,9 +374,12 @@ set -m
 
 if [ "$RUN_BACKEND" = 1 ]; then
   info "后端启动中…${DIM}clean 全量重编，首次会久一点${RST} Spring Boot (profile=${BACKEND_PROFILE}) → http://localhost:${BACKEND_PORT}"
-  # 用 env 只给后端这一个进程带上 profile：写成 export 的话前端那份环境也会跟着脏
+  # 用 env 只给后端这一个进程带上 profile 和 JAVA_HOME：写成 export 的话前端那份
+  # 环境也会跟着脏。JAVA_HOME 就是上面 pick_jdk17 挑出来的那个，mvnw 认它
+  # （只认 PATH 上那个 java 就不够了 —— 环境里的 JAVA_HOME 会压过 PATH）。
   start_service backend "$C_BACK" "$BACKEND_DIR" \
-    env "SPRING_PROFILES_ACTIVE=$BACKEND_PROFILE" ./mvnw clean spring-boot:run
+    env "SPRING_PROFILES_ACTIVE=$BACKEND_PROFILE" "JAVA_HOME=$BACKEND_JAVA_HOME" \
+    ./mvnw clean spring-boot:run
 fi
 if [ "$RUN_FRONTEND" = 1 ]; then
   info "前端启动中… Vite (mode=dev → .env.dev) → http://localhost:${FRONTEND_PORT}"
