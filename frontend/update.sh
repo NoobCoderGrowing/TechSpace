@@ -13,20 +13,78 @@ REMOTE_HOST="inforetrieval.com.cn"
 REMOTE_PATH="/var/ssl"
 SSH_PORT="22"  
 
-echo "Start deleting front end files in $REMOTE_PATH." &&
+# ============================================================================
+# 上传：单流 tar，不再用 scp 逐个文件传
+#
+# 原来是「ssh 删远端 -> scp -r dist/* 全量传」，慢在两件叠加的事上：
+#
+#   * 这条线路的 RTT 实测 ~310ms（ping），而 dist 有 76 个文件 —— 其中 67 个是
+#     字体，外加一个 2.7MB 的 gif、一个 1.8MB 的 jpeg。scp 从 OpenSSH 9.0 起
+#     其实就是 SFTP 的壳，每个文件都要 open / write / close 几轮往返：
+#     「文件数 × RTT」在三百毫秒的线路上就是几十秒的纯等待，跟文件多小无关。
+#   * 每次还是全量重传。76 个文件里 73 个逐字节没变（内容哈希写在文件名上，
+#     跨构建名字没变就说明内容没变），真正变的只有 index.html + 2MB 的 js +
+#     0.4MB 的 css。
+#   * 再乘上两条独立连接（一条 ssh 删、一条 scp 传），各付一次握手 + 一次密码。
+#
+# tar 之后：一条连接、一条流、顺带 gzip（js/css 能压到四分之一左右；图片和
+# 字体本来就压过，压不动），76 次协议往返归零。
+#
+# 顺序上有个刻意的取舍：**先在本地把包打好，再去动远端**。
+#   直接写 `tar cz dist | ssh host "rm -rf ... && tar xz"` 更短，但本地 tar
+#   中途出错时远端已经被清空了 —— 站点会空着挂到下一次成功部署为止。
+#   现在「自检 -> 打包」都排在前面，这两步失败的话线上一个字节都没动，
+#   跟下面 nginx 那段「先校验后落盘」是同一个原则。
+# ============================================================================
 
-# SSH 登录并删除文件
-ssh -p $SSH_PORT $REMOTE_USER@$REMOTE_HOST "rm -rf $REMOTE_PATH/*" &&
+# ① 构建产物自检：产物不对就停在这儿，别去碰线上
+if [ ! -f "$TARGET_DIR/index.html" ]; then
+  echo "!! $TARGET_DIR/index.html 不存在（构建没成功？），已中止，线上未被改动。" >&2
+  exit 1
+fi
 
-echo "Files in $REMOTE_PATH have been deleted." &&
+# ② 先在本地打包。这一步失败，远端同样还没被碰过。
+ARCHIVE="$(mktemp)" || { echo "!! 建不了临时文件，已中止。" >&2; exit 1; }
+# 不管从哪条路退出（包括下面那几个 exit 1）都把临时包清掉
+trap 'rm -f "$ARCHIVE"' EXIT
 
-echo "Start uploading front end files to $REMOTE_PATH." &&
+if ! tar czf "$ARCHIVE" -C "$TARGET_DIR" .; then
+  echo "!! 打包失败，已中止，线上未被改动。" >&2
+  exit 1
+fi
 
-scp -r -P $SSH_PORT $TARGET_DIR/* $REMOTE_USER@$REMOTE_HOST:$REMOTE_PATH &&
+# ③ 上传 + 解包，一次 ssh，但远端内部是三步：
+#      收包到 /tmp  ->  整包校验  ->  清空站点并解包
+#    为什么绕这一下：解包那两步（rm + tar）都在远端本地跑，是秒级的事；而收包要
+#    在这条 310ms 的线路上走几分钟。把「长时间的等待」和「不可逆的清空」分开，
+#    中途断线就只断在收包那一步 —— 站点还是原来那个站点。
+#    这是有反面教材的：包刚开传、连接就断了，远端被 rm 清空、只建出一个 assets/
+#    目录，76 个文件一个没落，首页 403。当时的写法是 `rm -rf ... && tar xz` 直接
+#    接在流上，断线就等于把站点掏空。
+#    `tar tzf` 那一步是白捡的保险：把包整个读一遍，截断/损坏的包在这里就露馅，
+#    根本走不到 rm 那一行。
+#
+#    --no-same-owner 是别把本机的 uid 带上去（本地是 wenjun，远端那个 uid 1000
+#    未必是同一个人）—— 让文件归 root，和原来 scp 的行为一致。
+#    万一远端是 busybox tar 不认这个长参数，去掉它即可：文件照样能读，
+#    只是属主会变成 uid 1000。
+#
+#    ★ 传输期间**没有任何输出**（tar 不报进度，传的是二进制流）—— 几分钟不动是
+#      正常的，别当成卡死去按 Ctrl-C。真按了也不会动到站点（见上）。
+echo "Start uploading front end files to $REMOTE_PATH ($(du -h "$ARCHIVE" | cut -f1)，传输期间无输出属正常现象)..." &&
 
-echo "Files in $TARGET_DIR have been scp to $REMOTE_PATH."
+ssh -p "$SSH_PORT" "$REMOTE_USER@$REMOTE_HOST" "
+  set -e
+  cat > /tmp/dist.tgz
+  tar tzf /tmp/dist.tgz > /dev/null
+  rm -rf $REMOTE_PATH/*
+  tar xzf /tmp/dist.tgz -C $REMOTE_PATH --no-same-owner
+  rm -f /tmp/dist.tgz
+" < "$ARCHIVE" &&
 
-# 上面那串 && 的结果。断在 rm/npm build/scp 任一步，这里拿到的就是失败码
+echo "Files in $TARGET_DIR have been uploaded to $REMOTE_PATH."
+
+# 上面那串 && 的结果。断在 rm / npm build / 上传 任一步，这里拿到的就是失败码
 # （那串链一旦断掉，后面的命令都不会执行，$? 停在断掉的那条上）。
 # 取值必须紧跟在链后面，中间只隔了注释和空行 —— 注释不是命令，不会冲掉 $?。
 upload_status=$?
@@ -58,7 +116,13 @@ upload_status=$?
 if [ "$upload_status" -ne 0 ]; then
   # 原来那句 restart 是靠 && 链兜住的：静态文件没传上去就不会走到 nginx 那一步。
   # 这段是独立语句，得自己把这个语义补回来 —— 文件都没上去，改 nginx 配置没意义。
-  echo "!! 上面的构建/上传没有全部成功，跳过 nginx 配置更新（站点文件仍是旧的）。" >&2
+  echo "!! 上面的构建/上传没有全部成功，跳过 nginx 配置更新。" >&2
+  # 这里要分清两种断法，别一律说"站点文件仍是旧的"：
+  #   自检 / 打包 / 收包 / 整包校验 这几步断 -> 线上一个字节都没动
+  #     （第 ③ 步是先把包收到远端 /tmp 并校验通过，才去动站点的）；
+  #   只有正好断在「rm 之后、解包完成之前」那几秒 -> 站点才会是半截的。
+  # 两种情况的处理都一样：重跑一次。
+  echo "!! 若断在上传：线上多半没被改动；只有正好断在解包那几秒才会半截 —— 重跑一次即可。" >&2
   exit 1
 elif [ "${SKIP_NGINX_CONF:-}" = "1" ]; then
   echo "SKIP_NGINX_CONF=1，跳过 nginx 配置更新。"
